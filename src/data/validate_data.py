@@ -2,13 +2,14 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 from typing import Any
 
 import numpy as np
 import pandas as pd
 
-from src.data.download import verify_manifest
+from src.data.download import sha256, verify_manifest
 from src.data.load_data import DataUnavailableError, load_official_pair
 from src.features.feature_groups import FAMILY_LABELS, column_role, feature_family, group_features
 from src.utils.paths import inside_root, utc_timestamp, write_json
@@ -243,6 +244,8 @@ def save_blocked_audit(root: Path, config: dict[str, Any], reason: str) -> dict[
 
 def run_audit(root: Path, config: dict[str, Any]) -> dict[str, Any]:
     """Audit only inputs matching the official-download manifest."""
+    if firewall_enabled(root):
+        return run_locked_integrity(root, config)
     settings = config["data"]
     raw = inside_root(root, settings["raw_dir"])
     manifest = verify_manifest(raw, settings["manifest_file"], [settings["train_file"], settings["test_file"]])
@@ -256,4 +259,48 @@ def run_audit(root: Path, config: dict[str, Any]) -> dict[str, Any]:
     if not summary["evaluation_files"]:
         summary["warnings"].append("No evaluation/API file matched the configured markers in the official archive; do not recreate an unverified competition metric.")
     save_audit(root, config, summary)
+    return summary
+
+
+def firewall_enabled(root: Path) -> bool:
+    """Tracked policy keeps protection active even if ignored artifacts vanish."""
+    return (root / "configs/split_policy.json").exists() or (root / "artifacts/split_definition.json").exists()
+
+
+def run_locked_integrity(root: Path, config: dict[str, Any]) -> dict[str, Any]:
+    """Reverify Phase 1 provenance without repeating pre-lock value statistics.
+
+    The original audit/dictionary remain historical Phase 1 evidence. A new
+    receipt reports only hashes, headers and identifiers, never their values.
+    """
+    from src.validation.time_split import prepare_split
+
+    settings = config["data"]
+    raw = inside_root(root, settings["raw_dir"])
+    manifest = verify_manifest(raw, settings["manifest_file"], [settings["train_file"], settings["test_file"]])
+    policy_path = root / "configs/split_policy.json"
+    if not policy_path.is_file():
+        raise ValueError("Tracked split policy is required for locked Phase 1 integrity verification.")
+    policy = json.loads(policy_path.read_text(encoding="utf-8"))
+    for relative, expected in policy["preserved_phase1_sha256"].items():
+        path = inside_root(root, relative)
+        if not path.is_file() or sha256(path) != expected:
+            raise ValueError(f"Preserved Phase 1 file differs: {relative}")
+    if sha256(raw / settings["train_file"]) != policy["source_train_sha256"]:
+        raise ValueError("Raw train differs from the fixed split policy.")
+    plan = prepare_split(root, raw / settings["train_file"], raw / settings["test_file"])
+    summary = {"status": "complete", "mode": "locked_integrity_only",
+        "generated_at_utc": utc_timestamp(), "preserved_phase1_outputs_unchanged": True,
+        "simulation_values_parsed": False, "official_test_values_parsed": False,
+        "train": {"rows": plan["full_train_rows"], "columns_count": len(plan["train_columns"]),
+                  "feature_groups": group_features(plan["feature_columns"])},
+        "test": {"rows": plan["official_test"]["rows"], "columns_count": len(plan["official_test"]["columns"]),
+                 "feature_groups": group_features(plan["feature_columns"])},
+        "provenance": {"source": manifest["source"], "downloaded_at_utc": manifest.get("downloaded_at_utc"),
+            "all_manifest_file_hashes_verified": True, "official_file_count": len(manifest["files"]),
+            "archive": manifest.get("archive")},
+        "evaluation_files": [item["path"] for item in manifest["files"]
+            if any(marker in item["path"].lower() for marker in settings["evaluation_markers"])],
+        "errors": [], "warnings": ["Historical Phase 1 value audit preserved; no locked-period value statistics recomputed."]}
+    write_json(root / "artifacts/phase1_integrity_check.json", summary)
     return summary

@@ -1,0 +1,17 @@
+{
+  "policy": "fixed_last_180_metadata_only",
+  "development_start": 0,
+  "development_end": 8867,
+  "development_rows": 8868,
+  "competition_simulation_start": 8868,
+  "competition_simulation_end": 9047,
+  "competition_simulation_rows": 180,
+  "competition_simulation_locked": true,
+  "source_train_sha256": "8c1aba83e1bf34f91b234b7979f1fc7c397186b33a8d08bdd3634c08eb3810ca",
+  "preserved_phase1_sha256": {
+    "reports/data_audit.md": "464039f0ddc109e41fcd930f2b607b9ebb37ef1f8630fe77bf11efd279fda4f6",
+    "docs/data_dictionary.md": "d52da7668438bfd576dfed466c6cae1c798aa9e268026b3ff1e3549e122b656e",
+    "artifacts/data_summary.json": "5d9cbd16581d42d1b376bd655d2450be205040469f988a85ad9b39b9d21b47b8",
+    "artifacts/phase1_status.json": "14edbff22e543acbd0276a0c424e6590dcdd514293dfd15af9d4d08ca3f739be"
+  }
+}

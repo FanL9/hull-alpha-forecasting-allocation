@@ -1,172 +1,90 @@
 # Regime-Aware Alpha Forecasting and Dynamic S&P 500 Allocation
 
-An end-to-end quantitative research framework for forecasting S&P 500 excess returns and translating predictive alpha into dynamic market exposure.
+An independent quant research project combining a future anonymous-feature alpha research layer with future Hull-style dynamic S&P 500 allocation. “Jane Street-style” describes the intended research organization; it does not claim proprietary methods, data or endorsement. Only the official Hull Tactical dataset is permitted.
 
-**Implementation status:** Phase 1 is complete: official competition data was downloaded on 2026-10-16, all 13 extracted files were hash-verified, and real-data audit/dictionary outputs were generated. No predictive-alpha findings, trained models or backtest results are claimed. Later phases are explicitly planned, not implemented.
+**Phase 1 — Official Data Acquisition & Audit: Completed.** Official acquisition, safe ZIP extraction, SHA-256 provenance, data audit/dictionary and credential safeguards are preserved.
 
-## Project Overview
+**Phase 2 — Data Processing & EDA: Completed.** The previous Phase 2 research implementation and results were withdrawn. The rebuilt phase contains development-only descriptive EDA, a conservative preprocessing framework and a fixed competition reservation.
 
-This independent research project studies whether anonymous financial features contain useful forecasts of future S&P 500 excess returns, whether their predictive power changes across market regimes, and whether forecasts create economic value after risk management and trading costs. Intended uses include a research portfolio and quantitative finance / financial engineering applications.
+> No alpha discovery, predictive feature selection, model fitting, allocation optimization, or backtesting has been performed in the rebuilt Phase 2.
 
-Research chain:
+## Official data and fixed boundary
 
-```text
-Financial features → alpha analysis → expected return forecast → market regime
-                   → trading signal → position size → portfolio return → risk evaluation
-```
+The only source is [Kaggle — Hull Tactical - Market Prediction](https://www.kaggle.com/competitions/hull-tactical-market-prediction/data). Existing local files are reused; this rebuild made no data download. All 13 manifest-listed files, including 11 API/transport files, and the original ZIP pass SHA-256 verification.
 
-## Research Motivation
+| Area / file | date_id | Rows | Columns | Role |
+| --- | --- | --- | --- | --- |
+| Full train.csv | 0–9047 | 9,048 | 98 | Provenance, header and ID inventory |
+| Development Area | 0–8867 | 8,868 | 98 | Current data processing and EDA; future research |
+| Competition Simulation | 8868–9047 | 180 | 98 | Locked: count, IDs and schema metadata only |
+| Official test.csv | 8980–8989 | 10 | 99 | Inference schema / API compatibility only |
 
-Forecast accuracy alone does not establish investable alpha. The research separates statistical predictability, stability, regime dependence and portfolio utility. Simple benchmarks precede nonlinear models, and all comparisons must use chronological out-of-sample predictions.
+There is no partition gap or overlap. Simulation values are excluded from all EDA, preprocessing choices, feature engineering, future selection and tuning. Its dtypes are not inferred from values; the same train header establishes column compatibility. Official test.csv overlaps the locked period and is **not an independent model evaluation set**. Only its header and IDs are inspected in this phase; it is never used for training, tuning or prediction evaluation.
 
-## Research Questions
+Training columns are date_id, 94 anonymous features (M=18, E=20, I=9, P=13, V=13, S=12, D=9) and three outcomes: forward_returns, risk_free_rate, market_forward_excess_returns. There is **no independent MOM family**. Official test adds is_scored and three lagged fields in place of contemporaneous outcomes. Exact numbered-feature economic meanings and release timing are not inferred.
 
-1. Do the supplied features predict future S&P 500 excess returns out of sample?
-2. Is predictive power stable through time?
-3. Which signals strengthen or fail across market and volatility regimes?
-4. Do nonlinear models improve on historical mean and linear benchmarks?
-5. Do better forecasts necessarily deliver better portfolio outcomes?
-6. Does volatility-aware sizing improve risk-adjusted performance?
+The [original Phase 1 audit](reports/data_audit.md), [data dictionary](docs/data_dictionary.md) and original summary remain unchanged. They predate the new firewall and include historical full-file inspection. The new lock governs subsequent use; it cannot make earlier inspection disappear. Their full-file statistics are not inputs to the rebuilt EDA or processing decisions.
 
-See [research questions](docs/research_questions.md) for planned evidence and failure criteria.
+## Actual development-only EDA findings
 
-## Data
+- No duplicate IDs or full rows, no infinite cells, and ordered unique date_id 0–8867. All 94 features and all three outcomes are retained.
+- 85 features contain 137,675 missing cells: **16.52%** of feature cells. No feature is wholly missing or constant over observed development values. Long starting gaps are substantial: E7 has 6,969 leading missing rows, V10 6,049 and S3 5,733.
+- Family missing fractions differ: M 25.84%, S 20.52%, V 20.10%; D has none. D6 is binary with values -1/0; its encoding is preserved.
+- Member-level distributions and scales vary. E8 has sample skewness 6.09 and excess kurtosis 90.40. Extremes are retained. Anonymous fields are not assigned economic causes.
+- Adjacent chronological feature blocks show distribution changes: median empirical CDF distance **0.3413**, 95th percentile **0.9921**, among 2,747 sufficiently observed pairs. These describe X distributions, not formal structural breaks or regimes. The last block has only 48 rows.
+- **7 X–X pairs** have absolute Pearson correlation at least 0.95 (pairwise-complete, at least 126 observations); no features are removed. No X–Y correlation is computed.
+- Target-only analysis: mean 0.00004252, median 0.00024783, sample std 0.01055681, excess kurtosis 2.2026. Lag-1 target autocorrelation is -0.0437. These retrospective descriptions do not establish predictability and are never joined to X.
 
-The only permitted raw data source is **Kaggle — Hull Tactical - Market Prediction**, competition slug `hull-tactical-market-prediction`:
+See the complete [Phase 2 report](reports/phase2_data_processing_eda.md) and executed [notebook 02](notebooks/02_data_processing_eda.ipynb). Full per-feature statistics, missing intervals, family tables, temporal summaries, X–X pair counts and separate target-only artifacts are generated locally.
 
-- [Official competition data](https://www.kaggle.com/competitions/hull-tactical-market-prediction/data)
-- [Official evaluation page](https://www.kaggle.com/competitions/hull-tactical-market-prediction/overview/evaluation)
-- [Competition rules](https://www.kaggle.com/competitions/hull-tactical-market-prediction/rules)
+## Processing and leakage controls
 
-**Never upload Kaggle raw data to GitHub.** Raw/derived data, archives, credentials and generated artifacts are ignored. Official evaluation/API files remain in the ignored raw directory under their own terms. The MIT license applies to project code and documentation, not competition assets.
+The default `data/processed/development.csv` is an identity export: all 8,868 rows and 98 columns, original values and NaNs remain. No feature drop, outcome imputation, scaling, outlier removal or global historical mean/median fill occurs.
 
-The primary planned label is `market_forward_excess_returns`. `forward_returns` and `risk_free_rate` are reserved for economic accounting. Their precise definitions, units and availability will be checked against official files. The forecasting label is not assumed to equal the simple difference of the other two fields.
+Optional software-tested candidates are a strictly prior expanding median and contemporaneous X missing indicators. They are not applied to the default export. When no past observation exists, the median candidate leaves NaN. A future fixed training-window median must be fitted separately at each training boundary and used only on subsequent rows; it is not used to fill the historical training period from its own future.
 
-Numbered predictors are **anonymous features**. The family taxonomy in the project brief is M (market/technical), E (macro), I (rates), P (price/valuation), V (volatility), S (sentiment), MOM (momentum), D (dummy/binary). Individual economic meanings are not inferred. Actual names and counts will come from the downloaded CSV headers.
+Trailing descriptive statistics end at the displayed row. Each drift comparison uses the preceding block and current block available at that endpoint. Full-development descriptive aggregates are not fitted transforms. Target rolling summaries describe realized labels retrospectively and are not prediction-time features. Feature EDA rejects outcome columns; target EDA accepts only its named target. No regime is defined from outcomes.
 
-Observed official files:
+`configs/split_policy.json` keeps the firewall active even if ignored artifacts are removed. `artifacts/split_definition.json` binds exact ranges and source hashes; changed source data, schema or boundaries are rejected. Under this policy `phase1` / `audit` verify integrity and ID/schema metadata, preserve the historical audit byte-for-byte and cannot fall back to downloading or full-file value statistics.
 
-| File | Rows | Columns | `date_id` range |
-| --- | --- | --- | --- |
-| `train.csv` | 9,048 | 98 | 0–9,047 |
-| `test.csv` | 10 | 99 | 8,980–8,989 |
+## Future research design — not executed
 
-Both files contain the same 94 recognized anonymous predictors: M=18, E=20, I=9, P=13, V=13, S=12, D=9. **No `MOM*` column is present.** The training file adds `date_id` and three outcome fields; the test file instead adds `date_id`, `is_scored` and three `lagged_*` fields.
+The intended chain is Hull features → alpha research → return forecasting → regime analysis → signal → 0–200% S&P 500 exposure → risk and portfolio evaluation. These research questions remain unanswered: whether stable out-of-sample alpha exists, which families are stable, whether regimes matter, whether ML improves stability, and whether better forecasts improve investment outcomes.
 
-The test file's 10 date identifiers all overlap training history, so it is unsuitable as an independent final research holdout. Training has 137,675 missing cells across 85 feature columns; all three outcome fields have no missing values. The supplied test file has no missing cells. `D6` uses the binary encoding `{-1, 0}`, which is preserved rather than forced to 0/1. See the [full audit](reports/data_audit.md) and [observed data dictionary](docs/data_dictionary.md).
+Future development uses **expanding-window walk-forward within 0–8867**. Fold count, initial window, validation lengths, internal test length, models, tuning and timing/purge rules remain undecided. The next research stage must define them, then plan an internal holdout and strategy freeze before any separately authorized 180-row competition simulation. No validation folds are executed now. See [methodology](docs/methodology.md), [split design](docs/validation_design.md) and [research questions](docs/research_questions.md).
 
-## Methodology
+## Reproduce using existing data
 
-Phase 1 implements official-only acquisition, safe ZIP extraction, SHA-256 provenance, strict loading, schema/time checks, per-column missingness, feature-family missingness across input-order blocks, and generated documentation. It does not fit or transform data. The detailed later-phase plan is in [methodology](docs/methodology.md).
-
-## Alpha Research
-
-Planned analyses include Pearson/Spearman relationships with future labels, univariate coefficients, walk-forward predictive direction, rolling predictive power, family comparisons, sign stability and conditional regime performance. Training-window analysis selects candidates; only subsequent out-of-sample evidence can support a candidate alpha claim. In-sample correlations alone will not be called alpha.
-
-Lagging signals to examine decay is distinct from constructing longer-horizon returns. Multi-period compounded labels will be built only after timing and consecutiveness are verified, with a matching purge gap. Multiple testing and selection bias must be reported.
-
-## Validation Framework
-
-The planned design is an expanding-window development sequence followed by a reserved chronological final holdout. No random KFold or shuffled split is permitted. Imputers, scalers, feature selectors, regime calibrations and model tuning are fitted on each training window only.
-
-The supplied official `test.csv` overlaps training on all 10 identifiers and has no contemporaneous outcome fields. The downloaded gateway reads it and serves ordered batches; detailed label availability and the hidden evaluation still require verification. The research holdout comes from the labelled training history. Its cut is not yet created. Final labels remain unused for tuning and exploratory target analysis; schema/missingness inventory is permitted. See [validation design](docs/validation_design.md) and [official API source review](docs/official_api_notes.md).
-
-## Models
-
-Planned order: historical mean → linear regression → Ridge → ElasticNet → Random Forest → XGBoost → LightGBM. Optional MLP work requires stable baselines and evidence of need. No model is currently fitted. Current requirements contain only Phase 1 dependencies; model-specific packages will be added with their implementation.
-
-## Signal Construction
-
-Planned comparisons: raw forecasts, historical normalization, historical percentiles, clipping and causal smoothing. Calibration uses training or earlier out-of-sample predictions only. Full-sample z-scores, bidirectional smoothing and future information are prohibited.
-
-## Portfolio Construction
-
-Planned exposure is bounded by `0 ≤ w_t ≤ 2`, with linear, threshold and volatility-adjusted mappings. Benchmarks are 100% buy-and-hold, a predeclared simple rule, the development-selected ML strategy and a regime-aware strategy. Cash returns, leveraged financing, turnover and transaction costs must be explicitly accounted for after the official return semantics are verified. `w=1` and constant 100% exposure represent the same benchmark.
-
-## Risk Management
-
-Planned controls include exposure clipping, past-only volatility estimates, volatility targeting, signal smoothing and a causal drawdown overlay. A 1.20 volatility-ratio reference is recorded in configuration from the brief; the exact official score/penalty must be verified before implementation. An ex-post ratio check is not a guarantee of future volatility. Standard financial metrics will be reported separately from any competition metric.
-
-## Evaluation Metrics
-
-Prediction: MAE, RMSE, R², Pearson correlation, Spearman correlation and directional accuracy. Portfolio: cumulative/annualized return, annualized volatility, excess-return Sharpe, Sortino, maximum drawdown, Calmar, downside volatility, turnover and hit rate. Regime and robustness analyses must report sample sizes, costs and uncertainty. No unverified metric values are currently available.
-
-## Repository Structure
-
-```text
-configs/       Base, model-plan and portfolio-plan YAML configuration
-data/          Ignored raw, interim and processed inputs (.gitkeep only in Git)
-docs/          Definition, questions, methodology, dictionary, validation
-notebooks/     Eight numbered research notebooks; Phase 1 is executable
-src/
-  cli.py       check-env / download / audit / phase1 commands
-  data/        Official download, strict loader, audit and eligibility filter
-  features/    Implemented family taxonomy; engineering modules planned
-  alpha/       Planned alpha research modules
-  validation/  Planned chronological split and walk-forward modules
-  models/      Planned ordered forecasting benchmarks
-  signals/     Planned signal construction and smoothing
-  portfolio/   Planned sizing, volatility targeting and backtest
-  evaluation/  Planned prediction, portfolio and regime metrics
-  utils/       Portable paths, configuration, RNG seeds, strict JSON
-tests/         Phase 1 acquisition, audit and leakage-boundary tests
-reports/       Human-readable data audit (includes a truthful blocked state)
-artifacts/     Ignored summary/status JSON and future generated artifacts
-```
-
-Future-phase modules and notebooks are marked as planned. They contain no fabricated outputs or purported model implementations.
-
-## Reproduction
-
-Run commands from the repository root with Python 3.12+.
+Python 3.12+. From this repository, use the existing virtual environment:
 
 ```powershell
-python -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
 .\.venv\Scripts\python.exe -m src.cli check-env
-```
-
-On Linux/macOS, replace `.\.venv\Scripts\python.exe` with `.venv/bin/python`.
-
-Configure authentication **locally**, without pasting credentials into chat or committing them. The [official Kaggle CLI documentation](https://github.com/Kaggle/kaggle-cli/blob/main/docs/README.md) describes an API token environment variable or `~/.kaggle/access_token`, and legacy `~/.kaggle/kaggle.json`. On Windows the latter is `%USERPROFILE%\.kaggle\kaggle.json`. The project also checks `KAGGLE_CONFIG_DIR` and the legacy username/key environment pair. Presence does not prove server validity. Check competition access and accept rules yourself on Kaggle if required; this project does not accept rules for you.
-
-```powershell
 .\.venv\Scripts\python.exe -m src.cli phase1
+.\.venv\Scripts\python.exe -m src.cli phase2
 .\.venv\Scripts\python.exe -m pytest
 ```
 
-The downloader invokes the installed official CLI:
+For a fresh environment install `requirements.txt`, or `requirements-lock.txt` for the captured dependency closure. On Linux/macOS use `.venv/bin/python`. Open notebook 02 with that environment and Run All; it executes the full data-only pipeline from the existing raw files and saves every artifact. It does not merely display precomputed research results. Notebook 01 calls the protected Phase 1 audit. Notebooks 03–08 are deferred plans without results.
 
-```text
-kaggle competitions download -c hull-tactical-market-prediction -p data/raw
-```
+Preserved Phase 1 acquisition tooling remains available for separately authorized initial acquisition (`python -m src.cli download`), safe extraction, hash verification and blocked-input reporting. This task never calls the downloader. If provenance or preserved audit files fail verification, stop and investigate; do not replace inputs silently. Existing Kaggle credentials remain local; never paste or commit their values.
 
-It validates the full ZIP before extraction, preserves all official files, and creates `data/raw/download_manifest.json` with hashes. `phase1` reuses a hash-verified acquisition when possible. Separate commands are available:
+## Files and outputs
 
-```powershell
-.\.venv\Scripts\python.exe -m src.cli download
-.\.venv\Scripts\python.exe -m src.cli audit
-```
-
-The audit generates `reports/data_audit.md`, `docs/data_dictionary.md`, `artifacts/data_summary.json` and `artifacts/phase1_status.json`. Exit codes: 0 = requested action succeeded; 1 = observed schema/time validation failed; 2 = required data unavailable. Expected-schema deviations are reported for investigation; source data is never edited to match expectations. Generated reports may expose column names and aggregate statistics, so review competition terms before publication.
-
-If Windows restricts its default temporary directory, point `TEMP` and `TMP` to a project-local `work/tmp` directory before installation. `requirements-lock.txt` captures all installed dependency versions for this Phase 1 environment; use `pip install -r requirements-lock.txt` to replay them.
-
-## Results
-
-| Deliverable | Current status |
+| Path | Purpose |
 | --- | --- |
-| Project structure, configuration and documentation | Created |
-| Official downloader and reproducible audit code | Implemented |
-| Official train/test and evaluation/API files | Downloaded from the official competition; 13 file hashes verified, including 11 API/transport files |
-| Actual data audit and observed dictionary | Generated from train 9,048×98 and test 10×99; no blocking schema/time errors |
-| EDA, alpha analysis, training, regimes and backtests | Not started; Phases 2–6 |
-| Empirical answer to the research questions | Not yet available |
+| src/data/ | Preserved official acquisition/audit; conservative candidate preprocessing |
+| src/validation/time_split.py | Identifier-only fixed reservation and bounded development loader |
+| src/research/ | Separate X and target EDA, figures, generated reporting and orchestration |
+| configs/research.yaml | Descriptive settings; no model/fold parameters |
+| configs/split_policy.json | Tracked split firewall and preserved Phase 1 checksums |
+| reports/phase2_data_processing_eda.md | Rebuilt report with six descriptive figures |
+| artifacts/split_definition.json | Exact split, timestamp, source binding and data-use policies |
+| artifacts/phase2_data_summary.json | Development quality, scope, processing and execution metadata |
+| artifacts/missingness_summary.csv | All 94 features, missing counts and contiguous-gap summaries |
+| artifacts/feature_statistics.csv | All 94 features, moments, quantiles and observed dtypes |
+| notebooks/02_data_processing_eda.ipynb | Actually executed, reproducible data-only workflow |
+| tests/ | Preserved Phase 1 checks plus boundary, firewall and causal-processing checks |
 
-Data-quality findings: substantial and time-varying historical feature missingness, absence of a separate MOM family, D6's -1/0 binary encoding, and complete overlap of the provided test dates with training. The tiny test sample also has constant nonmissing D1/D2/D4/D6/S7 fields; this is not evidence of constancy in the full history. The downloaded API code provides inference transport, not a verified financial scoring formula. No official score is claimed.
+Raw/processed data, ZIPs, artifacts, credentials, caches and local delivery copies are ignored by Git. Reports/notebooks contain reviewed aggregates; observation-level and processed files remain local. The MIT license applies to project code/documentation, not official competition assets.
 
-Unit tests use tiny, explicitly artificial fixtures in temporary directories. They verify software behavior and are not research datasets or evidence of market predictability.
-
-## Limitations
-
-Anonymous fields limit economic interpretation. Feature publication lags and target construction require verification. The absence of a calendar mapping limits calendar/regime claims. Nonstationarity, feature search, overlapping horizons, tail risk, leverage financing and transaction costs can invalidate apparent performance. No profitable strategy, live feasibility, official-score reproduction or model superiority has been established. This is a research framework, not investment advice.
+Anonymous definitions, publication timing, target construction, scoring details and a calendar mapping remain unresolved for future research. No alpha, forecast superiority or portfolio performance is claimed.

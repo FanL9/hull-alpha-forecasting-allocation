@@ -1,42 +1,25 @@
-# Time-series validation design
+# Research split design
 
-Status: design only. No split or final period has been instantiated, and no model has been trained.
+Status: fixed data boundary implemented; future walk-forward remains design only. No folds have been generated or executed.
 
-## Chronology and label timing
+| Area | Inclusive date_id | Rows | Current permitted use |
+| --- | --- | --- | --- |
+| Development | 0..8867 | 8868 | Data processing and EDA |
+| Competition Simulation | 8868..9047 | 180 | Headers/IDs/count metadata only |
 
-Validate unique, finite, integer-like and monotonically increasing `date_id` values; do not silently reorder them. `date_id` does not by itself establish a calendar date or consecutive trading days. Confirm official feature publication timing, label horizon and evaluation API behavior before determining the precise gap.
+The two areas partition all 9048 training rows, without a gap, overlap, sorting or shuffle. configs/split_policy.json is the tracked firewall. artifacts/split_definition.json persists source hashes, creation timestamp, exact boundaries and policies. A rerun verifies rather than overwrites a different reservation. The raw value parser reads only nrows=8868. Full-file operations are byte hashing and header/ID inspection.
 
-The intended forecast label is the future excess-return label already attached to row `t`. Do not shift an already-forward label again without documentary justification. Retrospective outcomes, contemporaneous risk-free fields and unverified lagged API fields are excluded from predictors.
+The final 180 rows cannot inform missing-value handling, feature engineering, selection, EDA, regimes, model/tuning/allocation choices or backtest optimization. No simulation dtype inference, missingness or target summary is allowed. Shared train headers provide schema compatibility; value checks wait for a future authorized simulation. Official test.csv is inference-schema-only and never a model test set.
 
-## Development and final holdout
+Future sequence, entirely unexecuted:
 
-After acquisition, define a chronological tail from labelled training history as the final holdout. The provisional configuration reserves 20%; this is a design value, not a completed split. Record its exact `date_id` cut, row counts, input hashes and configuration before development target exploration. Allow schema, file integrity and missingness inventory across files, but keep final labels unused in exploratory target analysis, feature selection, calibration and tuning.
+1. Agree on expanding-window walk-forward within Development Area.
+2. Decide fold count, initial window, block lengths, release/label timing, purge rules, models and tuning procedures. All are currently undecided/null.
+3. Fit preprocessing, feature selection, regime thresholds and models inside each historical training window only; evaluate strictly later rows. No random split.
+4. Define an internal chronological holdout inside development; its length is not selected now.
+5. Freeze the strategy, implementation and any sequential update schedule.
+6. Separately authorize and run the 180-row Kaggle-style competition simulation under that frozen protocol.
 
-Do not use official `test.csv` as a research holdout merely because of its filename. It may be an API example, overlap training or include evaluation-specific fields. Audit the actual relationship and review the official API.
+No internal test or fold length is implied by the 252-row descriptive EDA windows. Target-only rolling summaries are retrospective observations, not inputs to future forecast-time features. An outcome-availability gap must be determined later from verified semantics; the fixed Development/Simulation partition itself has no gap.
 
-## Expanding-window sequence
-
-```text
-earlier history     gap   validation 1
-earlier + block 1   gap   validation 2
-earlier + blocks 1–2 gap  validation 3
-frozen development specification   gap   final holdout
-```
-
-All validation intervals are contiguous and strictly later than their training interval. No shuffled splitting or random KFold. The provisional one-row gap is conservative for an assumed one-step horizon and must be confirmed; for multi-row labels purge every training label whose outcome interval reaches into validation. Place a corresponding gap before the final holdout.
-
-Fit imputers, missing indicators, scalers, transformations, feature selectors, normalization, regime thresholds and models only using each training window. Forward filling may carry historical values forward with a defined limit, but must never backfill future observations. All-missing training columns require an explicit stable policy. Do not use validation or final outcomes to repair features.
-
-## Tuning and model selection
-
-Train historical mean and linear models first. Compare all candidates using matched out-of-sample rows and a training-only baseline. If hyperparameters are tuned, use inner chronological splits. Select ensemble weights, signals, mappings, costs and risk overlays inside development evaluation only. Record evaluated candidates and selection criteria to expose research degrees of freedom.
-
-Prediction correlation and directional accuracy supplement error metrics. Portfolio utility is assessed net of declared costs and financing at comparable risk. No single metric determines model superiority.
-
-## Final evaluation protocol
-
-Freeze a configuration, code revision, feature list and rule for allowable refits before opening final labels. Specify whether the final period uses a frozen model or a predeclared sequential refit schedule that only consumes already realized earlier labels. Evaluate once; any subsequent design changes make that period development data and require a new independent test for a fresh claim.
-
-## Later implementation checks
-
-Add tests when those phases are implemented: training and outcome intervals precede validation; perturbing future rows cannot change earlier states/signals/weights; preprocessing fit state is training-only; weights remain within `[0,2]`; and portfolio return timing, turnover and costs agree with an explicit ledger. These checks are planned and are not included in current Phase 1 test claims.
+The original Phase 1 full-file audit and withdrawn previous analyses predate this rebuild. Preserving them as history does not make the new simulation historically unseen. New work enforces a prospective firewall and discloses prior access. Final independent-performance claims will require acknowledging that history.

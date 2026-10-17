@@ -22,10 +22,11 @@ audit:
   status_path: artifacts/phase1_status.json
   missingness_blocks: 4
 validation:
-  # Design only; no split, target analysis or model fitting occurs in Phase 1.
+  # Future development design only; no folds or models are run in Phase 2.
   method: expanding_window
   shuffle: false
-  final_holdout_fraction: 0.20
-  gap_rows: 1
-  horizon_rows: 1
-  final_holdout_status: not_created
+  competition_simulation_rows: 180
+  competition_simulation_locked: true
+  fold_count: null
+  internal_holdout_rows: null
+  selected_model: null

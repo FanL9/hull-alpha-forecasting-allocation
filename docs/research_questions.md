@@ -1,22 +1,16 @@
-# Research questions and evidence plan
+# Research questions
 
-Status: research design only. No empirical conclusion is available before acquisition and chronological validation.
+Status: unanswered. The rebuilt Phase 2 supplies data-quality context only; no predictive or investment evidence exists in its accepted outputs.
 
-| Question | Planned evidence | Interpretation safeguard |
-| --- | --- | --- |
-| Q1: Are future excess returns predictable? | Development walk-forward correlations, directional accuracy and univariate forecasts versus historical mean | In-sample correlation is exploratory, not alpha; account for feature search |
-| Q2: Is candidate alpha stable? | Rolling correlations, coefficient signs, fold-level predictive direction, temporal family summaries | Report sign reversals and uncertainty; overlapping windows are dependent |
-| Q3: Does effectiveness depend on regimes? | Signal and portfolio outcomes conditional on causal volatility and trend states | Thresholds use earlier history; small conditional samples cannot establish a regime effect |
-| Q4: Does ML beat linear baselines? | Identical development folds, labels, eligible fields, tuning budgets and forecast metrics | Compare Ridge/ElasticNet before nonlinear complexity; freeze selection before final test |
-| Q5: Do improved forecasts improve investment results? | Matched prediction metrics and net portfolio outcomes under fixed sizing rules | Exposure and risk differences can explain returns; a lower RMSE is insufficient |
-| Q6: Does volatility-aware sizing improve risk-adjusted outcomes? | Linear, threshold and volatility-adjusted mappings with cost and leverage sensitivities | Compare realized risk, turnover, drawdown and financing assumptions, not Sharpe alone |
+| Future question | Evidence needed later |
+| --- | --- |
+| Does Hull contain predictable alpha? | Chronological out-of-sample evidence against predeclared simple benchmarks, with selection uncertainty |
+| Which features/families are stable? | Historical-window discovery and later stability tests; coverage and sign changes |
+| Does alpha depend on market regimes? | Historically calibrated regimes and later conditional evaluation with sample counts |
+| Is ML more stable than linear forecasting? | Matched future validation intervals and training-only tuning |
+| Do better forecasts improve investment results? | Frozen signal/sizing rules and portfolio accounting net of costs and financing |
+| Does the full research-to-allocation chain improve robustness? | Appropriate benchmarks, risk comparisons, internal evaluation and a disclosed final simulation |
 
-## Alpha investigations
+Current descriptive questions are different: where are values missing, which feature distributions/scales vary, how does X–X redundancy look, and what is the development target's standalone distribution? The Phase 2 report answers these from actual development rows without joining X and Y. It does not select alpha candidates, models or allocation rules.
 
-For each observed feature, use `X[j,t]` to forecast the verified future label attached to row `t`. Establish the row/label alignment from official documentation before implementing shifts. Distinguish delayed signals from longer-horizon compounded future returns. Only construct the latter when the return sequence and availability permit it; otherwise report that the longer-horizon question is not identifiable.
-
-Report all examined families, candidate selection procedures, fold sample sizes and unsuccessful findings. Family labels do not establish the economic meaning of any numbered predictor. A feature may remain a statistical candidate without an interpretable economic story.
-
-## Reporting standard
-
-Negative and unstable results are valid outcomes. Answer each question using actual out-of-sample evidence with uncertainty, competing explanations and implementation limits. No results will be inserted to fit the project narrative.
+Future answers require a separately agreed expanding-window design inside 0..8867, an internal holdout, strategy freeze and prospective 180-row simulation firewall. Fold count, internal holdout length and models remain undecided. Report failures, uncertainty, dependent observations and all researcher choices. Earlier discarded research cannot be treated as accepted evidence or erased from access history.

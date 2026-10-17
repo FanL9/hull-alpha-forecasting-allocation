@@ -1,0 +1,18 @@
+# Phase 2 descriptive settings only. No targets inform feature processing.
+phase: data_processing_eda
+analysis_start: 0
+analysis_end: 8867
+default_processing: retain_nan
+time_block_rows: 252
+rolling_window_rows: 252
+rolling_min_observations: 126
+rolling_output_stride: 21
+correlation_min_pairs: 126
+high_xx_correlation_threshold: 0.95
+target_autocorrelation_max_lag: 20
+future_validation:
+  method: expanding_window
+  status: design_only
+  fold_count: null
+  internal_holdout_rows: null
+  selected_model: null

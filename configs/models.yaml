@@ -1,9 +1,9 @@
-status: planned_for_phases_3_and_4
+status: deferred_no_models_fitted
 selection:
   scope: development_walk_forward_only
-  primary_metric: pearson_correlation
-  compare_economic_value: true
-sequence:
+  primary_metric: null
+  selected_model: null
+candidate_menu_for_future_discussion:
   - historical_mean
   - linear_regression
   - ridge
@@ -11,5 +11,5 @@ sequence:
   - random_forest
   - xgboost
   - lightgbm
-# Hyperparameters and optional dependencies will be specified before fitting.
+# This menu does not select a model, benchmark order, folds or hyperparameters.
 seed: 42
