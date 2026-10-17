@@ -1,0 +1,15 @@
+status: planned_for_phases_3_and_4
+selection:
+  scope: development_walk_forward_only
+  primary_metric: pearson_correlation
+  compare_economic_value: true
+sequence:
+  - historical_mean
+  - linear_regression
+  - ridge
+  - elasticnet
+  - random_forest
+  - xgboost
+  - lightgbm
+# Hyperparameters and optional dependencies will be specified before fitting.
+seed: 42

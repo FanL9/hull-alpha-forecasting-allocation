@@ -1,0 +1,35 @@
+# Licensed competition inputs and all derived data stay local.
+data/raw/*
+!data/raw/.gitkeep
+data/interim/*
+!data/interim/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+artifacts/*
+!artifacts/.gitkeep
+
+# Credentials must never enter version control.
+.kaggle/
+kaggle.json
+access_token
+access_token.txt
+credentials.json
+.env
+.env.*
+!.env.example
+
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+.coverage
+htmlcov/
+*.egg-info/
+build/
+dist/
+work/
+outputs/
+.DS_Store
+Thumbs.db

@@ -1,0 +1,31 @@
+project:
+  name: hull-alpha-forecasting-allocation
+  seed: 42
+data:
+  competition: hull-tactical-market-prediction
+  source_url: https://www.kaggle.com/competitions/hull-tactical-market-prediction/data
+  raw_dir: data/raw
+  train_file: train.csv
+  test_file: test.csv
+  manifest_file: download_manifest.json
+  date_column: date_id
+  target: market_forward_excess_returns
+  outcome_columns: [forward_returns, risk_free_rate, market_forward_excess_returns]
+  # Availability has not been verified. Do not use these as predictors.
+  excluded_columns: [date_id, is_scored, forward_returns, risk_free_rate, market_forward_excess_returns]
+  evaluation_markers: [kaggle_evaluation, evaluation, inference]
+  timeout_seconds: 300
+audit:
+  summary_path: artifacts/data_summary.json
+  report_path: reports/data_audit.md
+  dictionary_path: docs/data_dictionary.md
+  status_path: artifacts/phase1_status.json
+  missingness_blocks: 4
+validation:
+  # Design only; no split, target analysis or model fitting occurs in Phase 1.
+  method: expanding_window
+  shuffle: false
+  final_holdout_fraction: 0.20
+  gap_rows: 1
+  horizon_rows: 1
+  final_holdout_status: not_created

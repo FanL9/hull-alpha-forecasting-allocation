@@ -1,0 +1,17 @@
+status: planned_for_phase_5
+exposure:
+  minimum: 0.0
+  maximum: 2.0
+  neutral: 1.0
+position_mappings: [linear, threshold, volatility_adjusted]
+risk:
+  competition_volatility_ratio_reference: 1.20
+  competition_formula_status: pending_official_evaluation_code_verification
+  annualization_periods: 252
+  volatility_target: null
+  drawdown_limit: null
+costs:
+  # Unset deliberately: no zero-cost performance claim is implied.
+  one_way_transaction_cost_bps: null
+  borrowing_spread_bps: null
+benchmarks: [buy_and_hold_100_percent, simple_rule, best_development_ml]

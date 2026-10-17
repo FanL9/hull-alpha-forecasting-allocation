@@ -1,0 +1,12 @@
+[project]
+name = "hull-alpha-forecasting-allocation"
+version = "0.1.0"
+description = "Regime-aware alpha research and dynamic S&P 500 allocation"
+requires-python = ">=3.12"
+readme = "README.md"
+license = "MIT"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-ra"

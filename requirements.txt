@@ -1,0 +1,6 @@
+# Phase 1 only. Add modelling libraries when their phase is implemented.
+kaggle==2.2.4
+numpy==2.5.4
+pandas==3.0.6
+PyYAML==6.0.3
+pytest==9.1.1
