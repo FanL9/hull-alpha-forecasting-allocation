@@ -197,6 +197,7 @@ def test_real_entry_call_order_with_only_test_doubles(monkeypatch):
     monkeypatch.setattr(phase3, 'verify_protocol_lock', verify)
     monkeypatch.setattr(phase3, 'real_execution_preflight', lambda *a, **k: {})
     monkeypatch.setattr(phase3, 'reserve_real_run', lambda *a, **k: nullcontext())
+    monkeypatch.setattr(phase3, '_output_destination', lambda *a, **k: None)
     monkeypatch.setattr(phase3, 'read_header', header)
     monkeypatch.setattr(phase3, 'load_research_prefix', load)
     monkeypatch.setattr(phase3, '_execute', execute)
