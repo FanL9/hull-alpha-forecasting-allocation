@@ -1,4 +1,4 @@
-# Phase 2 descriptive settings only. No targets inform feature processing.
+# Retained Phase 2 EDA settings; Phase 2.5 freezes future research rules below.
 phase: data_processing_eda
 analysis_start: 0
 analysis_end: 8867
@@ -12,7 +12,50 @@ high_xx_correlation_threshold: 0.95
 target_autocorrelation_max_lag: 20
 future_validation:
   method: expanding_window
-  status: design_only
-  fold_count: null
-  internal_holdout_rows: null
+  status: protocol_frozen_not_executed
+  config_path: configs/validation.yaml
+  fold_count: 11
+  internal_holdout_rows: 1008
   selected_model: null
+protocol:
+  version: phase2.5-v1
+  status: frozen_no_real_data_research_executed
+  primary_target: market_forward_excess_returns
+  horizon_trading_rows: 1
+  anonymous_feature_count: 94
+  lagged_outcomes_allowed_as_future_candidates: true
+  candidate_universe_size: 97
+  preprocessing: training_window_only
+  feature_availability:
+    min_nonmissing_observations: 252
+    min_historical_coverage_since_first_observation: 0.80
+    recent_window: 504
+    max_recent_missing_ratio: 0.25
+    min_distinct_values: 2
+  inference:
+    primary_metric: pearson_ic
+    secondary_metric: spearman_rank_ic
+    primary_test: two_sided_pearson_hac_normal_approximation
+    newey_west_lags: 5
+    bootstrap_method: paired_moving_block
+    bootstrap_block_length: 20
+    bootstrap_repetitions: 2000
+    confidence_level: 0.95
+    random_seed: 42
+    minimum_pairs_per_fold: 126
+    minimum_validation_coverage: 0.50
+    minimum_eligible_folds: 3
+    stability_metrics: [fold_ic, sign_consistency, mean_ic, ic_std, positive_fold_ratio]
+  multiple_testing:
+    method: benjamini_hochberg
+    fdr_alpha: 0.05
+    primary_family_size: 97
+    unavailable_hypothesis_pvalue: 1.0
+    dependence_sensitivity: benjamini_yekutieli
+    secondary_metrics_are_not_discovery_gates: true
+  baselines:
+    forecast: historical_training_mean
+    diagnostic_forecast: zero
+    portfolio_allocation: 1.0
+    sanity_allocation: 0.0
+  deflated_sharpe_stage: later_model_and_strategy_selection

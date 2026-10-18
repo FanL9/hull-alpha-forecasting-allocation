@@ -6,7 +6,9 @@ exposure:
 position_mappings: [linear, threshold, volatility_adjusted]
 risk:
   competition_volatility_ratio_reference: 1.20
-  competition_formula_status: pending_official_evaluation_code_verification
+  competition_formula_status: verified_official_metric_hull_competition_sharpe
+  competition_metric_module: src.evaluation.kaggle_metric
+  volatility_rule: soft_penalty_above_1.20_times_market_volatility
   annualization_periods: 252
   volatility_target: null
   drawdown_limit: null

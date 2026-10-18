@@ -1,0 +1,14 @@
+status: verified_against_official_source_on_synthetic_data
+source_url: https://www.kaggle.com/code/metric/hull-competition-sharpe
+kernel_id: 92174585
+source_notebook_sha256: a0f9633183ac52b912b30439fbf91df2899c843016c9c8f00c1b8af7410f2e20
+extracted_code_sha256: 19e64d96a713bf31c63cfea45a4416906dbd87ce3e770ed0b2e658460b257d13
+allocation_min: 0.0
+allocation_max: 2.0
+trading_days_per_year: 252
+sample_standard_deviation_ddof: 1
+market_volatility_ratio_threshold: 1.20
+volatility_constraint: soft_penalty_not_a_hard_rejection
+return_gap_units: annualized_percentage_points
+score_upper_cap: 1000000.0
+forecast_target_is_metric_input: false

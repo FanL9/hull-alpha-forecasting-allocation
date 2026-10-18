@@ -11,7 +11,7 @@ data:
   date_column: date_id
   target: market_forward_excess_returns
   outcome_columns: [forward_returns, risk_free_rate, market_forward_excess_returns]
-  # Availability has not been verified. Do not use these as predictors.
+  # Contemporaneous outcomes stay excluded; verified lagged candidates have a separate policy.
   excluded_columns: [date_id, is_scored, forward_returns, risk_free_rate, market_forward_excess_returns]
   evaluation_markers: [kaggle_evaluation, evaluation, inference]
   timeout_seconds: 300
@@ -22,11 +22,21 @@ audit:
   status_path: artifacts/phase1_status.json
   missingness_blocks: 4
 validation:
-  # Future development design only; no folds or models are run in Phase 2.
+  # Phase 2.5 design frozen; no alpha/model validation has been executed.
   method: expanding_window
   shuffle: false
   competition_simulation_rows: 180
   competition_simulation_locked: true
-  fold_count: null
-  internal_holdout_rows: null
+  protocol_config: configs/validation.yaml
+  initial_train_size: 5087
+  validation_window: 252
+  step_size: 252
+  purge_size: 1
+  embargo_size: 0
+  internal_holdout_start: 7860
+  internal_holdout_end: 8867
+  final_competition_start: 8868
+  final_competition_end: 9047
+  fold_count: 11
+  internal_holdout_rows: 1008
   selected_model: null

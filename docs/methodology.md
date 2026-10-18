@@ -42,11 +42,15 @@ Candidate designs only: native missing-value support; a median fitted inside a f
 
 Full-development descriptive tables are offline summaries, not causal online features or fitted transforms. All exported time-indexed rolling/block statistics end at or before their displayed timestamp; no centered window, backfill or future reference is allowed. date_id establishes ordering, not calendar dates or verified trading-day continuity.
 
-## Future research design — not executed
+## Phase 2.5 — research protocol frozen
 
-Use expanding-window walk-forward solely within 0..8867 for future alpha selection, model comparison and tuning. Fold count, initial length, validation length, model, hyperparameters, internal holdout length and outcome-availability/purge policy remain undecided. Confirm release timing/label horizon before defining those gaps. Never shuffle.
+The [research protocol](research_protocol.md) now verifies the official one-day labels, five-year mean/MAD=4 target definition, one-day lagged field availability, baselines, multiplicity and timing rules. The [official metric](official_metric_notes.md) has been reproduced from Kaggle's published code and checked on synthetic cases. Its 1.20 volatility ratio is a verified penalty threshold. Forecast market_forward_excess_returns; the final scoring layer instead uses allocations, forward_returns and risk_free_rate. It never scores the forecasting target's IC directly.
 
-Future imputers/scalers/selectors/regime thresholds are fitted only on each historical training window and frozen for its later evaluation interval. Nested chronological tuning, if adopted later, must preserve that boundary. After this design is agreed, specify an internal chronological holdout within development, a strategy freeze and a separately authorized 180-row competition simulation. Freeze code, data hashes, preprocessing, feature list, models, sizing/risk rules and any sequential update policy before that simulation. This phase executes no folds or models.
+Future expanding-window research is restricted to 0..7859. Internal Holdout is 7860..8867 (1008 rows); the final 180-row simulation remains locked. Initial training is 5087 rows, followed by 11 validation blocks of 252 rows, step 252, purge 1 and embargo 0. These parameters are fixed in configs/validation.yaml; no validation research or model fitting has run. Model families and hyperparameters remain unselected.
+
+Future imputers/scalers/selectors/regime thresholds use historical training windows only and stay frozen through each validation block. X-only availability gates late-starting inputs; no field is forced into early folds. Future screening uses Pearson/Rank IC, fold stability, lag-5 HAC and paired block-bootstrap uncertainty, followed by BH FDR 0.05 over 97 prespecified candidates, with BY sensitivity. Baselines are the purged historical training mean and allocation=1.0; zero forecast/cash are sanity checks. Deflated Sharpe is reserved for later model/strategy search, not single-feature screening. Details and limitations are in the frozen protocol.
+
+Selection and strategy freeze must precede any separately authorized Internal Holdout evaluation and final competition simulation. The internal holdout has already been described in historical Phase 2 EDA, so its new reservation is prospective, not historically untouched. No holdout/final values were used to choose Phase 2.5 parameters.
 
 Earlier Phase 1 and withdrawn analysis cannot be erased from human/research history. This is a prospective firewall, not a claim of an historically pristine independent test. No new predictive claim is made. Future independent-performance reporting must disclose this limitation.
 

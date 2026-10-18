@@ -12,6 +12,8 @@ Phase 2 preserves 94 anonymous X columns, date_id, all three outcomes, original 
 
 ## Future scope and open decisions
 
-Alpha stability, regime-aware forecasting and dynamic allocation remain future work. Their models, fold count, internal holdout length and tuning rules are not chosen now. Future development uses expanding-window walk-forward only inside development, followed by a defined internal holdout and strategy freeze before separately authorized competition simulation. Existing feature publication timing, target construction, scoring and calendar semantics still require verification.
+Phase 2.5 is complete: published label definitions and one-day lagged availability are verified, the official metric is implemented, and the [research protocol](research_protocol.md) freezes split, coverage, inference, multiplicity and baseline rules. Walk-forward research is 0..7859; Internal Holdout is 7860..8867; the final simulation stays locked. No Alpha Research or model training has started.
+
+Alpha stability, regime-aware forecasting and dynamic allocation remain future work. Models and hyperparameters remain unselected. Official target construction is documented at the level published by the host; unpublished reconstruction details and exact executable intraday cutoffs are not invented. These are distinct from the verified one-day holding-period definition and metric arithmetic.
 
 All evidence must come from actual official data and an appropriate future evaluation protocol. Anonymous feature numbers have no inferred economic definition. Descriptive X–X correlation and target distribution are not alpha, causality or performance. No Kaggle submission, automated rules acceptance, external dataset, live execution or GitHub push is included in this rebuild.

@@ -1,37 +1,21 @@
-# Official acquisition and API source review
+# Official interface and field verification
 
-Review date: 2026-10-16. Scope: file inventory and read-only source inspection, without executing the supplied API or submitting predictions.
+Phase 1 acquisition and API inspection are preserved. Phase 2.5 adds verified field definitions from the [official data page](https://www.kaggle.com/competitions/hull-tactical-market-prediction/data) and the [official metric](https://www.kaggle.com/code/metric/hull-competition-sharpe). See [research protocol](research_protocol.md) for the definitive timing/target rules and [metric notes](official_metric_notes.md) for formulas and source hashes.
 
-## Provenance
+## Preserved acquisition
 
-Source: [official Kaggle Hull Tactical competition data](https://www.kaggle.com/competitions/hull-tactical-market-prediction/data), downloaded using the official CLI with locally configured authentication. Archive: `hull-tactical-market-prediction.zip`, 3,032,317 bytes. SHA-256:
+The existing official archive contains train/test CSVs and 11 API/transport files. Its SHA-256 is `654f6e604e8cc76dca9649b3685b8738842ef46e78a3ccef93f0faf2dd962208`; all original bytes and the acquisition manifest remain unchanged. The archive does not contain the financial scoring formula. Phase 2.5 obtained that formula separately from Kaggle's official `metric` account; this supersedes the earlier pending-verification status without changing raw files.
 
-```text
-654f6e604e8cc76dca9649b3685b8738842ef46e78a3ccef93f0faf2dd962208
-```
+## Inference behavior
 
-The complete original ZIP and its 13 extracted files remain in ignored `data/raw/`. The local manifest records acquisition time, CLI version, byte counts and SHA-256 hashes. Both required CSVs and every manifest-listed API file have been reverified. This records acquisition provenance and later integrity; a locally generated hash manifest is not a publisher signature.
+The inspected `data/raw/kaggle_evaluation/default_gateway.py` loads test.csv, groups batches in original order and passes each batch to the predictor. It initially uses batch_id and falls back to the first sorted column, date_id in this file. It configures a five-minute response timeout; its competition-specific validation hook adds no rules. The supplied infrastructure was inspected, not executed against market data.
 
-## Actual files
+The official description explicitly lists the three `lagged_*` outcomes in inference data with a one-day lag. They are **competition-available lagged outcome features**, permitted as future candidates when reconstructed causally and when fold-level coverage qualifies. They are not permanently forbidden. Current outcomes, is_scored and date_id remain outside predictors. No lagged-feature alpha test has been run.
 
-- `train.csv`: 9,048 rows × 98 columns.
-- `test.csv`: 10 rows × 99 columns.
-- 11 files under `kaggle_evaluation/`: gateway and inference entry points, transport/templates, protobuf definitions and generated communication code.
+The default Phase 1 anonymous-name filter still returns anonymous fields only, preserving its original API. Future candidate construction uses the explicit policy in `src/features/availability.py` to include verified lagged fields. This distinction preserves 94 anonymous inputs while allowing a 97-field future candidate universe.
 
-No financial scoring function defining the volatility penalty or the competition's Sharpe-like calculation was found in these downloaded Python files. File names containing “evaluation” are not evidence that the archive contains the financial metric implementation. The 1.20 configuration reference remains an unverified requirement until the official metric definition is obtained.
+## Mock test and data boundaries
 
-## Verified gateway behavior
+The local test.csv has 10 IDs, 8980–8989, overlapping the locked simulation period. It is used only for schema/interface compatibility. Its feature and lagged-outcome values are not read for protocol decisions, research, training or evaluation. The official description also states that the public training-phase test copied a historical 180-ID tail; that fact is not evidence of independent predictive performance.
 
-The source file `data/raw/kaggle_evaluation/default_gateway.py` reads `test.csv` and groups batches in original identifier order. It initially looks for `batch_id`; when that field is absent it uses the first CSV column and checks that it is sorted. In the supplied file, that first column is `date_id`. The gateway configures a five-minute response timeout. Its competition-specific validation hook contains no additional logic.
-
-`default_inference_server.py` connects the generic inference server to this gateway. The remaining inspected files provide communication infrastructure. Phase 1 does not execute this infrastructure or install its optional Polars/gRPC runtime dependencies, since neither is needed for CSV auditing.
-
-## Observed schema and research implications
-
-Training contains `date_id`, 94 anonymous features and three outcomes. Test contains the same 94 feature names, `date_id`, `is_scored`, `lagged_forward_returns`, `lagged_risk_free_rate` and `lagged_market_forward_excess_returns`.
-
-Training identifiers are 0–9,047; test identifiers are 8,980–8,989. All 10 test identifiers overlap training. Both files are ordered and have unique identifiers internally. These facts establish that this supplied test file cannot supply an independent future research holdout. They do not establish hidden evaluation dates or future API content.
-
-The gateway passes batches through, but its source does not establish the precise financial definitions, timing and publication lags of every field. Current predictor eligibility therefore continues to exclude all contemporaneous outcome fields, all `lagged_*` fields, `is_scored` and unclassified fields. Verify official descriptions before relaxing any exclusion or constructing longer-horizon labels.
-
-The research holdout will be reserved from the chronological tail of labelled training history before development target exploration. No final cut or empirical model evaluation has yet been performed.
+Development remains 0–8867 and Competition Simulation remains 8868–9047. Phase 2.5 adds the prospective Internal Holdout inside development without redoing EDA. Exact observation publication cutoffs, tradable intraday execution and reconstruction details not published by the host are not guessed; the published one-day field definitions and scoring arithmetic are verified.

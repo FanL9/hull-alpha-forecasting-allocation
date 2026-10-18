@@ -42,8 +42,10 @@ def column_role(column: str) -> str:
         return "outcome / unavailable as contemporaneous predictor"
     if column in METADATA_COLUMNS:
         return "time index" if column == "date_id" else "evaluation metadata"
+    if column in {"lagged_forward_returns", "lagged_market_forward_excess_returns", "lagged_risk_free_rate"}:
+        return "competition-available lagged outcome feature; one trading-day lag"
     if column.startswith("lagged_"):
-        return "lagged field; availability requires official API verification"
+        return "unclassified lagged field; excluded until documented"
     if feature_family(column):
         return "anonymous feature"
     return "unclassified; excluded until documented"

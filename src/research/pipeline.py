@@ -25,9 +25,10 @@ def load_eda_settings(path: Path) -> dict:
             or settings["analysis_end"] != 8867 or settings["default_processing"] != "retain_nan"):
         raise ValueError("Only development-only descriptive EDA with retain_nan is allowed.")
     future = settings["future_validation"]
-    if future != {"method": "expanding_window", "status": "design_only", "fold_count": None,
-                  "internal_holdout_rows": None, "selected_model": None}:
-        raise ValueError("Future folds, internal test length and model must remain undecided.")
+    if future != {"method": "expanding_window", "status": "protocol_frozen_not_executed",
+                  "config_path": "configs/validation.yaml", "fold_count": 11,
+                  "internal_holdout_rows": 1008, "selected_model": None}:
+        raise ValueError("Validation parameters are frozen; the model remains undecided.")
     for key in ["time_block_rows", "rolling_window_rows", "rolling_min_observations", "rolling_output_stride", "correlation_min_pairs", "target_autocorrelation_max_lag"]:
         if not isinstance(settings[key], int) or settings[key] < 1:
             raise ValueError(f"{key} must be a positive integer.")
