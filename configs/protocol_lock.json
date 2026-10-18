@@ -1,24 +1,31 @@
 {
-  "protocol_version": "phase2.5-v1",
-  "created_at_utc": "2026-10-17T10:22:46.771470+00:00",
+  "protocol_version": "phase2.5-v2",
+  "created_at_utc": "2026-10-18T07:36:11.058587+00:00",
   "status": "frozen_not_research_executed",
+  "defined_before_real_xy_research": true,
+  "supersedes": {
+    "protocol_version": "phase2.5-v1",
+    "archived_lock": "configs/protocol_lock_phase2.5-v1.json"
+  },
   "sha256": {
-    "configs/validation.yaml": "5039c0412af4925a2fc0b33346cd06329ab63a312b274884873afd8a98b36c19",
-    "configs/research.yaml": "cf0b76f4d7d5dd24aa36ad6ff6db147f4453ea110c0f4047f858a6a7e289fe36",
+    "configs/validation.yaml": "771430764dbb951208b8f12695ac5010ae42959fbd46814a95ed93b38a4cbb3c",
+    "configs/research.yaml": "1771f21ae8eca4ea83c6e4b25e864153b3b840d659bfb97f2c875d83acd2c599",
     "configs/base.yaml": "cf4213ccf6e109f5912b258d00fcb16c874321354acfa05db68d614b494aff51",
     "configs/official_metric.yaml": "6d7f7790d0386591864993b540677769fdf55c60c526e15f56f1ed119cf637ae",
     "configs/portfolio.yaml": "a72c9b4b708d868ddfa9309170a73bc94bcf5062d7ecb9b1ee531ad78e477691",
     "configs/split_policy.json": "6c24af99dd4702979eab26026a1174788d6660214672ad3f9211eb69fd96ffe2",
-    "docs/research_protocol.md": "beb3dd63d07fdb6c230ac55ef48bf19e4ffa6fc9c2f60e83b5015762c8b1ddea",
+    "docs/research_protocol.md": "dcb5a73dfd79a86b0a3d38f51777d432e553ecda6dab5ee50719ef3a12c4ac35",
     "docs/official_metric_notes.md": "f848c2cea5f0bfae64c3e09e1785b5253ffb974502f27855ad93a80f2b96ca5c",
     "docs/official_api_notes.md": "489bbed672b267577d1f87fb2b9fceb2cc3c0e93531c44dfd61fb4270e16c393",
     "src/validation/walk_forward.py": "6d396557cd5647931be1b7044db3f7cfa5408067e755fa2993140728bc07bdde",
-    "src/validation/protocol_freeze.py": "a8b6463eb442bfd170277d7f2acdcf711a691bf09a63da9bc15ecf9859972f6e",
+    "src/validation/protocol_freeze.py": "831d33db5fd32b30d4cf9b0cd6ac1e349f8b034d3cc64ad81f6a16928ff0f73b",
     "src/evaluation/kaggle_metric.py": "71122987e5b73cf431f06e9693138f2e40ca33238905d8cf954173427ea32124",
     "src/features/availability.py": "7cacb1c59a548f503c1203b7dc67e762b7a179339ee5a88f78a63ffe8857fd79",
     "src/features/feature_groups.py": "32842b11de8b202d9bc2fdddcd542d94892eb5fcc0bc78964915b2a3ec3b25a1",
-    "src/statistics/multiple_testing.py": "d92edaf868d21d4a7e0863bf3a8f7cb6913794c0db72aa4f069e6cb08f0e0d10",
-    "src/statistics/robust_inference.py": "11b90a4e3f66779b078af509e1af27ed28b76803f150da94e0af42cc4b1ce300",
+    "src/statistics/multiple_testing.py": "087ca9f04f78dd74d3ea71b1d851e66d7c8dbbf9d5012545eec1629bd37d0985",
+    "src/statistics/robust_inference.py": "b8e6c539f8c332399ef68b9a5cfa92b59da028201a5d98be9980aecee4fb6a15",
+    "src/features/family_composites.py": "babb3039152a42c9face1b42ddc2e633a824a55c0b15a1a78ebdf1c7cbab3598",
+    "configs/protocol_lock_phase2.5-v1.json": "78040ea9ee40e72056b78fac8fb50a7c8ada08e4376843d4578b7ce330e4553b",
     "tests/fixtures/kaggle_metric_synthetic_cases.json": "235c3a806f69ceca02632345e3895c9ea48de8b1d55bd29a890c81716b40efbc"
   },
   "fold_metadata": [
@@ -188,6 +195,13 @@
     "competition_values_used": false
   },
   "primary_target": "market_forward_excess_returns",
+  "primary_metric": "spearman_rank_ic",
+  "secondary_metric": "winsorized_pearson_ic",
+  "hypothesis_families": {
+    "single_features": 97,
+    "family_composites": 7,
+    "global_sensitivity": 104
+  },
   "baselines": {
     "forecast": "historical_training_mean",
     "diagnostic_forecast": "zero",

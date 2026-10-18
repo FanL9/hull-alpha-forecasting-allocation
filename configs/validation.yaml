@@ -1,4 +1,4 @@
-protocol_version: phase2.5-v1
+protocol_version: phase2.5-v2
 status: frozen_design_not_executed
 method: expanding_window
 shuffle: false

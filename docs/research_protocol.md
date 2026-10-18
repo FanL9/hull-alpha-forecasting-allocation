@@ -1,6 +1,8 @@
 # Phase 2.5 — Research Protocol Freeze
 
-Version: **phase2.5-v1**. Status: **frozen; Phase 3 not started**.
+Version: **phase2.5-v2** (current). Status: **frozen; Phase 3 not started**. Supersedes phase2.5-v1, whose lock is archived at `configs/protocol_lock_phase2.5-v1.json`.
+
+**Phase 2.5 v2 was defined before any real feature–target Alpha Research was executed.** v2 changes only the statistical rules: the primary metric, a secondary robustness metric, explicit inference roles, a second pre-registered hypothesis family and a global sensitivity analysis. The reasons come only from properties of X already observed in Phase 2 EDA: heavy-tailed feature distributions, temporal distribution drift, and missingness/availability structure. No real IC, predictive result, feature ranking, model performance or backtest result informed v2. Splits, purge/embargo, availability thresholds, HAC lag, baselines and the official metric are unchanged from v1.
 
 This stage fixes rules and tests software using artificial observations. It does not repeat real-data EDA, test real X–Y relationships, fit models, generate signals, evaluate real portfolios or optimize scores. Phase 1/2 data, reports, notebooks and artifacts remain preserved.
 
@@ -78,21 +80,52 @@ A feature enters a particular fold only if its **training X** meets all conditio
 
 The post-launch denominator distinguishes structural leading gaps from sporadic holes; recent coverage prevents a formerly observed but stale input entering. No fill, backward availability, validation coverage or Y-based selection changes eligibility. Store reasons and coverage for every field/fold. Preserve all source columns.
 
-## Future single-feature inference and multiplicity
+## Primary and secondary metrics
 
-These are rules for Phase 3, not results from this stage:
+**Primary Alpha metric: block-wise Spearman Rank IC.** For each of the 11 validation blocks, X and y are ranked separately inside that block, using only complete (X, y) pairs, with average ranks for ties. NaNs receive no rank and keep their time positions. Ranks are divided by (complete pairs in the block + 1) so blocks with different coverage share one scale. The ranked blocks are concatenated chronologically and **never re-ranked**; no other fold enters a block's ranks. The primary IC and its inference are computed on this concatenated rank series. This prevents level drift across folds from entering the Rank IC. Implementation: `blockwise_rank`, `blockwise_rank_pairs`, `blockwise_spearman_hac` in `src/statistics/robust_inference.py`.
 
-- Report raw Pearson IC and Spearman Rank IC, sample counts and complete-pair coverage by fold. Require at least **126 validation pairs**, **50% validation coverage** and **3 eligible folds** for a primary discovery test. Missing/unavailable folds stay explicit; no fabricated zero IC.
-- Report equal-fold mean IC, sample IC std (ddof=1), sign consistency and positive-fold ratio among defined folds. Orientation is fixed from each fold's training Pearson sign; a zero/undefined training association gives no oriented test for that fold. Never choose a sign from validation or holdout. Report raw and oriented metrics separately.
-- The one primary two-sided p-value per feature comes from pooled chronological validation Pearson IC, using X centering/scaling and direction determined inside each corresponding training window. Retain native timestamps and unavailable-row gaps; never concatenate observed pairs as if gaps were adjacent. Eligible validation rows are disjoint. Pooling retains cross-boundary dependence; fold metrics remain essential. This is a future research recipe, not an implemented Alpha pipeline.
-- Use **Newey–West/Bartlett HAC with lag 5** on the Pearson-correlation influence function and a normal approximation. Generic mean-HAC and correlation-HAC tools are implemented; no regression is fitted. Undefined uncertainty becomes no rejection, never a zero p-value. Rank-IC HAC is only an approximate secondary diagnostic.
-- Add a **paired moving-block bootstrap**, block length **20**, **2000** repetitions, **95%** percentile interval, seed **42**. Resample X/Y jointly on the original grid; record valid repetitions. Never stitch blocks across nonconsecutive eligible segments. This uncertainty resampling is not random train/test splitting. Strong nonstationarity and data-dependent missingness can still invalidate nominal uncertainty.
-- Apply **Benjamini–Hochberg at FDR 0.05** to one prespecified family of **97 hypotheses**, one target and one horizon. Ineligible/unestimable hypotheses receive p=1, preserving the denominator. Do not treat secondary Rank IC, family tables or repeated windows as alternative discovery gates. New horizons/variants expand multiplicity and require a new registered family before inspection.
-- Report **Benjamini–Yekutieli** adjusted values as dependence sensitivity. BH's control requires independence or suitable positive dependence, not arbitrary financial dependence. A finding sensitive to BY is labeled dependence-sensitive; neither correction proves persistent or investable alpha. No stability threshold is retrofitted after seeing results.
+**Secondary robustness metric: training-window 1%/99% winsorized Pearson IC.** For each feature and fold, the 1st and 99th percentiles of X are estimated from that fold's training window only. The same bounds clip both training X and validation X. Validation data, pooled folds and future data never estimate bounds. y is **not** winsorized again: `market_forward_excess_returns` is already winsorized by the publisher. This metric is not confirmatory. A feature that is significant under winsorized Pearson but not under the primary Spearman test is **not** a discovery. Implementation: `fit_winsor_bounds`, `apply_winsor_bounds`.
 
-Implemented tools only calculate statistics from caller-supplied arrays. There is no CLI that applies them to official X/Y. The current EDA entry point continues to reject target columns in X analysis.
+Fold-level reporting keeps fold IC, sample counts, complete-pair coverage, equal-fold mean IC, IC std (ddof=1), sign consistency and positive-fold ratio. A fold counts only with at least **126 validation pairs** and **50% validation coverage**. A hypothesis needs at least **3 eligible folds**. Missing folds stay explicit; no zero IC is fabricated.
 
-References: [Benjamini–Hochberg (1995)](https://doi.org/10.1111/j.2517-6161.1995.tb02031.x), [Newey–West (1987)](https://doi.org/10.2307/1913610), [Künsch (1989)](https://doi.org/10.1214/aos/1176347265).
+## Inference roles
+
+- **Newey–West → significance.** The single primary two-sided p-value comes from Bartlett HAC with **lag 5** on the Pearson-correlation influence function of the block-wise ranked series, with a normal approximation. This is approximate inference on the correlation of block-wise ranked series, not an exact finite-sample Spearman test. NaN gaps keep their time positions. Undefined uncertainty means no rejection, never p=0.
+- **Paired moving-block bootstrap → confidence interval and stability only.** Block length **20**, **2000** repetitions, **95%** percentile interval, seed **42**. It resamples the already block-wise ranked (X, y) pairs jointly and preserves time dependence. It produces no p-value and no alternative discovery rule.
+
+Strong nonstationarity and data-dependent missingness can still invalidate nominal uncertainty.
+
+## Hypothesis families
+
+**Family 1 — 97 single-feature hypotheses (primary).** 94 anonymous features plus `lagged_forward_returns`, `lagged_market_forward_excess_returns` and `lagged_risk_free_rate`. A feature that fails fold availability or has fewer than 3 eligible folds is `not_testable` and receives p=1. The denominator is always 97. E7 and other late-starting features follow this rule; thresholds are not relaxed.
+
+**Family 2 — 7 family-composite hypotheses (pre-registered).** One composite each for M, E, I, P, V, S and D, built fold by fold from training information only (`src/features/family_composites.py`):
+
+1. **Members:** family features that pass the existing availability rule in that fold's training window. A feature eligible in another fold is not added to this fold. The three lagged fields belong to no family.
+2. **Direction:** the sign of the member's training-window Spearman correlation with y. Positive → +1, negative → −1, zero or undefined → member excluded. Validation, other folds and the full sample never set direction. Qualified members = eligible members with a nonzero direction.
+3. **Normalization:** rank-based, not z-score. Each member is mapped to the mid-rank empirical CDF of its training values, p(v) = (#train < v + 0.5 × #train = v) / n_train. Validation values use the same training map; no distribution is refitted on validation. The result is multiplied by the direction.
+4. **Weighting:** equal-weight mean of the oriented members observed in that row. No IC, p-value, volatility, regression or optimized weights.
+5. **Missing members:** a row needs at least max(2, ceil(0.5 × qualified members)) observed members, otherwise the composite is NaN. With fewer than 2 qualified members the fold composite is NaN.
+6. **Testing:** the same framework as Family 1: block-wise Spearman, HAC lag 5, block-bootstrap interval, the same fold eligibility, not testable → p=1. The denominator is always 7.
+
+The training percentile map used to build composites is a different step from the block-wise validation ranking used to test them.
+
+The D family is retained. Interpretation of the D-family composite should be cautious because rank-based aggregation of discrete features may contain limited cross-sectional resolution. The test standard is not changed for it.
+
+## Multiple testing
+
+| Analysis | Hypotheses | Method | Role |
+| --- | --- | --- | --- |
+| Family 1 | 97 single features | BH, FDR 0.05 | Primary, reported separately |
+| Family 2 | 7 family composites | BH, FDR 0.05 | Primary, reported separately |
+| Global sensitivity | 104 = 97 + 7 raw primary p-values | BH, FDR 0.05 | Sensitivity only; never replaces family results |
+| Dependence sensitivity | each of the above | Benjamini–Yekutieli | Sensitivity only |
+
+BH requires independence or suitable positive dependence. A finding that fails BY is labeled dependence-sensitive. Secondary metrics, family tables and repeated windows are not discovery gates. New horizons or variants need a new registered family before inspection. Implementation: `adjust_fdr`, `family_pvalues`, `protocol_multiplicity` in `src/statistics/multiple_testing.py`.
+
+All tools only compute statistics from caller-supplied arrays and are tested on synthetic data. No CLI applies them to official X/Y.
+
+References: [Benjamini–Hochberg (1995)](https://doi.org/10.1111/j.2517-6161.1995.tb02031.x), [Benjamini–Yekutieli (2001)](https://doi.org/10.1214/aos/1013699998), [Newey–West (1987)](https://doi.org/10.2307/1913610), [Künsch (1989)](https://doi.org/10.1214/aos/1176347265).
 
 ## Baselines and later selection
 
@@ -104,7 +137,7 @@ Deflated Sharpe belongs to later **model/strategy selection**, particularly mult
 
 ## Locks, access history and changes
 
-`configs/validation.yaml` is authoritative. `configs/research.yaml` fixes eligibility, inference, FDR and baselines; `configs/official_metric.yaml` records the verified scorer. A protocol lock binds these documents/configurations and relevant source hashes. Future research must verify it before reading research values. Any change requires an explicit new protocol version and disclosure before examining new predictive outcomes.
+`configs/validation.yaml` is authoritative for boundaries. `configs/research.yaml` fixes eligibility, metrics, inference, hypothesis families, multiple testing and baselines; `configs/official_metric.yaml` records the verified scorer. `configs/protocol_lock.json` (phase2.5-v2) binds these documents/configurations, the relevant source files and the archived v1 lock by hash. Future research must verify it before reading research values. Any change requires an explicit new protocol version and disclosure before examining new predictive outcomes.
 
 Historical Phase 2 outputs and `split_definition.json` retain their original metadata, including the then-undecided future design. They are historical evidence, not current protocol configuration. They are not regenerated in this task.
 

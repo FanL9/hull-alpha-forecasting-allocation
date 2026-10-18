@@ -1,4 +1,4 @@
-"""HAC and paired moving-block uncertainty tools, tested only synthetically.
+"""HAC, block-wise ranking, winsorization and block-bootstrap tools, tested synthetically.
 
 Gaussian HAC p-values and stationary-block bootstrap intervals are approximate;
 neither guarantees inference under nonstationarity or after researcher search.
@@ -10,6 +10,8 @@ from math import erfc, sqrt
 
 import numpy as np
 import pandas as pd
+
+from src.features.feature_groups import OUTCOME_COLUMNS
 
 
 def newey_west_mean_se(contributions, lags: int = 5) -> float:
@@ -103,3 +105,78 @@ def moving_block_correlation_interval(x, y, block_length: int = 20, repetitions:
     return {"lower": float(lower), "upper": float(upper), "confidence": confidence,
             "valid_repetitions": valid, "requested_repetitions": repetitions,
             "block_length": block_length, "seed": seed, "method": method}
+
+
+def blockwise_rank(values, blocks) -> np.ndarray:
+    """Average ranks computed separately inside each contiguous validation block.
+
+    NaNs keep their positions and never receive or influence a rank. Each rank
+    is divided by (observed count in its block + 1), so blocks with different
+    coverage share one scale. Blocks must appear once, in chronological order;
+    the concatenated result is never re-ranked across blocks.
+    """
+    a, labels = np.asarray(values, dtype=float), np.asarray(blocks)
+    if a.ndim != 1 or labels.ndim != 1 or len(a) != len(labels) or np.isinf(a).any():
+        raise ValueError("Use aligned one-dimensional finite-or-NaN values and block labels.")
+    changes = np.flatnonzero(labels[1:] != labels[:-1]) + 1
+    starts = np.r_[0, changes] if len(a) else np.array([], dtype=int)
+    if len(set(labels[starts].tolist())) != len(starts):
+        raise ValueError("Each validation block must be one contiguous chronological segment.")
+    result = np.full(len(a), np.nan)
+    for start, stop in zip(starts, np.r_[changes, len(a)]):
+        segment = pd.Series(a[start:stop])
+        observed = int(segment.notna().sum())
+        if observed:
+            result[start:stop] = (segment.rank(method="average") / (observed + 1)).to_numpy()
+    return result
+
+
+def blockwise_rank_pairs(x, y, blocks) -> tuple[np.ndarray, np.ndarray]:
+    """Rank X and Y separately within each block, using complete pairs only."""
+    a, b = np.asarray(x, dtype=float), np.asarray(y, dtype=float)
+    if a.shape != b.shape:
+        raise ValueError("X and Y must be aligned.")
+    complete = np.isfinite(a) & np.isfinite(b)
+    return (blockwise_rank(np.where(complete, a, np.nan), blocks),
+            blockwise_rank(np.where(complete, b, np.nan), blocks))
+
+
+def blockwise_spearman_hac(x, y, blocks, lags: int = 5) -> CorrelationInference:
+    """Primary metric: correlation of block-wise ranked series with HAC inference.
+
+    The p-value is an approximate normal HAC test on the ranked series, not an
+    exact finite-sample Spearman distribution. Time positions, including NaN
+    gaps, are preserved for the HAC lags.
+    """
+    rx, ry = blockwise_rank_pairs(x, y, blocks)
+    result = correlation_hac(rx, ry, lags=lags, method="pearson")
+    return CorrelationInference(result.correlation, result.standard_error, result.pvalue,
+                                result.pairs, "blockwise_spearman")
+
+
+def blockwise_spearman_interval(x, y, blocks, block_length: int = 20, repetitions: int = 2000,
+                                confidence: float = .95, seed: int = 42) -> dict:
+    """Bootstrap confidence interval on the already block-wise ranked series only."""
+    rx, ry = blockwise_rank_pairs(x, y, blocks)
+    result = moving_block_correlation_interval(rx, ry, block_length, repetitions, confidence, seed, "pearson")
+    result["method"] = "blockwise_spearman"
+    return result
+
+
+def fit_winsor_bounds(training_x: pd.DataFrame, lower: float = .01, upper: float = .99) -> pd.DataFrame:
+    """Per-feature X quantile bounds estimated from one training window only."""
+    if not 0 <= lower < upper <= 1:
+        raise ValueError("Winsor quantiles must satisfy 0 <= lower < upper <= 1.")
+    if training_x.empty or OUTCOME_COLUMNS & set(training_x.columns):
+        raise ValueError("Winsor bounds are fitted on nonempty X only; the target is never winsorized.")
+    values = training_x.astype(float)
+    return pd.DataFrame({"lower": values.quantile(lower), "upper": values.quantile(upper)})
+
+
+def apply_winsor_bounds(x: pd.DataFrame, bounds: pd.DataFrame) -> pd.DataFrame:
+    """Clip X with previously fitted training bounds; NaNs stay NaN."""
+    if OUTCOME_COLUMNS & set(x.columns) or list(bounds.index) != list(x.columns):
+        raise ValueError("Apply training bounds to the same X columns only; never to the target.")
+    if bounds[["lower", "upper"]].isna().any().any():
+        raise ValueError("Undefined training bounds; the feature is not testable in this fold.")
+    return x.astype(float).clip(lower=bounds["lower"], upper=bounds["upper"], axis=1)

@@ -1,4 +1,4 @@
-# Retained Phase 2 EDA settings; Phase 2.5 freezes future research rules below.
+# Retained Phase 2 EDA settings; Phase 2.5-v2 freezes future research rules below.
 phase: data_processing_eda
 analysis_start: 0
 analysis_end: 8867
@@ -18,8 +18,11 @@ future_validation:
   internal_holdout_rows: 1008
   selected_model: null
 protocol:
-  version: phase2.5-v1
+  version: phase2.5-v2
   status: frozen_no_real_data_research_executed
+  supersedes: phase2.5-v1
+  archived_lock: configs/protocol_lock_phase2.5-v1.json
+  defined_before_real_xy_research: true
   primary_target: market_forward_excess_returns
   horizon_trading_rows: 1
   anonymous_feature_count: 94
@@ -32,11 +35,28 @@ protocol:
     recent_window: 504
     max_recent_missing_ratio: 0.25
     min_distinct_values: 2
+  primary_metric:
+    name: spearman_rank_ic
+    ranking_scope: validation_block
+    tie_method: average
+    rank_scale: rank_divided_by_block_observations_plus_one
+    pairs: complete_pairs_within_block
+    rerank_after_concatenation: false
+    confirmatory: true
+  secondary_metric:
+    name: winsorized_pearson_ic
+    x_winsor_lower: 0.01
+    x_winsor_upper: 0.99
+    thresholds_fit_on: training_window
+    validation_uses_training_thresholds: true
+    winsorize_target: false
+    confirmatory: false
   inference:
-    primary_metric: pearson_ic
-    secondary_metric: spearman_rank_ic
-    primary_test: two_sided_pearson_hac_normal_approximation
+    primary_test: two_sided_hac_normal_on_blockwise_ranked_series
+    pvalue_source: newey_west_hac
     newey_west_lags: 5
+    bootstrap_role: confidence_interval
+    bootstrap_input: blockwise_ranked_series
     bootstrap_method: paired_moving_block
     bootstrap_block_length: 20
     bootstrap_repetitions: 2000
@@ -46,13 +66,37 @@ protocol:
     minimum_validation_coverage: 0.50
     minimum_eligible_folds: 3
     stability_metrics: [fold_ic, sign_consistency, mean_ic, ic_std, positive_fold_ratio]
-  multiple_testing:
-    method: benjamini_hochberg
+  primary_hypothesis_family:
+    name: single_features
+    size: 97
+    members: anonymous_94_plus_lagged_3
+    fdr_method: benjamini_hochberg
     fdr_alpha: 0.05
-    primary_family_size: 97
-    unavailable_hypothesis_pvalue: 1.0
-    dependence_sensitivity: benjamini_yekutieli
-    secondary_metrics_are_not_discovery_gates: true
+    not_testable_pvalue: 1.0
+  secondary_hypothesis_family:
+    name: family_composites
+    size: 7
+    families: [M, E, I, P, V, S, D]
+    lagged_fields_included: false
+    member_eligibility: fold_training_availability_rule
+    normalization: training_empirical_rank_percentile
+    direction: training_spearman_sign
+    zero_or_undefined_direction: exclude_member
+    weighting: equal
+    min_available_members: 2
+    min_available_fraction: 0.50
+    fdr_method: benjamini_hochberg
+    fdr_alpha: 0.05
+    not_testable_pvalue: 1.0
+  global_sensitivity:
+    combined_hypotheses: 104
+    method: benjamini_hochberg
+    alpha: 0.05
+    replaces_family_results: false
+  by_sensitivity:
+    enabled: true
+    scopes: [single_features, family_composites, global]
+  secondary_metrics_are_not_discovery_gates: true
   baselines:
     forecast: historical_training_mean
     diagnostic_forecast: zero

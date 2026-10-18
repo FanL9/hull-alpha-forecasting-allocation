@@ -23,8 +23,9 @@ The final **180 rows are locked** for a future Kaggle-style simulation and exclu
 
 - **Phase 1 complete:** official data acquisition, SHA-256 verification and data audit.
 - **Phase 2 complete:** data processing and EDA.
-- **Phase 2.5 complete:** labels verified, official metric implemented and validation protocol frozen; no Alpha Research yet.
-- **Not started:** Alpha Research, model training, Signal, Allocation and Backtest.
+- **Phase 2.5 complete:** labels verified, official metric implemented and research protocol frozen at **phase2.5-v2** (primary Alpha metric: block-wise Rank IC). See the [research protocol](docs/research_protocol.md).
+- **Phase 3 Alpha Research: not started.**
+- **Not started:** model training, Signal, Allocation and Backtest.
 
 Development EDA found missing values in **85 features**, with clear temporal structure. Default processing preserves NaNs; no predictive alpha or profitable strategy has been established.
 

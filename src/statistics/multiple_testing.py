@@ -34,3 +34,33 @@ def adjust_fdr(pvalues, alpha: float = .05, method: str = "bh") -> FDRResult:
     adjusted = np.empty(m, dtype=float)
     adjusted[order] = adjusted_sorted
     return FDRResult(adjusted, adjusted <= alpha, alpha, method)
+
+
+def family_pvalues(pvalues: dict, hypotheses) -> np.ndarray:
+    """Order p-values by a prespecified family; absent or untestable entries get p=1.
+
+    Unknown names are rejected so a family can never grow or shrink silently.
+    """
+    names = list(hypotheses)
+    if len(set(names)) != len(names) or set(pvalues) - set(names):
+        raise ValueError("p-values must belong to one prespecified family of distinct hypotheses.")
+    values = [pvalues.get(name) for name in names]
+    return np.array([1. if v is None or not np.isfinite(v) else float(v) for v in values])
+
+
+def protocol_multiplicity(single_pvalues: dict, single_hypotheses, composite_pvalues: dict,
+                          composite_hypotheses, alpha: float = .05) -> dict:
+    """Family-specific BH (primary), plus combined-BH and BY sensitivity analyses.
+
+    The combined family pools both raw primary p-value vectors. It is reported
+    as sensitivity only and never replaces the two family-specific results.
+    """
+    single = family_pvalues(single_pvalues, single_hypotheses)
+    composite = family_pvalues(composite_pvalues, composite_hypotheses)
+    combined = np.r_[single, composite]
+    return {"single_feature_bh": adjust_fdr(single, alpha, "bh"),
+            "family_composite_bh": adjust_fdr(composite, alpha, "bh"),
+            "global_bh_sensitivity": adjust_fdr(combined, alpha, "bh"),
+            "single_feature_by_sensitivity": adjust_fdr(single, alpha, "by"),
+            "family_composite_by_sensitivity": adjust_fdr(composite, alpha, "by"),
+            "global_by_sensitivity": adjust_fdr(combined, alpha, "by")}
