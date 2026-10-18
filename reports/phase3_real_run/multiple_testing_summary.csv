@@ -1,0 +1,7 @@
+analysis,method,alpha,hypotheses,rejected,role
+single_feature_bh,bh,0.05,97,24,family_primary
+family_composite_bh,bh,0.05,7,4,family_primary
+global_bh_sensitivity,bh,0.05,104,27,sensitivity
+single_feature_by_sensitivity,by,0.05,97,18,sensitivity
+family_composite_by_sensitivity,by,0.05,7,3,sensitivity
+global_by_sensitivity,by,0.05,104,20,sensitivity

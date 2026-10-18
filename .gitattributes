@@ -6,3 +6,5 @@
 *.toml text eol=lf
 *.txt text eol=lf
 *.ipynb text eol=lf
+# Keep the sealed outputs byte-identical, including original Windows line endings.
+reports/phase3_real_run/** -text -eol whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

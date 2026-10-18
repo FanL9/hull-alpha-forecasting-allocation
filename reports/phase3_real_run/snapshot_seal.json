@@ -1,0 +1,26 @@
+{
+  "snapshot_type": "read_only_byte_identical_real_run",
+  "source": "artifacts/phase3/",
+  "run_type": "real",
+  "run_commit": "5b0b25b08f93be373bcb0049340ce5ce5cd45987",
+  "run_tag": "phase3-pipeline-v1",
+  "protocol_version": "phase2.5-v2",
+  "phase3_pipeline_code_hash": "987ac1a342c2a551155eb855997aaa842d528f52ed7d9495971406bab9f4ddba",
+  "research_start": 0,
+  "research_end": 7859,
+  "internal_holdout_used": false,
+  "final_180_used": false,
+  "real_execution_count": 1,
+  "rerun_count": 0,
+  "original_bytes_preserved": true,
+  "sha256": {
+    "family_composite_results.csv": "cf08f6179fad425e241d23677ce4e5478a3c05d5f2f24f05ad9c1c9d9301b6dc",
+    "feature_availability.csv": "f19b792343396ca4ef3f77894d86ac896649bcf2cf9e2751490f129cdbe949bf",
+    "fold_level_ic.csv": "65a71e322499e20e2fc26a55a754101b6bb760088ed90e11205446ce7b3b945b",
+    "fold_transform_audit.json": "d5cca80d9b08b088880e2e54856466bac065f44da538dd1b685c4e07148c5ea3",
+    "multiple_testing_summary.csv": "8ffb05d7eacea7c32fd554b29428e27db31bc8f76dec262e13a857cb1d21e320",
+    "phase3_run_manifest.json": "ec11693b688d415a9b1244c1f6ca3e5b74b9cc792241e0c7109951b52bd60778",
+    "single_feature_results.csv": "7d795ceee70fb924b8d491f7b125f1c7c3f831c565913d17e42e490639963b1c",
+    "phase3_execution_state.json": "20a868520f289da5efe971f40c84bc69399179485ba496fec73b109c5d16216b"
+  }
+}
