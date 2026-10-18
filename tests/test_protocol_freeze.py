@@ -20,6 +20,8 @@ def copied_protocol(tmp_path):
 def test_protocol_freeze_roundtrip_without_market_data(tmp_path):
     root=copied_protocol(tmp_path)
     first=freeze_protocol(root)
+    assert first['lock_version']==2
+    assert all(not p.startswith(('docs/','reports/','notebooks/')) for p in first['sha256'])
     assert verify_protocol_lock(root)==freeze_protocol(root)==first
     assert first['competition_simulation']=={'start':8868,'end':9047,'rows':180,'locked':True}
     assert first['internal_holdout']['rows']==1008
@@ -55,14 +57,17 @@ def test_forecasting_and_portfolio_baselines_are_fixed():
     assert config['inference']['newey_west_lags']==5
 
 
-def test_current_lock_is_v2_and_v1_lock_is_archived():
+def test_current_lock_is_v2_and_v1_locks_are_archived():
     root=project_root()
     current=verify_protocol_lock(root)
-    assert current['protocol_version']=='phase2.5-v2' and current['defined_before_real_xy_research'] is True
-    assert current['supersedes']=={'protocol_version':'phase2.5-v1','archived_lock':'configs/protocol_lock_phase2.5-v1.json'}
-    archived=json.loads((root/'configs/protocol_lock_phase2.5-v1.json').read_text())
-    assert archived['protocol_version']=='phase2.5-v1'
-    assert current['fold_metadata']==archived['fold_metadata']
+    assert current['lock_version']==2 and current['protocol_version']=='phase2.5-v2'
+    assert current['defined_before_real_xy_research'] is True
+    archives=['configs/protocol_lock_phase2.5-v1.json','configs/protocol_lock_phase2.5-v1_lockformat2.json']
+    assert current['supersedes']=={'protocol_version':'phase2.5-v1','archived_locks':archives}
+    for relative in archives:
+        archived=json.loads((root/relative).read_text())
+        assert archived['protocol_version']=='phase2.5-v1' and relative in current['sha256']
+        assert archived['fold_metadata']==current['fold_metadata']
     assert current['primary_metric']=='spearman_rank_ic' and current['secondary_metric']=='winsorized_pearson_ic'
     assert current['hypothesis_families']=={'single_features':97,'family_composites':7,'global_sensitivity':104}
 
@@ -102,3 +107,77 @@ def test_freeze_rejects_stale_protocol_version(tmp_path):
     path.write_text(path.read_text().replace('phase2.5-v2','phase2.5-v1'),encoding='utf-8')
     with pytest.raises(ValueError,match='version'):
         freeze_protocol(root)
+
+
+def test_explanatory_documents_can_change_without_invalidating_lock(tmp_path):
+    root=copied_protocol(tmp_path)
+    frozen=freeze_protocol(root)
+    for relative in ['README.md','docs/research_protocol.md','docs/methodology.md','docs/data_dictionary.md',
+                     'docs/project_flow.md','docs/official_metric_notes.md','reports/data_audit.md']:
+        path=root/relative
+        path.parent.mkdir(parents=True,exist_ok=True)
+        path.write_text('Editable explanatory text.\n',encoding='utf-8')
+    assert verify_protocol_lock(root)==frozen
+    policy=json.loads((root/'configs/split_policy.json').read_text(encoding='utf-8'))
+    assert not any(p.startswith(('docs/','reports/')) for p in policy['preserved_phase1_sha256'])
+
+
+def test_statistical_or_metric_code_edits_still_invalidate_lock(tmp_path):
+    root=copied_protocol(tmp_path)
+    freeze_protocol(root)
+    path=root/'src/evaluation/kaggle_metric.py'
+    path.write_text(path.read_text(encoding='utf-8')+'\n# executable change\n',encoding='utf-8')
+    with pytest.raises(ValueError,match='Frozen protocol changed'):
+        verify_protocol_lock(root)
+
+
+def test_frozen_metadata_cannot_disagree_with_config(tmp_path):
+    root=copied_protocol(tmp_path)
+    freeze_protocol(root)
+    path=root/'configs/protocol_lock.json'
+    lock=json.loads(path.read_text(encoding='utf-8'))
+    lock['fold_metadata'][0]['validation_start']+=1
+    path.write_text(json.dumps(lock),encoding='utf-8')
+    with pytest.raises(ValueError,match='metadata differs'):
+        verify_protocol_lock(root)
+
+
+def test_raw_data_hashes_are_verified_without_parsing_market_values(tmp_path):
+    import hashlib
+    root=copied_protocol(tmp_path)
+    data=root/'data/raw/train.csv'
+    data.parent.mkdir(parents=True,exist_ok=True)
+    data.write_bytes(b'artificial raw bytes; not a research dataset\n')
+    digest=hashlib.sha256(data.read_bytes()).hexdigest()
+    path=root/'configs/split_policy.json'
+    policy=json.loads(path.read_text(encoding='utf-8'))
+    policy['source_train_sha256']=digest
+    policy['data_sha256']={'data/raw/train.csv':digest}
+    path.write_text(json.dumps(policy),encoding='utf-8')
+    freeze_protocol(root)
+    verify_protocol_lock(root,verify_data=True)
+    data.write_bytes(b'artificial tampered bytes\n')
+    with pytest.raises(ValueError,match='raw data differs'):
+        verify_protocol_lock(root,verify_data=True)
+
+
+def test_text_newline_conversion_does_not_change_executable_hash(tmp_path):
+    root=copied_protocol(tmp_path)
+    freeze_protocol(root)
+    path=root/'configs/research.yaml'
+    path.write_bytes(path.read_bytes().replace(b'\r\n',b'\n').replace(b'\n',b'\r\n'))
+    verify_protocol_lock(root)
+
+
+def test_v1_upgrade_is_explicit_and_does_not_change_scientific_rules(tmp_path):
+    root=copied_protocol(tmp_path)
+    current=freeze_protocol(root)
+    path=root/'configs/protocol_lock.json'
+    previous=dict(current)
+    previous.pop('lock_version')
+    path.write_text(json.dumps(previous),encoding='utf-8')
+    with pytest.raises(ValueError,match='explicit lock-format upgrade'):
+        freeze_protocol(root)
+    migrated=freeze_protocol(root,upgrade_lock=True)
+    assert migrated['lock_version']==2 and migrated['protocol_version']==current['protocol_version']
+    assert migrated['fold_metadata']==current['fold_metadata']

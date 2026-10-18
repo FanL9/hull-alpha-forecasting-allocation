@@ -1,116 +1,114 @@
-# Phase 2.5 — Research Protocol Freeze
+# Research Protocol
 
-Version: **phase2.5-v2** (current). Status: **frozen; Phase 3 not started**. Supersedes phase2.5-v1, whose lock is archived at `configs/protocol_lock_phase2.5-v1.json`.
+Research rules: **phase2.5-v2**; **frozen**. Phase 3 Alpha Research is **not started**.
+Executable authority: [validation configuration](../configs/validation.yaml), [research configuration](../configs/research.yaml), [split policy](../configs/split_policy.json) and their implementations.
 
-**Phase 2.5 v2 was defined before any real feature–target Alpha Research was executed.** v2 changes only the statistical rules: the primary metric, a secondary robustness metric, explicit inference roles, a second pre-registered hypothesis family and a global sensitivity analysis. The reasons come only from properties of X already observed in Phase 2 EDA: heavy-tailed feature distributions, temporal distribution drift, and missingness/availability structure. No real IC, predictive result, feature ranking, model performance or backtest result informed v2. Splits, purge/embargo, availability thresholds, HAC lag, baselines and the official metric are unchanged from v1.
+## Version history
 
-This stage fixes rules and tests software using artificial observations. It does not repeat real-data EDA, test real X–Y relationships, fit models, generate signals, evaluate real portfolios or optimize scores. Phase 1/2 data, reports, notebooks and artifacts remain preserved.
+**Phase 2.5 v2 was defined before any real feature–target Alpha Research was executed.**
+v2 supersedes phase2.5-v1 only in its statistical rules: primary and secondary metrics, inference roles, a second pre-registered hypothesis family and a global sensitivity analysis.
+Its reasons come only from properties of X already described in Phase 2 EDA: heavy-tailed feature distributions, temporal distribution drift, and missingness/availability structure.
+No real IC, predictive result, feature ranking, model performance or backtest result informed v2.
+Boundaries, folds, purge/embargo, availability thresholds, HAC lag, baselines and the official metric are unchanged from v1.
+The v1 locks remain byte-for-byte in configs/protocol_lock_phase2.5-v1.json (original format) and configs/protocol_lock_phase2.5-v1_lockformat2.json (lock-format migration).
 
-## Labels and information timing
+## Data boundaries
 
-The authority is the [official data description](https://www.kaggle.com/competitions/hull-tactical-market-prediction/data), the [official evaluation page](https://www.kaggle.com/competitions/hull-tactical-market-prediction/overview/evaluation) and the locally acquired gateway source, not participant discussions.
-
-| Field | Verified definition and availability |
-| --- | --- |
-| `forward_returns` | S&P 500 return from buying on the identified trading day and selling one day later; contemporaneous training outcome |
-| `market_forward_excess_returns` | Forward return minus its rolling five-year mean, then MAD-based winsorization with criterion 4; training outcome |
-| `risk_free_rate` | Federal funds rate; contemporaneous training outcome/cash-accounting input |
-| `lagged_forward_returns` | The corresponding return supplied by inference with one trading-day lag |
-| `lagged_market_forward_excess_returns` | The corresponding adjusted target supplied with one trading-day lag |
-| `lagged_risk_free_rate` | The corresponding cash-rate field supplied with one trading-day lag |
-
-Use the decision convention `X_t → allocation_t → forward_returns[t]`, with the holding-period return realized one trading day later. At inference call t, the three published lagged fields reveal their t−1 outcomes; current t outcomes are not inputs. Keep the publisher's target on its existing row; never shift an already-forward label a second time.
-
-Symbolically, `y_t = W_MAD,4(r_t − mean_5y(r)_t)`, where W denotes the publisher's MAD winsorization. This verifies the published construction; it does not invent an exact reconstruction. The public description does not specify rolling endpoint/minimum periods, five-year row conversion, MAD normalization or all clipping implementation details. Use the supplied y unchanged. Official wording confirms a one-day holding period but does not certify exact intraday feature cutoffs or a close-to-close executable price convention. Do not infer these from participant comments. The scorer consumes the supplied cash rates without dividing by 252 or replacing them with external rates.
-
-The Phase 1 dictionary is a preserved, dated audit snapshot. Its former verification caveats are superseded by this protocol and the current interface/metric notes; its data statistics are not rewritten.
-
-## Prediction and portfolio evaluation are separate
-
-Primary forecasting target: **market_forward_excess_returns**. Historical-mean adjustment and tail treatment motivate studying its stability; they do not prove easier forecasting or alpha. The official metric does not use this target or an IC.
-
-```text
-X → forecast → allocation → realized portfolio return → official metric
-```
-
-Prediction metrics belong to the prediction layer. Cash, market returns, bounded allocations and the verified official metric belong to portfolio evaluation. Metric implementation here is a calculator tested on synthetic cases, not a real-data backtest. See [official metric notes](official_metric_notes.md).
-
-## Frozen chronological boundaries
-
-| Area | Inclusive date_id | Rows | Rule |
+| Area | Inclusive date_id | Rows | Permitted use |
 | --- | --- | --- | --- |
-| Walk-Forward Research | 0–7859 | 7860 | Future training and validation only |
-| Internal Holdout | 7860–8867 | 1008 | Prospectively reserved; no selection/tuning |
-| Competition Simulation | 8868–9047 | 180 | Existing lock; headers/IDs/counts only |
+| Research / Walk-Forward | 0–7859 | 7860 | Training, validation and selection |
+| Internal Holdout | 7860–8867 | 1008 | One frozen-pipeline evaluation; no tuning |
+| Competition Simulation | 8868–9047 | 180 | Locked until final sequential simulation |
 
-The two internal areas still constitute Development 0–8867 (8868 rows); the outer partition has not changed. Official test.csv remains interface/schema-only, never model evaluation data.
+Research and Internal Holdout together form Development 0–8867; the outer partition has no gap or overlap.
+Official test.csv is interface/schema-only and never a research evaluation set.
+The competition lock permits only identifiers, row counts and header compatibility before simulation authorization.
+Holdout reservations control subsequent predictive selection; the development history has descriptive EDA coverage and is not described as historically unseen.
 
-Internal Holdout is **4 × 252 = 1008 trading observations**, approximately four metric-annualization years and 5.6 times the final 180-row simulation. It supplies a longer later evaluation interval while leaving 7860 rows for research. This is a design convention, not a power calculation or guarantee of stable inference. It was chosen using sample length and already-published X missingness, never predictive performance.
+## Target, timing and candidates
 
-Existing Phase 2 missingness records place E7's first observation at 6969 and V10's at 6049. Shorter expanding training histories must not assume these inputs exist. Under the coverage rule below, the last two proposed training windows would have 386/638 E7 observations based solely on the recorded leading interval; an individual feature may therefore have insufficient fold coverage for a discovery claim. Do not move boundaries or lower eligibility thresholds to rescue it.
+Primary target: **market_forward_excess_returns**, kept on its supplied row without reconstruction or a second forward shift.
+Its official adjustment motivates stability research, not a claim that alpha exists; definitions and availability are centralized in the [data dictionary](data_dictionary.md).
+The prediction layer evaluates forecasts; the portfolio layer evaluates allocations and realized returns with the [official metric](official_metric_notes.md), not target IC.
 
-| Parameter | Frozen value |
+The candidate universe has **94 anonymous inputs plus 3 competition-available lagged outcomes**: lagged_forward_returns, lagged_market_forward_excess_returns and lagged_risk_free_rate.
+Reconstruct these one-row lags from consecutive historical IDs, initializing validation only with earlier observed history; do not import mock test values.
+Exclude current outcomes, date_id and is_scored from predictors.
+
+## Expanding-window validation
+
+| Parameter | Value |
 | --- | --- |
-| `initial_train_size` | 5087 |
-| `validation_window` | 252 |
-| `step_size` | 252 |
-| `purge_size` | 1 |
-| `embargo_size` | 0 |
-| Fold count | 11 |
-| Internal Holdout | 7860–8867 |
-| Final Competition Simulation | 8868–9047 |
+| Initial training size | 5087 |
+| Validation window | 252 |
+| Step size | 252 |
+| Folds | 11 |
+| Purge | 1 row |
+| Embargo | 0 rows |
 
-The initial sample exceeds 20×252 observations and absorbs a 47-row remainder, allowing all 11 later validation blocks to have a full 252 rows. Fold 1 trains 0–5086, purges 5087 and validates 5088–5339. Fold 11 trains 0–7606, purges 7607 and validates 7608–7859. Training expands; validation intervals do not overlap. A model/transform, if later adopted, stays frozen within each block. No model family or hyperparameters are selected now.
+Never shuffle, silently reorder identifiers or overlap validation intervals.
+Fold 1 trains 0–5086, purges 5087 and validates 5088–5339; fold 11 trains 0–7606, purges 7607 and validates 7608–7859.
+Training expands and transforms/models stay frozen within each validation block; earlier validation labels may enter later training once historical and outside that fold's purge.
 
-Before a future Internal Holdout evaluation, refit only on 0–7858 and purge 7859, then freeze throughout 7860–8867. Internal Holdout is not part of walk-forward, multiple testing, parameter selection or feature-availability decisions. There is no automatic unlock or evaluation command in this stage.
+The one-row purge makes training outcome endpoints strictly earlier than the validation decision boundary for a one-day label.
+A forward-only expanding split needs no extra post-validation embargo; supported nonzero embargo excludes post-validation rows from later training and validation, with a matching step size.
 
-The one-row purge requires training outcome endpoints to precede the first validation decision strictly. With one-day labels, additional post-validation embargo is unnecessary in a forward-only expanding split: no future training rows enter the current fold. Earlier validation labels may join later training once historical and outside that fold's purge. The splitter also supports positive embargo for future protocols: rows immediately after validation are excluded from all later training and validation; step size must skip them. Default remains zero. Longer target horizons require a new protocol before use.
+Internal Holdout is four 252-observation blocks, longer than the final simulation while retaining sufficient research history.
+The initial history absorbs a 47-row remainder so every validation block is full-sized; neither choice is based on predictive performance or a statistical-power guarantee.
+For a holdout refit, use only 0–7858, purge 7859 and freeze throughout 7860–8867; no automatic holdout or competition unlock is provided.
 
-## Feature availability and lagged candidates
+## Training-only feature availability
 
-Future candidate universe: **94 anonymous fields + 3 verified competition-available lagged outcome fields**. The anonymous-feature count remains 94; no MOM family is created. `date_id`, `is_scored` and current outcomes remain excluded.
-
-For historical training data, the three lagged candidates can be reconstructed by a one-row shift over consecutive IDs. At validation time only past observations may initialize that history. The mock official test file is never copied into research data. Helpers exist and are tested on artificial observations; no real lagged-feature research has run.
-
-A feature enters a particular fold only if its **training X** meets all conditions:
+Every candidate must meet all conditions within the current training window:
 
 - At least **252 nonmissing observations** and **2 distinct observed values**.
-- At least **80% observed coverage from its first observed training row to that training endpoint**.
-- At most **25% missing in the trailing 504 training rows** (or all training rows if shorter).
+- At least **80% coverage from its first observed training row to the endpoint**.
+- At most **25% missingness over the trailing 504 training rows**, or all training rows when shorter.
 
-The post-launch denominator distinguishes structural leading gaps from sporadic holes; recent coverage prevents a formerly observed but stale input entering. No fill, backward availability, validation coverage or Y-based selection changes eligibility. Store reasons and coverage for every field/fold. Preserve all source columns.
+Post-launch coverage distinguishes structural leading gaps from intermittent holes, and recent coverage prevents stale inputs entering.
+Record eligibility reasons per feature/fold without filling source values or using validation, holdout or Y to set thresholds.
+Late-appearing inputs may have too few eligible folds for a discovery claim; do not relax the rules to rescue them.
 
-## Primary and secondary metrics
+## Metrics
 
-**Primary Alpha metric: block-wise Spearman Rank IC.** For each of the 11 validation blocks, X and y are ranked separately inside that block, using only complete (X, y) pairs, with average ranks for ties. NaNs receive no rank and keep their time positions. Ranks are divided by (complete pairs in the block + 1) so blocks with different coverage share one scale. The ranked blocks are concatenated chronologically and **never re-ranked**; no other fold enters a block's ranks. The primary IC and its inference are computed on this concatenated rank series. This prevents level drift across folds from entering the Rank IC. Implementation: `blockwise_rank`, `blockwise_rank_pairs`, `blockwise_spearman_hac` in `src/statistics/robust_inference.py`.
+**Primary Alpha metric: block-wise Spearman Rank IC.**
+Within each of the 11 validation blocks, rank X and y separately on complete (X, y) pairs, with average ranks for ties; NaNs get no rank and keep their time positions.
+Divide ranks by (complete pairs in the block + 1) so blocks with different coverage share one scale.
+Concatenate the ranked blocks chronologically and **never re-rank** them; no other fold enters a block's ranks.
+Compute the primary IC and its inference on this concatenated rank series, so level drift across folds cannot enter the Rank IC.
 
-**Secondary robustness metric: training-window 1%/99% winsorized Pearson IC.** For each feature and fold, the 1st and 99th percentiles of X are estimated from that fold's training window only. The same bounds clip both training X and validation X. Validation data, pooled folds and future data never estimate bounds. y is **not** winsorized again: `market_forward_excess_returns` is already winsorized by the publisher. This metric is not confirmatory. A feature that is significant under winsorized Pearson but not under the primary Spearman test is **not** a discovery. Implementation: `fit_winsor_bounds`, `apply_winsor_bounds`.
+**Secondary robustness metric: training-window 1%/99% winsorized Pearson IC.**
+For each feature and fold, estimate the 1st and 99th percentiles of X from that fold's training window only, and clip both training and validation X with those bounds.
+Never estimate bounds from validation, pooled folds or future data; never winsorize y again, because market_forward_excess_returns is already winsorized by the publisher.
+This metric is not confirmatory: significance under winsorized Pearson without primary Spearman significance is **not** a discovery.
 
-Fold-level reporting keeps fold IC, sample counts, complete-pair coverage, equal-fold mean IC, IC std (ddof=1), sign consistency and positive-fold ratio. A fold counts only with at least **126 validation pairs** and **50% validation coverage**. A hypothesis needs at least **3 eligible folds**. Missing folds stay explicit; no zero IC is fabricated.
+Report fold IC, pair counts, coverage, equal-fold mean IC, IC std (ddof=1), sign consistency and positive-fold ratio; unavailable folds stay explicit.
+A fold counts only with **126 validation pairs** and **50% validation coverage**; a hypothesis needs **3 eligible folds**.
 
 ## Inference roles
 
-- **Newey–West → significance.** The single primary two-sided p-value comes from Bartlett HAC with **lag 5** on the Pearson-correlation influence function of the block-wise ranked series, with a normal approximation. This is approximate inference on the correlation of block-wise ranked series, not an exact finite-sample Spearman test. NaN gaps keep their time positions. Undefined uncertainty means no rejection, never p=0.
-- **Paired moving-block bootstrap → confidence interval and stability only.** Block length **20**, **2000** repetitions, **95%** percentile interval, seed **42**. It resamples the already block-wise ranked (X, y) pairs jointly and preserves time dependence. It produces no p-value and no alternative discovery rule.
+- **Newey–West → significance.** The single primary two-sided p-value uses Bartlett HAC **lag 5** on the correlation influence function of the block-wise ranked series, with a normal approximation. It is approximate inference on the correlation of block-wise ranked series, not an exact finite-sample Spearman test. NaN gaps keep their time positions; undefined uncertainty cannot reject.
+- **Paired moving-block bootstrap → confidence interval and stability only.** Block length **20**, **2000 repetitions**, **95%** percentile interval, seed **42**, applied jointly to the already block-wise ranked (X, y) series. It yields no p-value and no alternative discovery rule.
 
-Strong nonstationarity and data-dependent missingness can still invalidate nominal uncertainty.
+These methods are approximate under dependent, nonstationary observations and data-dependent missingness; no nominal interval guarantees stable alpha.
+Implementation: blockwise_rank, blockwise_spearman_hac, blockwise_spearman_interval, fit_winsor_bounds and apply_winsor_bounds in src/statistics/robust_inference.py.
 
 ## Hypothesis families
 
-**Family 1 — 97 single-feature hypotheses (primary).** 94 anonymous features plus `lagged_forward_returns`, `lagged_market_forward_excess_returns` and `lagged_risk_free_rate`. A feature that fails fold availability or has fewer than 3 eligible folds is `not_testable` and receives p=1. The denominator is always 97. E7 and other late-starting features follow this rule; thresholds are not relaxed.
+**Family 1 — 97 single features (primary).** 94 anonymous inputs plus the 3 lagged fields.
+A candidate failing fold availability or the 3-eligible-fold rule is not_testable with p=1, so the denominator stays 97; late-starting inputs such as E7 are not rescued.
 
-**Family 2 — 7 family-composite hypotheses (pre-registered).** One composite each for M, E, I, P, V, S and D, built fold by fold from training information only (`src/features/family_composites.py`):
+**Family 2 — 7 family composites (pre-registered).** One composite per M, E, I, P, V, S and D, rebuilt in every fold from training information only (src/features/family_composites.py):
 
-1. **Members:** family features that pass the existing availability rule in that fold's training window. A feature eligible in another fold is not added to this fold. The three lagged fields belong to no family.
-2. **Direction:** the sign of the member's training-window Spearman correlation with y. Positive → +1, negative → −1, zero or undefined → member excluded. Validation, other folds and the full sample never set direction. Qualified members = eligible members with a nonzero direction.
-3. **Normalization:** rank-based, not z-score. Each member is mapped to the mid-rank empirical CDF of its training values, p(v) = (#train < v + 0.5 × #train = v) / n_train. Validation values use the same training map; no distribution is refitted on validation. The result is multiplied by the direction.
-4. **Weighting:** equal-weight mean of the oriented members observed in that row. No IC, p-value, volatility, regression or optimized weights.
-5. **Missing members:** a row needs at least max(2, ceil(0.5 × qualified members)) observed members, otherwise the composite is NaN. With fewer than 2 qualified members the fold composite is NaN.
-6. **Testing:** the same framework as Family 1: block-wise Spearman, HAC lag 5, block-bootstrap interval, the same fold eligibility, not testable → p=1. The denominator is always 7.
+1. **Members:** family features passing the availability rule in that fold's training window; eligibility in another fold does not count. The 3 lagged fields belong to no family.
+2. **Direction:** sign of the member's training-window Spearman correlation with y; positive → +1, negative → −1, zero/undefined → member excluded. Qualified members are eligible members with a nonzero direction.
+3. **Normalization:** rank-based, not z-score. Map each member through the mid-rank empirical CDF of its training values, p(v) = (#train < v + 0.5 × #train = v) / n_train; validation uses the same training map and never refits it. Multiply by the direction.
+4. **Weighting:** equal-weight mean of oriented members observed in the row; no IC, p-value, volatility, regression or optimized weights.
+5. **Missing members:** a row needs at least max(2, ceil(0.5 × qualified members)) observed members, otherwise NaN; fewer than 2 qualified members makes the fold composite NaN.
+6. **Testing:** identical to Family 1 — block-wise Spearman, HAC lag 5, block-bootstrap interval, the same fold eligibility, not testable → p=1; the denominator stays 7.
 
-The training percentile map used to build composites is a different step from the block-wise validation ranking used to test them.
-
-The D family is retained. Interpretation of the D-family composite should be cautious because rank-based aggregation of discrete features may contain limited cross-sectional resolution. The test standard is not changed for it.
+The training percentile map that builds a composite is a different step from the block-wise validation ranking that tests it.
+Interpretation of the D-family composite should be cautious because rank-based aggregation of discrete features may contain limited cross-sectional resolution; its test standard is unchanged.
 
 ## Multiple testing
 
@@ -121,26 +119,25 @@ The D family is retained. Interpretation of the D-family composite should be cau
 | Global sensitivity | 104 = 97 + 7 raw primary p-values | BH, FDR 0.05 | Sensitivity only; never replaces family results |
 | Dependence sensitivity | each of the above | Benjamini–Yekutieli | Sensitivity only |
 
-BH requires independence or suitable positive dependence. A finding that fails BY is labeled dependence-sensitive. Secondary metrics, family tables and repeated windows are not discovery gates. New horizons or variants need a new registered family before inspection. Implementation: `adjust_fdr`, `family_pvalues`, `protocol_multiplicity` in `src/statistics/multiple_testing.py`.
+BH needs independence or suitable positive dependence; findings that fail BY are labeled dependence-sensitive.
+Secondary metrics, family tables and repeated windows are not alternative discovery gates; new horizons or variants require a registered family before inspection.
+No correction establishes persistence, causality or investability, and no stability threshold is retrofitted to results.
+Implementation: adjust_fdr, family_pvalues and protocol_multiplicity in src/statistics/multiple_testing.py.
+The tools only process caller-supplied arrays and are tested on synthetic data; no real-data Alpha pipeline exists yet.
 
-All tools only compute statistics from caller-supplied arrays and are tested on synthetic data. No CLI applies them to official X/Y.
+## Baselines and selection
 
-References: [Benjamini–Hochberg (1995)](https://doi.org/10.1111/j.2517-6161.1995.tb02031.x), [Benjamini–Yekutieli (2001)](https://doi.org/10.1214/aos/1013699998), [Newey–West (1987)](https://doi.org/10.2307/1913610), [Künsch (1989)](https://doi.org/10.1214/aos/1176347265).
+Forecast baseline: the arithmetic target mean in the fold's **purged training rows**, frozen throughout validation; zero forecast is a diagnostic comparison.
+Portfolio baseline: **allocation=1.0**; **allocation=0.0** is a cash sanity comparison, with undefined zero-risk scores preserved as such.
+Deflated Sharpe is reserved for later model/strategy selection involving multiple candidates, parameters or backtests, not single-feature screening.
 
-## Baselines and later selection
+Freeze preprocessing, selected inputs, model, timing and evaluation schedule before authorizing one Internal Holdout test; holdout outcomes do not guide redesign.
+Freeze the complete strategy and update schedule before separately authorizing competition simulation; using either held-out interval for redesign removes its selection-independent interpretation.
 
-Forecast baseline: the arithmetic mean of **market_forward_excess_returns in that fold's purged training rows**, frozen throughout validation; zero forecast is a diagnostic comparison. Do not use an expanding mean that consumes validation outcomes within the block.
+## Integrity and maintenance
 
-Portfolio baseline: **allocation=1.0** (100% S&P 500), with **allocation=0.0** cash as a sanity comparison. No baseline is optimized or evaluated on real returns now. The official score can be undefined for a zero-risk strategy; do not silently replace that with a manufactured score.
+[Protocol lock](../configs/protocol_lock.json) (lock format 2, rules phase2.5-v2) binds configuration, critical executable code, reference tests, the archived v1 locks and expected data hashes; ordinary docs and reports are not hash-locked.
+Run verify_protocol_lock with verify_data=True before research access; the default metadata-only check also supports a checkout without licensed data.
+Scientific-rule changes require an explicitly versioned protocol before new outcome inspection; explanatory prose can be maintained independently.
 
-Deflated Sharpe belongs to later **model/strategy selection**, particularly multiple strategies, parameter searches and backtest candidates. It is not a gate in single-feature Phase 3 screening and is not implemented or optimized here. Record all later trials before using it; see [Bailey–López de Prado (2014)](https://doi.org/10.3905/jpm.2014.40.5.094).
-
-## Locks, access history and changes
-
-`configs/validation.yaml` is authoritative for boundaries. `configs/research.yaml` fixes eligibility, metrics, inference, hypothesis families, multiple testing and baselines; `configs/official_metric.yaml` records the verified scorer. `configs/protocol_lock.json` (phase2.5-v2) binds these documents/configurations, the relevant source files and the archived v1 lock by hash. Future research must verify it before reading research values. Any change requires an explicit new protocol version and disclosure before examining new predictive outcomes.
-
-Historical Phase 2 outputs and `split_definition.json` retain their original metadata, including the then-undecided future design. They are historical evidence, not current protocol configuration. They are not regenerated in this task.
-
-Internal Holdout values have already appeared in Phase 2 descriptive EDA, and Phase 1/withdrawn work involved earlier inspection. Reservation is **prospective**: it prevents subsequent predictive selection and tuning, but cannot establish a historically untouched independent test. The existing final 180-row firewall continues unchanged. No held-out values or results determine these rules.
-
-After future walk-forward selection: freeze preprocessing, feature set, model, timing and evaluation schedule; authorize one Internal Holdout evaluation; then freeze any complete strategy before separately authorizing the final 180-row simulation. Reusing either later interval for redesign invalidates its selection-independent interpretation. This stage performs none of those evaluations.
+References: [Benjamini–Hochberg](https://doi.org/10.1111/j.2517-6161.1995.tb02031.x), [Benjamini–Yekutieli](https://doi.org/10.1214/aos/1013699998), [Newey–West](https://doi.org/10.2307/1913610), [Künsch](https://doi.org/10.1214/aos/1176347265), [Deflated Sharpe](https://doi.org/10.3905/jpm.2014.40.5.094).

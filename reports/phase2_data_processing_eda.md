@@ -1,3 +1,5 @@
+> Historical snapshot. For current research rules and validation settings, see [research_protocol.md](../docs/research_protocol.md).
+
 # Phase 2 — Data Processing & EDA
 
 Generated (UTC): 2026-10-17T08:44:34.802668+00:00. Source: existing hash-verified official Hull Tactical files only.

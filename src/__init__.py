@@ -1,1 +1,1 @@
-"""Hull alpha research project. Phase 1 implements acquisition and auditing."""
+"""Official-data acquisition, descriptive EDA and frozen research-protocol tools."""

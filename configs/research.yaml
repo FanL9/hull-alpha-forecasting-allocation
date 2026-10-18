@@ -21,7 +21,7 @@ protocol:
   version: phase2.5-v2
   status: frozen_no_real_data_research_executed
   supersedes: phase2.5-v1
-  archived_lock: configs/protocol_lock_phase2.5-v1.json
+  archived_locks: [configs/protocol_lock_phase2.5-v1.json, configs/protocol_lock_phase2.5-v1_lockformat2.json]
   defined_before_real_xy_research: true
   primary_target: market_forward_excess_returns
   horizon_trading_rows: 1

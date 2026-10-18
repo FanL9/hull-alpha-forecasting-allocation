@@ -9,9 +9,25 @@
   "competition_simulation_locked": true,
   "source_train_sha256": "8c1aba83e1bf34f91b234b7979f1fc7c397186b33a8d08bdd3634c08eb3810ca",
   "preserved_phase1_sha256": {
-    "reports/data_audit.md": "464039f0ddc109e41fcd930f2b607b9ebb37ef1f8630fe77bf11efd279fda4f6",
-    "docs/data_dictionary.md": "d52da7668438bfd576dfed466c6cae1c798aa9e268026b3ff1e3549e122b656e",
     "artifacts/data_summary.json": "5d9cbd16581d42d1b376bd655d2450be205040469f988a85ad9b39b9d21b47b8",
     "artifacts/phase1_status.json": "14edbff22e543acbd0276a0c424e6590dcdd514293dfd15af9d4d08ca3f739be"
+  },
+  "lock_version": 2,
+  "data_sha256": {
+    "data/raw/download_manifest.json": "ad9c38179493751003acecbe209315b7dc631417ee588b7e858d84b98c02502d",
+    "data/raw/hull-tactical-market-prediction.zip": "654f6e604e8cc76dca9649b3685b8738842ef46e78a3ccef93f0faf2dd962208",
+    "data/raw/test.csv": "b643378a7db4f868ccc23146cdd6bfa94e0f1926d670c509115713f953376b49",
+    "data/raw/train.csv": "8c1aba83e1bf34f91b234b7979f1fc7c397186b33a8d08bdd3634c08eb3810ca",
+    "data/raw/kaggle_evaluation/default_gateway.py": "f76664b86df6615b4d5bfa1c313278656a095c7aba227596307918c412272b25",
+    "data/raw/kaggle_evaluation/default_inference_server.py": "14ab84e95f43f31c625f15d03cd2e0d9cb9d119c45dddbfcb2b6f0df2f965b64",
+    "data/raw/kaggle_evaluation/__init__.py": "82c0adaf89ba66326c88b8e4de381cb8496c98eb5d3a7dac3d715d3c5eb155b1",
+    "data/raw/kaggle_evaluation/core/base_gateway.py": "0b9f5e8c516202659513c0adc89b51778a1a383d8247137d9bfddce038ee06a5",
+    "data/raw/kaggle_evaluation/core/kaggle_evaluation.proto": "cbc742d6b9e6f9a4981d8354cee79c7136edd8fe30cb90e1f6786ae72bc57ab1",
+    "data/raw/kaggle_evaluation/core/relay.py": "b070f6f2c154b7ae5de2081125a0f27a0a7a577b46136a39d746091d323ae85e",
+    "data/raw/kaggle_evaluation/core/templates.py": "3aa3eaf75139cd9220652b0601c24ef5f6188fcf44d4463b9b7e290271b5fa3a",
+    "data/raw/kaggle_evaluation/core/__init__.py": "7d04526624b1f71259b958206a343546f2ef31fd0ad6f0d606c6f2c8494b8874",
+    "data/raw/kaggle_evaluation/core/generated/kaggle_evaluation_pb2.py": "04108189b4ac7751901a7fbaa95231ed7335b437c33706d5850cab868bd16a11",
+    "data/raw/kaggle_evaluation/core/generated/kaggle_evaluation_pb2_grpc.py": "620d76b7b993a3fbf7809b1e7423ed71a94fe73156918215aeae86cb6f9b8a4f",
+    "data/raw/kaggle_evaluation/core/generated/__init__.py": "7d04526624b1f71259b958206a343546f2ef31fd0ad6f0d606c6f2c8494b8874"
   }
 }
