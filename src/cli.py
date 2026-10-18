@@ -1,4 +1,4 @@
-"""Official acquisition, protected Phase 1 integrity and development-only EDA."""
+"""Official acquisition, protected EDA, and explicitly gated Phase 3 research."""
 
 from __future__ import annotations
 
@@ -29,12 +29,32 @@ def environment_status() -> dict:
 def main(argv: list[str] | None = None) -> int:
     """Return 0 on success, 1 on schema failure, 2 on unavailable official data."""
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("command", choices=["check-env", "download", "audit", "phase1", "phase2"])
+    parser.add_argument("command", choices=["check-env", "download", "audit", "phase1", "phase2", "phase3"])
     parser.add_argument("--root", type=Path, default=project_root())
     parser.add_argument("--config", default="configs/base.yaml")
     parser.add_argument("--eda-config", "--research-config", dest="eda_config", default="configs/research.yaml")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--synthetic", action="store_true", help="Phase 3 artificial-data validation only")
+    mode.add_argument("--run-real-phase3", action="store_true", help="Explicitly authorize real Phase 3 research")
+    parser.add_argument("--output-dir", help="Phase 3 output path under artifacts/; must be empty")
     args = parser.parse_args(argv)
     root = args.root.resolve()
+    if args.command == "phase3":
+        if not (args.synthetic or args.run_real_phase3):
+            parser.error("phase3 requires --synthetic or explicit --run-real-phase3")
+        if args.config != "configs/base.yaml" or args.eda_config != "configs/research.yaml":
+            parser.error("phase3 uses frozen configuration paths only")
+        from src.research.phase3 import run_real_phase3, run_synthetic_phase3
+        if args.synthetic:
+            from src.research.synthetic_alpha import make_synthetic_history
+            result = run_synthetic_phase3(root, make_synthetic_history(root),
+                                         output_dir=args.output_dir or "artifacts/phase3_synthetic")
+        else:
+            result = run_real_phase3(root, run_real_phase3=True, output_dir=args.output_dir or "artifacts/phase3")
+        print(json.dumps(result.manifest, indent=2, ensure_ascii=False))
+        return 0
+    if args.synthetic or args.run_real_phase3 or args.output_dir:
+        parser.error("Phase 3 options require the phase3 command")
     config = load_config(inside_root(root, args.config))
     set_seed(config["project"]["seed"])
     if args.command == "phase2":

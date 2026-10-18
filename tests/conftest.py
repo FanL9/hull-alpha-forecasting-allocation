@@ -6,6 +6,32 @@ import pytest
 from src.utils.paths import load_config, project_root
 
 
+@pytest.fixture(scope="session", autouse=True)
+def forbid_real_project_data():
+    """The complete suite uses artificial fixtures, even if real data exists."""
+    import builtins
+    import io
+    import os
+    from pathlib import Path
+
+    data_root = (project_root() / "data").resolve()
+    original_open, original_io_open = builtins.open, io.open
+
+    def guarded(original):
+        def open_file(file, *args, **kwargs):
+            if isinstance(file, (str, bytes, os.PathLike)):
+                path = Path(os.fsdecode(file)).resolve()
+                if path.is_relative_to(data_root):
+                    raise AssertionError("Tests must never access real project data; use synthetic tmp_path inputs.")
+            return original(file, *args, **kwargs)
+        return open_file
+
+    with pytest.MonkeyPatch.context() as patch:
+        patch.setattr(builtins, "open", guarded(original_open))
+        patch.setattr(io, "open", guarded(original_io_open))
+        yield
+
+
 @pytest.fixture
 def config():
     return load_config(project_root() / "configs" / "base.yaml")

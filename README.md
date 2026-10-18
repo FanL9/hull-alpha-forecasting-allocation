@@ -23,7 +23,8 @@ The first two areas form Development; holdout outcomes do not guide selection, a
 
 - **Done:** official data acquisition, hash verification, data audit and descriptive EDA.
 - **Frozen:** research protocol **phase2.5-v2** (primary Alpha metric: block-wise Rank IC), official metric and validation rules. See the [Research Protocol](docs/research_protocol.md).
-- **Not started:** Phase 3 Alpha Research, model training, signals, allocation and backtesting.
+- **Phase 3:** pipeline implemented and tested on synthetic data; [real Alpha Research has not run](docs/phase3_alpha_research.md).
+- **Not started:** model training, signals, allocation and backtesting.
 
 ## Pipeline
 
