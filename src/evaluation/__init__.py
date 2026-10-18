@@ -1,1 +1,1 @@
-"""Planned research modules; see docs/methodology.md for phase boundaries."""
+"""Verified official Hull metric implementation."""

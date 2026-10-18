@@ -1,3 +1,5 @@
+> Historical snapshot. For current research rules and validation settings, see [research_protocol.md](../docs/research_protocol.md).
+
 # Official data audit
 
 Status: **complete**
@@ -357,7 +359,7 @@ These are observed value sets, not inferred economic meanings. A two-state -1/0 
 
 ## Official evaluation/API files
 
-These files are inventoried, not executed. File presence does not establish a scoring formula or label availability; see docs/official_api_notes.md for the separate source review.
+These files are inventoried, not executed. File presence does not establish a scoring formula or label availability; see docs/official_metric_notes.md for the separate source review.
 
 - `kaggle_evaluation/__init__.py`
 - `kaggle_evaluation/core/__init__.py`

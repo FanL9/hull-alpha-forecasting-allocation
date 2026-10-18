@@ -1,1 +1,1 @@
-"""Feature taxonomy; feature engineering is deferred beyond Phase 1."""
+"""Observed feature taxonomy, lagged availability and training-only coverage rules."""

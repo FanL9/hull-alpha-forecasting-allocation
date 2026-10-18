@@ -1,60 +1,46 @@
 # Regime-Aware Alpha Forecasting and Dynamic S&P 500 Allocation
 
-This project uses official [Kaggle Hull Tactical Market Prediction data](https://www.kaggle.com/competitions/hull-tactical-market-prediction/data) to study whether anonymous financial features can predict future S&P 500 excess returns.
-Later stages will turn forecasts into allocations, using strict chronological validation and a Kaggle-style competition simulation.
+This project uses official [Kaggle Hull Tactical data](https://www.kaggle.com/competitions/hull-tactical-market-prediction/data) to study whether anonymous financial features predict future S&P 500 excess returns.
+The planned pipeline converts forecasts into allocations under chronological validation and a final competition simulation.
 
 ## Data
 
-- `train.csv`: **9,048 rows × 98 columns**, including **94 anonymous features**.
-- Feature families: **M, E, I, P, V, S, D**.
-- Forecasting target: `market_forward_excess_returns`.
-- Official `test.csv` is used only for interface/schema testing, not as an independent research test set.
+- train.csv: **9048 rows × 98 columns**, including **94 anonymous features** in M, E, I, P, V, S and D.
+- Primary target: market_forward_excess_returns.
+- Official test.csv is for interface/schema checks, not an independent research test set.
 
-## Data Split
+## Chronological Split
 
-| Area | `date_id` | Rows |
+| Area | date_id | Rows |
 | --- | --- | --- |
-| Development | 0–8867 | 8,868 |
+| Research / Walk-Forward | 0–7859 | 7860 |
+| Internal Holdout | 7860–8867 | 1008 |
 | Competition Simulation | 8868–9047 | 180 |
 
-The final **180 rows are locked** for a future Kaggle-style simulation and excluded from development analysis and decisions.
+The first two areas form Development; holdout outcomes do not guide selection, and the final 180 rows remain locked until simulation.
 
 ## Current Status
 
-- **Phase 1 complete:** official data acquisition, SHA-256 verification and data audit.
-- **Phase 2 complete:** data processing and EDA.
-- **Phase 2.5 complete:** labels verified, official metric implemented and validation protocol frozen; no Alpha Research yet.
-- **Not started:** Alpha Research, model training, Signal, Allocation and Backtest.
+- **Done:** official data acquisition, hash verification, data audit and descriptive EDA.
+- **Frozen:** research protocol, official metric, validation and statistical rules.
+- **Not started:** Phase 3 Alpha Research, model training, signals, allocation and backtesting.
 
-Development EDA found missing values in **85 features**, with clear temporal structure. Default processing preserves NaNs; no predictive alpha or profitable strategy has been established.
-
-## Workflow
+## Pipeline
 
 ```text
-Official Data
-→ Data Audit & EDA
-→ Alpha Research
-→ Forecasting Model
-→ Signal & Allocation
-→ 180-day Competition Simulation
+Official Data → Audit & EDA → Protocol Freeze → Alpha Research
+→ Forecasting → Internal Holdout → Signal & Allocation → Evaluation → Simulation
 ```
 
-## Repository Structure
+## Repository
 
 ```text
-configs/
-data/
-docs/
-notebooks/
-src/
-tests/
-reports/
-artifacts/
+configs/  data/  docs/  notebooks/  src/  tests/  reports/  artifacts/
 ```
 
-## Quick Start
+## Run
 
-Requires Python 3.12+, existing official data and preserved Phase 1 audit artifacts. Run from the repository root (Windows PowerShell):
+Python 3.12+, existing official data and acquisition artifacts are required; run from the repository root in Windows PowerShell.
 
 ```powershell
 python -m venv .venv
@@ -64,8 +50,8 @@ python -m venv .venv
 .\.venv\Scripts\python.exe -m pytest
 ```
 
-Keep raw data, generated artifacts and credentials out of Git.
+Keep raw data, generated artifacts and credentials out of Git; result snapshots are in [reports/](reports/).
 
-## Documentation
+## Read Next
 
-[Methodology](docs/methodology.md) · [Research protocol](docs/research_protocol.md) · [Official metric](docs/official_metric_notes.md) · [Research questions](docs/research_questions.md) · [Validation design](docs/validation_design.md) · [Data dictionary](docs/data_dictionary.md)
+[Project Flow](docs/project_flow.md) · [Methodology](docs/methodology.md) · [Research Protocol](docs/research_protocol.md) · [Data Dictionary](docs/data_dictionary.md)

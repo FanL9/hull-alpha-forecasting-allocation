@@ -154,7 +154,8 @@ def _table(headers: list[str], rows: list[list[Any]]) -> list[str]:
 
 def render_report(summary: dict[str, Any]) -> str:
     """Produce a reviewable report with all columns and actual observed counts."""
-    lines = ["# Official data audit", "", f"Status: **{summary['status']}**", "",
+    lines = ["> Historical snapshot. For current research rules and validation settings, see [research_protocol.md](../docs/research_protocol.md).", "",
+             "# Official data audit", "", f"Status: **{summary['status']}**", "",
              f"Generated (UTC): {summary['generated_at_utc']}", "",
              "Source: [Kaggle — Hull Tactical - Market Prediction](https://www.kaggle.com/competitions/hull-tactical-market-prediction/data).", ""]
     if summary["status"] == "blocked":
@@ -188,7 +189,7 @@ def render_report(summary: dict[str, Any]) -> str:
     lines += _table(["Schema difference", "Observed columns"], [
         ["Train only", ", ".join(summary["train_only_columns"]) or "none"],
         ["Test only", ", ".join(summary["test_only_columns"]) or "none"]]) + [""]
-    lines += ["## Official evaluation/API files", "", "These files are inventoried, not executed. File presence does not establish a scoring formula or label availability; see docs/official_api_notes.md for the separate source review.", ""]
+    lines += ["## Official evaluation/API files", "", "These files are inventoried, not executed. File presence does not establish a scoring formula or label availability; see docs/official_metric_notes.md for the separate source review.", ""]
     lines += [f"- `{path}`" for path in summary.get("evaluation_files", [])] or ["No matching evaluation/API files found in the official manifest."]
     lines += ["", "## Errors", ""] + ([f"- {item}" for item in summary["errors"]] or ["None."])
     lines += ["", "## Warnings and research safeguards", ""] + [f"- {item}" for item in summary["warnings"]]
@@ -197,28 +198,40 @@ def render_report(summary: dict[str, Any]) -> str:
 
 
 def render_dictionary(summary: dict[str, Any]) -> str:
-    """Document only observed fields, or clearly mark the dictionary as pending."""
+    """Render observed schema with verified definitions, without fitting data."""
     lines = ["# Data dictionary", "", "Source: [official competition data](https://www.kaggle.com/competitions/hull-tactical-market-prediction/data).", "",
-             "Individual numbered predictors are **anonymous features**. The project brief supplies family labels; exact economic definitions and prediction-time availability require official documentation. No field-level meaning is inferred from a number.", ""]
-    lines += _table(["Prefix", "Family taxonomy"], [[key, value] for key, value in FAMILY_LABELS.items()]) + [""]
+             "Individual numbered predictors are anonymous features; broad official family labels do not identify their exact economic meanings.", ""]
     if summary["status"] == "blocked":
         lines += ["Status: **pending official data acquisition**. No actual column list, feature count or dtype has been established.", "",
                   "Expected fields to verify: `date_id`, `forward_returns`, `risk_free_rate`, `market_forward_excess_returns`. These are expectations from the brief, not observations.", ""]
     else:
+        lines += _table(["Prefix", "Family taxonomy", "Observed count"], [
+            [key, value, len(summary["train"]["feature_groups"][key])]
+            for key, value in FAMILY_LABELS.items() if summary["train"]["feature_groups"][key]]) + [""]
         columns = list(dict.fromkeys(summary["train"]["columns"] + summary["test"]["columns"]))
+        definitions = {
+            "date_id": "Ordered trading-day identifier",
+            "forward_returns": "S&P 500 return from buying on the identified day and selling one trading day later",
+            "risk_free_rate": "Supplied federal funds rate used directly in cash accounting",
+            "market_forward_excess_returns": "Forward return minus rolling five-year mean, then MAD winsorization with criterion 4",
+            "is_scored": "Whether the inference row enters competition scoring",
+            "lagged_forward_returns": "One-trading-day-lagged forward return; inference-available candidate",
+            "lagged_market_forward_excess_returns": "One-trading-day-lagged adjusted target; inference-available candidate",
+            "lagged_risk_free_rate": "One-trading-day-lagged cash rate; inference-available candidate",
+        }
         lines += [f"Observed shape: train {summary['train']['rows']} × {summary['train']['columns_count']}; test {summary['test']['rows']} × {summary['test']['columns_count']}.", ""]
         lines += _table(["Observed column", "Train dtype", "Test dtype", "Role", "Definition"], [
             [column, summary["train"]["column_details"].get(column, {}).get("dtype", "absent"),
              summary["test"]["column_details"].get(column, {}).get("dtype", "absent"), column_role(column),
-             "anonymous feature; " + FAMILY_LABELS[feature_family(column)] if feature_family(column) else "Official definition / availability review pending"]
+             "anonymous feature; " + FAMILY_LABELS[feature_family(column)] if feature_family(column) else definitions.get(column, "Unclassified field")]
             for column in columns]) + [""]
-        lines += ["## Observed schema qualifications", "", "A missing family is not reconstructed from assumptions. MOM-family count in this training file: " + str(len(summary["train"]["feature_groups"]["MOM"])) + ".", ""]
+        lines += ["## Observed schema qualifications", "", "Only observed feature families are listed; no missing family is reconstructed.", ""]
         lines += _table(["D field", "Observed training values", "Unique nonmissing"], [
             [column, values, summary["train"]["column_details"][column]["unique_nonmissing"]]
             for column, values in summary["train"]["dummy_value_sets"].items()]) + [""]
-    lines += ["`market_forward_excess_returns` is the planned forecasting label. Its precise construction must be verified against official documentation; it is **not assumed equal** to `forward_returns - risk_free_rate`.", "",
-              "`forward_returns` and `risk_free_rate` are retained for later economic accounting. Their row alignment, units, timing and financing interpretation remain to be verified. Lagged labels, when present, are excluded until the official API establishes their availability.", "",
-              "The official metric, its volatility penalty and precise field-availability semantics remain unverified. A 1.20 reference in configuration is a research requirement, not a reproduced official score. The downloaded inference gateway is reviewed separately in `docs/official_api_notes.md` without being executed.", ""]
+    lines += ["Keep the supplied target on its original row; it is not forward_returns minus risk_free_rate. Use supplied cash-rate units unchanged.", "",
+              "Current outcomes are not predictors; the three named one-day lagged outcomes are competition-available candidates under [Research Protocol](research_protocol.md).", "",
+              "See [Official Metric](official_metric_notes.md) for the verified scoring implementation and penalty rules.", ""]
     return "\n".join(lines)
 
 
@@ -270,8 +283,8 @@ def firewall_enabled(root: Path) -> bool:
 def run_locked_integrity(root: Path, config: dict[str, Any]) -> dict[str, Any]:
     """Reverify Phase 1 provenance without repeating pre-lock value statistics.
 
-    The original audit/dictionary remain historical Phase 1 evidence. A new
-    receipt reports only hashes, headers and identifiers, never their values.
+    Machine-readable Phase 1 artifacts remain protected. Narrative reports and
+    current dictionaries are editable; the receipt contains no market values.
     """
     from src.validation.time_split import prepare_split
 
@@ -290,7 +303,7 @@ def run_locked_integrity(root: Path, config: dict[str, Any]) -> dict[str, Any]:
         raise ValueError("Raw train differs from the fixed split policy.")
     plan = prepare_split(root, raw / settings["train_file"], raw / settings["test_file"])
     summary = {"status": "complete", "mode": "locked_integrity_only",
-        "generated_at_utc": utc_timestamp(), "preserved_phase1_outputs_unchanged": True,
+        "generated_at_utc": utc_timestamp(), "preserved_phase1_machine_artifacts_unchanged": True,
         "simulation_values_parsed": False, "official_test_values_parsed": False,
         "train": {"rows": plan["full_train_rows"], "columns_count": len(plan["train_columns"]),
                   "feature_groups": group_features(plan["feature_columns"])},

@@ -86,13 +86,13 @@ def run_phase2(root: Path, config: dict, settings_path: Path) -> dict:
             "processed_path": processed_path.relative_to(root).as_posix(), "processed_sha256": sha256(processed_path)},
         "provenance": {"source": integrity["provenance"]["source"], "official_file_count": integrity["provenance"]["official_file_count"],
             "source_train_sha256": plan["source_train_sha256"], "source_test_sha256": plan["source_test_sha256"],
-            "settings_sha256": sha256(settings_path), "phase1_outputs_preserved": True, "data_downloaded": False},
+            "settings_sha256": sha256(settings_path), "phase1_machine_artifacts_preserved": True, "data_downloaded": False},
         "execution": {"alpha_research": False, "models_fitted": 0, "folds_executed": 0, "oos_predictions": 0,
             "regime_research": False, "signals": False, "allocation": False, "backtest": False},
         "dependencies": {p: importlib.metadata.version(p) for p in ["pandas", "numpy", "matplotlib", "PyYAML"]},
         "table_rows": {name: len(table) for name, table in tables.items()},
         "limitations": ["Anonymous fields: no economic field-level interpretation.",
-            "Past Phase 1 and withdrawn research inspection cannot be undone; lock is a prospective-use policy.",
+            "Holdout reservations govern subsequent predictive selection; descriptive development history has already been inspected.",
             "No calendar mapping; windows refer to ordered rows, not verified calendar days.",
             "Feature release timing, label construction and official scoring require future verification."]}
     figure_names = make_figures(tables, root / "reports/figures")

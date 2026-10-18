@@ -40,9 +40,10 @@ def render_report(summary: dict, tables: dict[str, pd.DataFrame], figure_names: 
     family_time = tables["family_time_blocks"]
     binary = tables["discrete_value_counts"]
     sets = binary.groupby(["feature", "kind"], sort=False)["value"].apply(lambda s: ", ".join(map(str, s))).reset_index()
-    lines = ["# Phase 2 — Data Processing & EDA", "",
+    lines = ["> Historical snapshot. For current research rules and validation settings, see [research_protocol.md](../docs/research_protocol.md).", "",
+        "# Phase 2 — Data Processing & EDA", "",
         f"Generated (UTC): {summary['generated_at_utc']}. Source: existing hash-verified official Hull Tactical files only.", "",
-        "The superseded Phase 2 alpha/model results and split were withdrawn. This report describes only the rebuilt descriptive phase.", "",
+        "This report records development-only descriptive analysis.", "",
         "## Boundary and provenance", "",
         "| Area | date_id | Rows | Columns | Permitted access |", "| --- | --- | --- | --- | --- |",
         "| Full train | 0–9047 | 9048 | 98 | Hashes, headers, IDs |",
@@ -50,7 +51,7 @@ def render_report(summary: dict, tables: dict[str, pd.DataFrame], figure_names: 
         "| Competition Simulation | 8868–9047 | 180 | 98 | Locked; headers, IDs, counts only |", "",
         "No gap or overlap exists. Simulation feature/target values were not parsed. Schema compatibility means a shared header in train.csv; no simulation dtype inference, duplicate-value check or missingness statistics were performed.", "",
         "Official test.csv is inference-schema/API material only. Its 10 IDs (8980–8989) overlap the locked period. Only its header and IDs were inspected; no feature, lagged-label or target statistics were computed.", "",
-        "The original Phase 1 full-file audit and dictionary predate this firewall and remain byte-identical historical evidence. They are not inputs to new processing choices. This rebuild cannot erase earlier inspection or make these periods historically unseen.", "",
+        "Acquisition and machine-readable data-audit artifacts remain preserved; current field definitions and research rules are documented in docs/.", "",
         f"All {summary['provenance']['official_file_count']} manifest-listed official files and the ZIP passed integrity verification. Train SHA-256: `{summary['provenance']['source_train_sha256']}`.", "",
         "## Development schema and quality", "",
         f"All 94 anonymous features, date_id and all three original outcomes are retained. Development shape: {q['rows']} × {q['columns']}; duplicate full rows: {q['duplicate_rows']}; duplicate IDs: {q['duplicate_date_ids']}; chronological: {q['chronological_order']}; infinite cells: {q['infinite_cells']}.", "",
@@ -81,8 +82,8 @@ def render_report(summary: dict, tables: dict[str, pd.DataFrame], figure_names: 
         "## Processing framework", "",
         "Default processed development.csv preserves all 8,868 rows, 98 columns, original values, encodings and NaNs. This is an identity export, not fitted preprocessing. Missingness is investigated before choosing a treatment.", "",
         "Future candidates: retain NaN; a median fitted inside each historical training window and used only on subsequent observations; expanding strictly prior median; contemporaneous missing indicators. Optional past-only median/indicator helpers are software-tested but are not applied to the default export. Leading gaps stay NaN when no past value exists. No global mean/median, backward fill or full-development statistic is used to transform historical rows.", "",
-        "## Future validation — design only", "",
-        "Phase 2.5 fixes future research at date_id 0–7859: 5087 initial training rows, 11 validation blocks of 252, step 252, purge 1 and embargo 0. Internal Holdout is 7860–8867 (1008 rows); the final 180-row simulation stays locked. Models remain unselected. See docs/research_protocol.md and configs/validation.yaml. This descriptive EDA does not execute alpha/model validation, signals, allocation or backtests.", "",
+        "## Research-rule reference", "",
+        "This descriptive snapshot does not define or execute predictive validation. Current boundaries, validation parameters and statistical rules are in [Research Protocol](../docs/research_protocol.md) and configs/validation.yaml.", "",
         "## Figures", ""]
     for name in figure_names:
         lines += [f"![{name.removeprefix('phase2_eda_').removesuffix('.png').replace('_', ' ')}](figures/{name})", ""]

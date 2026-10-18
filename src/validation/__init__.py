@@ -1,1 +1,1 @@
-"""Planned research modules; see docs/methodology.md for phase boundaries."""
+"""Chronological reservations, expanding splits and executable-protocol integrity."""

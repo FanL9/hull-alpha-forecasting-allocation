@@ -1,25 +1,52 @@
 {
+  "lock_version": 2,
   "protocol_version": "phase2.5-v1",
   "created_at_utc": "2026-10-17T10:22:46.771470+00:00",
+  "lock_created_at_utc": "2026-10-18T07:34:43.103765+00:00",
   "status": "frozen_not_research_executed",
+  "text_hash_representation": "UTF-8 text bytes with LF line endings",
+  "data_hash_representation": "original file bytes",
   "sha256": {
     "configs/validation.yaml": "5039c0412af4925a2fc0b33346cd06329ab63a312b274884873afd8a98b36c19",
     "configs/research.yaml": "cf0b76f4d7d5dd24aa36ad6ff6db147f4453ea110c0f4047f858a6a7e289fe36",
     "configs/base.yaml": "cf4213ccf6e109f5912b258d00fcb16c874321354acfa05db68d614b494aff51",
     "configs/official_metric.yaml": "6d7f7790d0386591864993b540677769fdf55c60c526e15f56f1ed119cf637ae",
     "configs/portfolio.yaml": "a72c9b4b708d868ddfa9309170a73bc94bcf5062d7ecb9b1ee531ad78e477691",
-    "configs/split_policy.json": "6c24af99dd4702979eab26026a1174788d6660214672ad3f9211eb69fd96ffe2",
-    "docs/research_protocol.md": "beb3dd63d07fdb6c230ac55ef48bf19e4ffa6fc9c2f60e83b5015762c8b1ddea",
-    "docs/official_metric_notes.md": "f848c2cea5f0bfae64c3e09e1785b5253ffb974502f27855ad93a80f2b96ca5c",
-    "docs/official_api_notes.md": "489bbed672b267577d1f87fb2b9fceb2cc3c0e93531c44dfd61fb4270e16c393",
+    "configs/split_policy.json": "a943ccd5ac29c972904959b2edaf225683a5886ce9adf7664617abba8c2c1638",
     "src/validation/walk_forward.py": "6d396557cd5647931be1b7044db3f7cfa5408067e755fa2993140728bc07bdde",
-    "src/validation/protocol_freeze.py": "a8b6463eb442bfd170277d7f2acdcf711a691bf09a63da9bc15ecf9859972f6e",
+    "src/validation/protocol_freeze.py": "5d7119c8900c873d1b1666080c829904e752e8e7d77bdfe1c735817b74fe48af",
+    "src/validation/time_split.py": "6bb3e5d09406442a2214bad39a332023197582ef3fe67a85178b31cbf7c67b97",
     "src/evaluation/kaggle_metric.py": "71122987e5b73cf431f06e9693138f2e40ca33238905d8cf954173427ea32124",
     "src/features/availability.py": "7cacb1c59a548f503c1203b7dc67e762b7a179339ee5a88f78a63ffe8857fd79",
     "src/features/feature_groups.py": "32842b11de8b202d9bc2fdddcd542d94892eb5fcc0bc78964915b2a3ec3b25a1",
     "src/statistics/multiple_testing.py": "d92edaf868d21d4a7e0863bf3a8f7cb6913794c0db72aa4f069e6cb08f0e0d10",
     "src/statistics/robust_inference.py": "11b90a4e3f66779b078af509e1af27ed28b76803f150da94e0af42cc4b1ce300",
+    "src/data/download.py": "8dcff370aee7b77d97950b116f3ea24cc06448d09d1d4a1f509127fb3c8e953d",
+    "src/data/load_data.py": "d50a411b9023b92d5fde9305cf3c045d217691720808fcba3bb70123fa74d36a",
+    "src/data/preprocess.py": "a5b68075bba42624bde62a0cd9ff114707e89bf663607f25d7a25fe14f389e1d",
+    "src/data/validate_data.py": "66ffc57735aa86816fcd6fd60d8092f5c50c8ee857349ea262055b52358d49cf",
+    "src/research/eda.py": "b6e16958945d4f472f3a0683c4e52cc90150ab7d3c5df14c178bb682eb92dc5e",
+    "src/research/pipeline.py": "493422027e19d04fb564abe5e83b42aab1c9ae8a2f7ba5ee1f279d2a37f6099c",
+    "src/utils/paths.py": "3c537e8367d51dea8c2a11018e543c751a131b6be59305be1fa58b361b0c0cac",
+    "src/utils/seed.py": "b5d322fc0c67917edf69de7d92ad98acaf84bb7dd453a5f183c13a9b3516ff7f",
     "tests/fixtures/kaggle_metric_synthetic_cases.json": "235c3a806f69ceca02632345e3895c9ea48de8b1d55bd29a890c81716b40efbc"
+  },
+  "data_sha256": {
+    "data/raw/download_manifest.json": "ad9c38179493751003acecbe209315b7dc631417ee588b7e858d84b98c02502d",
+    "data/raw/hull-tactical-market-prediction.zip": "654f6e604e8cc76dca9649b3685b8738842ef46e78a3ccef93f0faf2dd962208",
+    "data/raw/test.csv": "b643378a7db4f868ccc23146cdd6bfa94e0f1926d670c509115713f953376b49",
+    "data/raw/train.csv": "8c1aba83e1bf34f91b234b7979f1fc7c397186b33a8d08bdd3634c08eb3810ca",
+    "data/raw/kaggle_evaluation/default_gateway.py": "f76664b86df6615b4d5bfa1c313278656a095c7aba227596307918c412272b25",
+    "data/raw/kaggle_evaluation/default_inference_server.py": "14ab84e95f43f31c625f15d03cd2e0d9cb9d119c45dddbfcb2b6f0df2f965b64",
+    "data/raw/kaggle_evaluation/__init__.py": "82c0adaf89ba66326c88b8e4de381cb8496c98eb5d3a7dac3d715d3c5eb155b1",
+    "data/raw/kaggle_evaluation/core/base_gateway.py": "0b9f5e8c516202659513c0adc89b51778a1a383d8247137d9bfddce038ee06a5",
+    "data/raw/kaggle_evaluation/core/kaggle_evaluation.proto": "cbc742d6b9e6f9a4981d8354cee79c7136edd8fe30cb90e1f6786ae72bc57ab1",
+    "data/raw/kaggle_evaluation/core/relay.py": "b070f6f2c154b7ae5de2081125a0f27a0a7a577b46136a39d746091d323ae85e",
+    "data/raw/kaggle_evaluation/core/templates.py": "3aa3eaf75139cd9220652b0601c24ef5f6188fcf44d4463b9b7e290271b5fa3a",
+    "data/raw/kaggle_evaluation/core/__init__.py": "7d04526624b1f71259b958206a343546f2ef31fd0ad6f0d606c6f2c8494b8874",
+    "data/raw/kaggle_evaluation/core/generated/kaggle_evaluation_pb2.py": "04108189b4ac7751901a7fbaa95231ed7335b437c33706d5850cab868bd16a11",
+    "data/raw/kaggle_evaluation/core/generated/kaggle_evaluation_pb2_grpc.py": "620d76b7b993a3fbf7809b1e7423ed71a94fe73156918215aeae86cb6f9b8a4f",
+    "data/raw/kaggle_evaluation/core/generated/__init__.py": "7d04526624b1f71259b958206a343546f2ef31fd0ad6f0d606c6f2c8494b8874"
   },
   "fold_metadata": [
     {
@@ -180,18 +207,18 @@
     "rows": 180,
     "locked": true
   },
-  "execution": {
-    "real_data_eda_repeated": false,
-    "real_xy_tests": 0,
-    "models_fitted": 0,
-    "real_portfolio_evaluations": 0,
-    "competition_values_used": false
-  },
   "primary_target": "market_forward_excess_returns",
   "baselines": {
     "forecast": "historical_training_mean",
     "diagnostic_forecast": "zero",
     "portfolio_allocation": 1.0,
     "sanity_allocation": 0.0
+  },
+  "execution": {
+    "real_data_eda_repeated": false,
+    "real_xy_tests": 0,
+    "models_fitted": 0,
+    "real_portfolio_evaluations": 0,
+    "competition_values_used": false
   }
 }
