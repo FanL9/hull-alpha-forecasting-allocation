@@ -162,6 +162,7 @@ def test_real_entry_requires_opt_in_before_any_verification(monkeypatch):
 
 def test_failed_real_verification_never_loads_data(monkeypatch):
     events = []
+    monkeypatch.setattr(phase3, 'real_execution_preflight', lambda *a, **k: {})
     def verify(root, *, verify_data):
         assert verify_data is True
         events.append('verify')
@@ -174,6 +175,7 @@ def test_failed_real_verification_never_loads_data(monkeypatch):
 
 
 def test_real_entry_call_order_with_only_test_doubles(monkeypatch):
+    from contextlib import nullcontext
     events = []
     frame = make_synthetic_history(ROOT)
     def verify(root, *, verify_data):
@@ -193,6 +195,8 @@ def test_real_entry_call_order_with_only_test_doubles(monkeypatch):
         assert history is frame and lock == {'test_double': True} and not kwargs['synthetic']
         events.append('engine')
     monkeypatch.setattr(phase3, 'verify_protocol_lock', verify)
+    monkeypatch.setattr(phase3, 'real_execution_preflight', lambda *a, **k: {})
+    monkeypatch.setattr(phase3, 'reserve_real_run', lambda *a, **k: nullcontext())
     monkeypatch.setattr(phase3, 'read_header', header)
     monkeypatch.setattr(phase3, 'load_research_prefix', load)
     monkeypatch.setattr(phase3, '_execute', execute)
@@ -379,6 +383,7 @@ def test_real_output_preflight_precedes_safe_loader(tmp_path, monkeypatch):
     (tmp_path / 'artifacts/phase3').mkdir(parents=True)
     (tmp_path / 'artifacts/phase3/existing.json').write_text('{}')
     monkeypatch.setattr(phase3, 'verify_protocol_lock', lambda *a, **k: {})
+    monkeypatch.setattr(phase3, 'real_execution_preflight', lambda *a, **k: {})
     monkeypatch.setattr(phase3, 'load_research_prefix', lambda *a, **k: pytest.fail('Output must be checked before loading'))
     with pytest.raises(FileExistsError):
         phase3.run_real_phase3(tmp_path, run_real_phase3=True)

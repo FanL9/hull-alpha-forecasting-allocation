@@ -1,0 +1,50 @@
+{
+  "run_type": "synthetic",
+  "purpose": "software calibration only; no real Alpha evidence",
+  "run_timestamp": "2026-10-18T12:16:09.444828+00:00",
+  "protocol_version": "phase2.5-v2",
+  "implementation_sha256": {
+    "src/cli.py": "993e6c49b1bfd8e0a8fc97eeb781e60d1148cb8b7d8bb1acd7dc726e5f39d2a6",
+    "src/research/alpha_pipeline.py": "557fe67e973010c6504637a34d93452b394e54bdffdb7b1455d6fde6be468631",
+    "src/research/alpha_results.py": "3881afeaf8668eaf3cc4a61c4ce40a281ada19e70889d0da16766a5216080ae3",
+    "src/research/phase3.py": "daa91c9550b390b87b883fedb08f79f885488cc051b1014719fb906acf42f201",
+    "src/research/synthetic_alpha.py": "c5227a8391beef63b37cedc77ef7e7d5f56b61f6ecfa1d56f69dd7b56e48372b",
+    "src/research/phase3_execution.py": "5fd3dcd782ef78780d3ac02e1aeee368a3da672e5e98896eb719ef78a2b2dbf5",
+    "src/research/alpha_calibration.py": "2e0809a575698d7c1bb7fe0a71cba53c971e222ad49fa80cf93dfa009564dd4b"
+  },
+  "phase3_pipeline_code_hash": "987ac1a342c2a551155eb855997aaa842d528f52ed7d9495971406bab9f4ddba",
+  "noise_seeds": [
+    11,
+    29,
+    47,
+    71,
+    101
+  ],
+  "power_seeds": [
+    137,
+    271,
+    409
+  ],
+  "strengths": [
+    0.0,
+    0.03,
+    0.05,
+    0.08,
+    -0.03,
+    -0.05,
+    -0.08
+  ],
+  "fold_count": 11,
+  "single_hypothesis_count": 97,
+  "family_hypothesis_count": 7,
+  "global_hypothesis_count": 104,
+  "bootstrap_repetitions": 2000,
+  "bootstrap_role": "confidence_interval",
+  "market_data_read": false,
+  "csv_line_ending": "LF",
+  "output_sha256": {
+    "pure_noise_calibration.csv": "dd4821d355ce884d645e19b39f612b4abddd3d706443d4dd3848e2f6b4238c01",
+    "weak_signal_calibration.csv": "259170905da619aa432a1e2b7b502efba1a81bdb65040037bbea79a165b98a1f",
+    "weak_signal_summary.csv": "79980311921f3426189f5b0d38f6769d1920b70d15402182329075645c168d30"
+  }
+}

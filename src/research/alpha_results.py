@@ -5,13 +5,13 @@ from dataclasses import dataclass
 import hashlib
 import json
 from pathlib import Path
-import subprocess
 
 import numpy as np
 import pandas as pd
 
 from src.features.family_composites import COMPOSITE_FAMILIES
 from src.research.alpha_pipeline import AlphaDesign, AlphaTables
+from src.research.phase3_execution import git_identity, pipeline_code_identity, validate_frozen_checkout
 from src.statistics.multiple_testing import protocol_multiplicity
 from src.utils.paths import utc_timestamp, write_json
 
@@ -51,26 +51,23 @@ def apply_multiple_testing(tables: AlphaTables, design: AlphaDesign) -> pd.DataF
                          for name, result in corrections.items()])
 
 
-def build_manifest(root: Path, history: pd.DataFrame, design: AlphaDesign, lock: dict, *, synthetic: bool) -> dict:
+def build_manifest(root: Path, history: pd.DataFrame, design: AlphaDesign, lock: dict, *, synthetic: bool,
+                   execution_identity: dict | None = None) -> dict:
     """Bind results to rules, executing implementation, dataset identity and Git."""
-    def git(*args):
-        process = subprocess.run(["git", "-C", str(root), *args], capture_output=True, text=True)
-        return process.stdout.strip() if process.returncode == 0 else None
-    implementation = Path(__file__).resolve().parent
-    code = {f"src/research/{name}": hashlib.sha256((implementation / name).read_bytes().replace(b"\r\n", b"\n")).hexdigest()
-            for name in ["alpha_pipeline.py", "alpha_results.py", "phase3.py", "synthetic_alpha.py"]}
-    code["src/cli.py"] = hashlib.sha256((implementation.parent / "cli.py").read_bytes().replace(b"\r\n", b"\n")).hexdigest()
+    identity = {**git_identity(root), **pipeline_code_identity()} if synthetic else validate_frozen_checkout(root)
+    if not synthetic and (execution_identity is None or identity != execution_identity):
+        raise PermissionError("Frozen execution identity changed during real Phase 3.")
     fingerprint = hashlib.sha256(json.dumps(list(history.columns)).encode() +
                                  pd.util.hash_pandas_object(history, index=False).to_numpy().tobytes()).hexdigest()
     inference = design.rules["inference"]
-    return {"protocol_version": design.rules["version"], "git_commit": git("rev-parse", "HEAD"),
-            "git_worktree_dirty": bool(git("status", "--porcelain")), "implementation_sha256": code,
+    return {"protocol_version": design.rules["version"], **identity,
             "protocol_lock_hash": hashlib.sha256((root / "configs/protocol_lock.json").read_bytes().replace(b"\r\n", b"\n")).hexdigest(),
             "verified_dataset_identity": {"kind": "synthetic" if synthetic else "official_hull",
                 "raw_data_hashes_verified": not synthetic,
                 "official_data_sha256": {} if synthetic else lock["data_sha256"],
                 "research_frame_sha256": fingerprint},
-            "run_timestamp": utc_timestamp(), "run_mode": "synthetic" if synthetic else "real",
+            "run_timestamp": utc_timestamp(), "run_type": "synthetic" if synthetic else "real",
+            "run_mode": "synthetic" if synthetic else "real",
             "real_alpha_research_executed": not synthetic,
             "internal_holdout_used": False, "final_competition_used": False,
             "research_date_id_start": design.validation.research_start,

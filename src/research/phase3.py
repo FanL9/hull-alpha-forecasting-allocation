@@ -8,6 +8,7 @@ import yaml
 
 from src.research.alpha_pipeline import build_alpha_tables, load_alpha_design, validate_research_history
 from src.research.alpha_results import Phase3Result, apply_multiple_testing, build_manifest, write_phase3_outputs
+from src.research.phase3_execution import REAL_OUTPUT, real_execution_preflight, reserve_real_run
 from src.utils.paths import inside_root
 from src.validation.protocol_freeze import verify_protocol_lock
 from src.validation.walk_forward import load_research_prefix
@@ -25,13 +26,14 @@ def _output_destination(root, output_dir):
     return destination
 
 
-def _execute(root, history, lock, *, synthetic, output_dir):
+def _execute(root, history, lock, *, synthetic, output_dir, execution_identity=None):
     destination = _output_destination(root, output_dir)
     design = load_alpha_design(root)
     validate_research_history(history, design)
     tables = build_alpha_tables(history, design)
     result = Phase3Result(tables, apply_multiple_testing(tables, design),
-                          build_manifest(root, history, design, lock, synthetic=synthetic))
+                          build_manifest(root, history, design, lock, synthetic=synthetic,
+                                         execution_identity=execution_identity))
     if destination is not None:
         write_phase3_outputs(result, destination)
     return result
@@ -47,7 +49,7 @@ def run_synthetic_phase3(root: Path, history, *, output_dir: str | None = None) 
 
 
 def run_real_phase3(root: Path, *, run_real_phase3: bool = False,
-                    output_dir: str = "artifacts/phase3") -> Phase3Result:
+                    output_dir: str = REAL_OUTPUT) -> Phase3Result:
     """Future authorized entry: verify data before the only safe prefix loader.
 
     Never invoked during synthetic development. Hash verification can stream
@@ -56,14 +58,17 @@ def run_real_phase3(root: Path, *, run_real_phase3: bool = False,
     if run_real_phase3 is not True:
         raise PermissionError("Real research requires explicit --run-real-phase3 authorization.")
     root = root.resolve()
+    identity = real_execution_preflight(root, output_dir)
     lock = verify_protocol_lock(root, verify_data=True)
     _output_destination(root, output_dir)
     design = load_alpha_design(root)
     policy = json.loads((root / "configs/split_policy.json").read_text(encoding="utf-8"))
     base = yaml.safe_load((root / "configs/base.yaml").read_text(encoding="utf-8"))
     train = inside_root(root, f"{base['data']['raw_dir']}/{base['data']['train_file']}")
-    # Header-only access is allowed after verification; the existing safe loader
-    # compares it and parses at most 7860 rows. Never materialize full train.csv.
-    policy = {**policy, "train_columns": read_header(train)}
-    history = load_research_prefix(train, policy, design.validation)
-    return _execute(root, history, lock, synthetic=False, output_dir=output_dir)
+    with reserve_real_run(root, identity):
+        # Header-only access is allowed after verification; the existing safe
+        # loader parses at most 7860 rows. Never materialize full train.csv.
+        policy = {**policy, "train_columns": read_header(train)}
+        history = load_research_prefix(train, policy, design.validation)
+        return _execute(root, history, lock, synthetic=False, output_dir=output_dir,
+                        execution_identity=identity)

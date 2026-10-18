@@ -8,7 +8,8 @@ Implement the pre-registered Alpha tests in [phase2.5-v2](research_protocol.md) 
 
 Research accepts consecutive date_id **0–7859** only. Internal Holdout 7860–8867 and Final Simulation 8868–9047 are excluded.
 Synthetic development reads configuration/schema metadata and artificial frames, never official market rows.
-The future real entry requires explicit `--run-real-phase3`, first verifies the frozen protocol and raw-file hashes, then uses the existing `load_research_prefix` with a 7860-row limit. Hashing streams file bytes; it does not parse held-out observations.
+The future real entry requires explicit authorization, a clean Git worktree and HEAD at the annotated `phase3-pipeline-v1` tag. Execution preflight reads metadata only; protocol/data verification must then succeed before the existing `load_research_prefix` parses at most 7860 rows. Hashing streams file bytes; it does not parse held-out observations.
+The execution tag is separate from the unchanged Phase 2.5-v2 statistical lock.
 
 ## Pipeline
 
@@ -31,20 +32,23 @@ Each run creates five CSV tables plus two JSON files:
 - `single_feature_results.csv`, `family_composite_results.csv`
 - `fold_level_ic.csv`, `feature_availability.csv`, `multiple_testing_summary.csv`
 - `fold_transform_audit.json`: training members, directions, percentile-reference hashes and composite winsor bounds.
-- `phase3_run_manifest.json`: Git/code/protocol/data identity, timestamp, boundaries, folds, inference settings, fixed hypothesis counts and output hashes.
+- `phase3_run_manifest.json`: run_type, Git commit/tag/dirty state, aggregate pipeline code hash, per-file hashes, protocol/data identity, timestamp, boundaries, folds, inference settings, fixed hypothesis counts and output hashes.
 
-The default synthetic destination is `artifacts/phase3_synthetic/`; the future real destination is `artifacts/phase3/`. Existing nonempty output directories are preserved. Artifacts stay out of Git.
+The default synthetic destination is `artifacts/phase3_synthetic/`; real output is fixed to canonical `artifacts/phase3/`. Its real manifest blocks reruns even if another output path is supplied. An atomic `artifacts/phase3_execution_state.json` claim blocks concurrent or interrupted reruns before any research values are parsed. Existing evidence is preserved and no force-rerun option is provided. Artifacts stay out of Git.
 
 ```powershell
 .\.venv\Scripts\python.exe -m src.cli phase3 --synthetic
+.\.venv\Scripts\python.exe -m src.cli phase3-check
 .\.venv\Scripts\python.exe -m pytest
 ```
 
-`phase3` without an explicit mode stops. Synthetic frames require a marker, and the full test suite blocks access to this checkout's real data directory. Real-entry ordering is tested with doubles only.
+`phase3-check` verifies protocol metadata and execution readiness without reading market data. It requires the freeze commit/tag to exist. `phase3` without an explicit mode stops. Synthetic frames require a marker; tests and calibration workers block this checkout's real data directory. Real-entry behavior is tested with doubles only.
 
 ## Current status
 
 Pipeline implemented and tested on synthetic data.
 Real Alpha Research not yet executed.
 
-Full suite: **195 passed, 0 failed, 0 skipped**. [Synthetic tests](../tests/test_phase3_alpha_pipeline.py) cover signal signs/noise, tails/drift, missing and late inputs, composite rules, training isolation, multiplicity, output provenance and execution guards.
+The [synthetic engine tests](../tests/test_phase3_alpha_pipeline.py), [execution guards](../tests/test_phase3_execution.py) and [calibration panel](../tests/test_phase3_calibration.py) cover pipeline behavior, single-run/Git restrictions and statistical sanity. Calibration executes five IID null seeds and three Gaussian-copula power seeds, with 97/7/104 hypotheses and the unchanged 2000-draw bootstrap in every run. Weak signals are never required to pass BH; this finite panel does not certify nominal FDR.
+
+Full suite: **224 passed, 0 failed, 0 skipped**. Results: [synthetic calibration report](../reports/phase3_pipeline_calibration.md).
