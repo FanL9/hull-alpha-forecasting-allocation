@@ -31,16 +31,45 @@ def fake_project(tmp_path,monkeypatch):
     monkeypatch.setattr(ex,'git',fake_git)
     monkeypatch.setattr(ex.protocol,'load_config',lambda root:{'research':{'start':0,'end':7859},
         'holdout':{'start':7860},'final_simulation':{'start':8868}})
+    write_v1_failure(tmp_path)
     return tmp_path,identity
+
+
+def write_v1_failure(root,**changes):
+    record={'run_type':'real','state':'failed_or_interrupted','reservation_consumed':True,
+        'real_xy_read':False,'error_type':'KeyError','pipeline_tag':ex.PREVIOUS_TAG,'git_commit':'abc',**changes}
+    path=root/ex.PREVIOUS_STATE;path.parent.mkdir(parents=True,exist_ok=True)
+    path.write_text(json.dumps(record,indent=2)+'\n',encoding='utf-8')
+    return path
 
 
 def test_preflight_readonly_no_writes(fake_project):
     root,_=fake_project
-    before=list(root.rglob('*'))
+    before={p:p.read_bytes() for p in root.rglob('*') if p.is_file()}
     checked=ex.preflight(root)
     assert checked['preflight']=='passed' and not checked['real_xy_read']
     assert checked['read_only'] and not checked['data_bytes_verified']
-    assert list(root.rglob('*'))==before
+    assert {p:p.read_bytes() for p in root.rglob('*') if p.is_file()}==before
+    previous=checked['previous_attempt']
+    assert previous['path']==ex.PREVIOUS_STATE and previous['record']['error_type']=='KeyError'
+    assert previous['sha256']==hashlib.sha256((root/ex.PREVIOUS_STATE).read_bytes()).hexdigest()
+
+
+def test_v1_1_uses_its_own_tag_and_state():
+    assert ex.TAG=='phase4-engineered-pipeline-v1.1' and ex.PREVIOUS_TAG=='phase4-engineered-pipeline-v1'
+    assert ex.STATE!=ex.PREVIOUS_STATE and ex.REAL_OUTPUT=='artifacts/phase4'
+
+
+def test_missing_v1_record_refused(fake_project):
+    root,_=fake_project;(root/ex.PREVIOUS_STATE).unlink()
+    with pytest.raises(RuntimeError,match='missing'):ex.preflight(root)
+
+
+@pytest.mark.parametrize('changes',[{'real_xy_read':True},{'state':'completed'},{'error_type':'ValueError'},
+    {'pipeline_tag':'other'},{'git_commit':'different'},{'run_type':'synthetic'}])
+def test_v1_record_must_be_the_documented_pre_data_failure(fake_project,changes):
+    root,_=fake_project;write_v1_failure(root,**changes)
+    with pytest.raises(RuntimeError,match='documented pre-data'):ex.preflight(root)
 
 
 def test_dirty_worktree_refused(fake_project):
@@ -183,3 +212,63 @@ def test_output_inventory_and_no_overwrite(tmp_path):
     manifest=json.loads((out/'phase4_run_manifest.json').read_text())
     assert manifest['run_type']=='synthetic' and len(manifest['output_sha256'])==9
     with pytest.raises(FileExistsError):ex.write_outputs(tables,out,{'run_type':'synthetic'})
+
+
+def research_shaped_project(tmp_path):
+    """Temporary project with the real split-policy structure and an artificial train.csv."""
+    from src.research.alpha_pipeline import load_alpha_design
+    design=load_alpha_design(ROOT)
+    columns=list(design.source_columns)
+    rng=np.random.default_rng(5)
+    frame=pd.DataFrame(rng.normal(size=(9048,len(columns))),columns=columns)
+    frame['date_id']=np.arange(9048)
+    frame=frame.astype(object)
+    frame.loc[7860:,[c for c in columns if c!='date_id']]='HELD_OUT_VALUE'
+    train=tmp_path/'data/raw/train.csv';train.parent.mkdir(parents=True)
+    frame.to_csv(train,index=False)
+    policy=json.loads((ROOT/'configs/split_policy.json').read_text(encoding='utf-8'))
+    assert 'train_columns' not in policy  # the v1 integration gap
+    policy['source_train_sha256']=hashlib.sha256(train.read_bytes()).hexdigest()
+    (tmp_path/'configs').mkdir();(tmp_path/'configs/split_policy.json').write_text(json.dumps(policy),encoding='utf-8')
+    return design,policy,train
+
+
+def test_v1_loader_call_reproduces_key_error(tmp_path):
+    from src.validation.walk_forward import load_research_prefix
+    design,policy,train=research_shaped_project(tmp_path)
+    with pytest.raises(KeyError,match='train_columns'):load_research_prefix(train,policy,design.validation)
+
+
+def test_real_entry_loader_parses_only_research_prefix(tmp_path,monkeypatch):
+    """Integration: the unpatched bounded loader, real policy structure, no loader double."""
+    from src.research.alpha_pipeline import validate_research_history
+    design,_,_=research_shaped_project(tmp_path)
+    original,calls=pd.read_csv,[]
+    def spy(path,*a,**k):
+        calls.append(k.get('nrows'));return original(path,*a,**k)
+    monkeypatch.setattr(pd,'read_csv',spy)
+    history=ex.load_research_history(tmp_path,design)
+    assert calls==[7860] and len(history)==7860 and history['date_id'].iloc[-1]==7859
+    assert not history.isin(['HELD_OUT_VALUE']).any().any()
+    validate_research_history(history,design)
+
+
+def test_run_real_reaches_engine_with_loaded_history(fake_project,monkeypatch):
+    root,_=fake_project
+    design,_,_=research_shaped_project(root)
+    monkeypatch.setattr(ex,'verify_protocol_lock',lambda *a,**k:{})
+    seen={}
+    def engine(history,config,d):
+        seen['rows']=len(history);raise RuntimeError('stop after loading in test')
+    import src.research.phase4_engine as engine_module
+    monkeypatch.setattr(engine_module,'build_phase4_tables',engine)
+    import src.research.alpha_pipeline as alpha
+    monkeypatch.setattr(alpha,'load_alpha_design',lambda r:design)
+    monkeypatch.setattr(ex.protocol,'load_config',lambda r:{'research':{'start':0,'end':7859},
+        'holdout':{'start':7860},'final_simulation':{'start':8868}})
+    with pytest.raises(RuntimeError,match='stop after loading'):ex.run_real(root)
+    assert seen['rows']==7860
+    state=json.loads((root/ex.STATE).read_text())
+    assert state['state']=='failed_or_interrupted' and state['real_xy_read'] is True
+    assert state['previous_attempt']['record']['error_type']=='KeyError'
+    assert json.loads((root/ex.PREVIOUS_STATE).read_text())['state']=='failed_or_interrupted'

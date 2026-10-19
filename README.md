@@ -24,7 +24,7 @@ The first two areas form Development; holdout outcomes do not guide selection, a
 - **Done:** official data acquisition, hash verification, data audit and descriptive EDA.
 - **Frozen:** research protocol **phase2.5-v2** (primary Alpha metric: block-wise Rank IC), official metric and validation rules. See the [Research Protocol](docs/research_protocol.md).
 - **Phase 3:** frozen pipeline completed one real Alpha Research run; [sealed results and report](reports/phase3_alpha_research_results.md). Post-hoc timing diagnostics: [interpretation](reports/phase3_posthoc_interpretation.md).
-- **Phase 4A:** [Raw-Control / Engineered pipeline](docs/phase4_pipeline.md) validated with synthetic data under frozen [Protocol v3.1](docs/protocol_v3_1_engineered_alpha_fair_comparison.md); [calibration report](reports/phase4_pipeline_synthetic_calibration.md). Real Phase 4 has not run.
+- **Phase 4A:** [Raw-Control / Engineered pipeline](docs/phase4_pipeline.md) validated with synthetic data under frozen [Protocol v3.1](docs/protocol_v3_1_engineered_alpha_fair_comparison.md); [calibration report](reports/phase4_pipeline_synthetic_calibration.md). Real Phase 4 has not run; the v1 attempt failed before reading data and is remediated by pipeline v1.1 ([incident](reports/phase4_incidents/v1_real_entry_key_error.md)).
 - **Not started:** model training, signals, allocation and backtesting.
 
 ## Pipeline

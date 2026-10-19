@@ -56,17 +56,23 @@ No seed, K, transformation, threshold or window is retuned from the panel.
 ```
 
 This metadata-only command requires a clean checkout exactly at annotated
-`phase4-engineered-pipeline-v1`, verifies protocol tags/locks and the code hashes
+`phase4-engineered-pipeline-v1.1`, verifies protocol tags/locks and the code hashes
 in that tag, checks frozen data-identity metadata/boundaries and unused state.
 It never hashes/parses actual market files or runs selection. A successful
 preflight is not authorization to execute real research.
 
 The future real entry uses only the existing bounded `load_research_prefix`
 after guards and an exclusive canonical reservation. State is always anchored
-at `artifacts/phase4_execution_state.json`, output at `artifacts/phase4/`.
+at `artifacts/phase4_execution_state_v1.1.json`, output at `artifacts/phase4/`.
 Any prior reservation (including failed/interrupted) or real manifest blocks a
 second attempt. Alternative destinations are rejected before loading data.
-There is no reset/force/rerun CLI. Real execution is intentionally left to a
+There is no reset/force/rerun CLI.
+
+**v1 incident.** The only v1 real attempt failed with `KeyError: 'train_columns'`
+before any data row was parsed ([incident record](../reports/phase4_incidents/v1_real_entry_key_error.md)).
+v1.1 fixes only the loader call in the real entry and requires the unchanged v1
+failure record (`artifacts/phase4_execution_state.json`, `real_xy_read=false`) to be
+present; its hash is embedded in the v1.1 state and manifest. Real execution is intentionally left to a
 separate user-authorized task after the pipeline freeze.
 
 Internal Holdout 7860–8867 and Final Simulation 8868–9047 are not loaded by Phase 4.

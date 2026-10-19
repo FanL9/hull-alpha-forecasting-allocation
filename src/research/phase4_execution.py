@@ -16,8 +16,12 @@ from src.utils.paths import project_root, utc_timestamp
 from src.validation import protocol_v3_1 as protocol
 from src.validation.protocol_freeze import verify_protocol_lock
 
-TAG = 'phase4-engineered-pipeline-v1'
-STATE = 'artifacts/phase4_execution_state.json'
+TAG = 'phase4-engineered-pipeline-v1.1'
+STATE = 'artifacts/phase4_execution_state_v1.1.json'
+# v1.1 only fixes the real entry's loader call. The single v1 attempt failed
+# before any data row was parsed; its state must stay present and unchanged.
+PREVIOUS_TAG = 'phase4-engineered-pipeline-v1'
+PREVIOUS_STATE = 'artifacts/phase4_execution_state.json'
 REAL_OUTPUT = 'artifacts/phase4'
 MANIFEST = REAL_OUTPUT+'/phase4_run_manifest.json'
 CODE = ('src/features/engineered_alpha.py','src/research/phase4_engine.py',
@@ -52,6 +56,21 @@ def execution_identity(root: Path, run_type: str) -> dict:
         'real_xy_read':run_type=='real','internal_holdout_read':False,'final_simulation_read':False}
 
 
+def prior_failed_attempt(root: Path) -> dict:
+    """The v1 record must show a failed real attempt that read no X-Y rows."""
+    path = root/PREVIOUS_STATE
+    if not path.is_file():
+        raise RuntimeError('The v1 failed-attempt record is missing; v1.1 runs only as its documented remediation.')
+    raw = path.read_bytes()
+    saved = json.loads(raw)
+    expected = git(root,'rev-parse',f'{PREVIOUS_TAG}^{{commit}}')
+    if (saved.get('run_type')!='real' or saved.get('state')!='failed_or_interrupted'
+            or saved.get('real_xy_read') is not False or saved.get('error_type')!='KeyError'
+            or saved.get('pipeline_tag')!=PREVIOUS_TAG or saved.get('git_commit')!=expected):
+        raise RuntimeError('The v1 record is not the documented pre-data KeyError failure; refusing v1.1.')
+    return {'path':PREVIOUS_STATE,'sha256':hashlib.sha256(raw).hexdigest(),'record':saved}
+
+
 def assert_unused(root: Path):
     # Canonical project state is independent of the requested destination.
     if (root/STATE).exists():
@@ -84,6 +103,7 @@ def preflight(root: Path | None = None) -> dict:
     if (c['research']['start'],c['research']['end'],c['holdout']['start'],c['final_simulation']['start'])!=(0,7859,7860,8868):
         raise ValueError('Research/holdout/final boundaries changed.')
     assert_unused(root)
+    identity['previous_attempt'] = prior_failed_attempt(root)
     return {**identity,'preflight':'passed','real_xy_read':False,'data_bytes_verified':False,
         'real_run_state':'unused','pipeline_tag':TAG,'read_only':True}
 
@@ -120,11 +140,20 @@ def write_outputs(tables, destination: Path, manifest: dict):
     (destination/'phase4_run_manifest.json').write_text(json.dumps({**manifest,'output_sha256':hashes},indent=2)+'\n',encoding='utf-8')
 
 
+def load_research_history(root: Path, design) -> pd.DataFrame:
+    """Same loader contract as Phase 3: the split plan carries the train header."""
+    from src.validation.time_split import read_header
+    from src.validation.walk_forward import load_research_prefix
+    train = root/'data/raw/train.csv'
+    split = json.loads((root/'configs/split_policy.json').read_text(encoding='utf-8'))
+    split = {**split,'train_columns':read_header(train)}
+    return load_research_prefix(train,split,design.validation)
+
+
 def run_real(root: Path | None = None, output: Path | None = None):
     """Future explicit entry. This function is NOT called during Phase 4A."""
     from src.research.alpha_pipeline import load_alpha_design
     from src.research.phase4_engine import build_phase4_tables
-    from src.validation.walk_forward import load_research_prefix
     root = (root or project_root()).resolve()
     # Reject an alternative destination before any read or reservation.
     if output is not None and output.resolve()!=(root/REAL_OUTPUT).resolve():
@@ -134,9 +163,8 @@ def run_real(root: Path | None = None, output: Path | None = None):
     reserve(root,identity)
     try:
         verify_protocol_lock(root,verify_data=True)
-        split = json.loads((root/'configs/split_policy.json').read_text(encoding='utf-8'))
         design = load_alpha_design(root)
-        history = load_research_prefix(root/'data/raw/train.csv',split,design.validation)
+        history = load_research_history(root,design)
         identity.update(real_xy_read=True,data_bytes_verified=True)
         update_state(root,identity,'running')
         tables = build_phase4_tables(history,protocol.load_config(root),design)
