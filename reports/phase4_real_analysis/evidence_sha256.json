@@ -1,0 +1,17 @@
+{
+  "A_selection_jaccard_matrix.csv": "c047b2e82168168980e2e2661c542f3be4f257c21decf42c1052983fb5480847",
+  "B_selection_jaccard_matrix.csv": "2364e34ccf333220d35bc6e1eeb019611249305debefd2ffffbacb10f9754c93",
+  "comparison_summary.json": "adf9e702e5b1c531f9381a0ed0b5734ee0b1e605693f5671608140be29a9ab9e",
+  "figures/fold_comparison.png": "b4a0ce43d358193ad29676d245a6fd1f1343738866d929d859d71331517f2645",
+  "figures/selection_overlap.png": "40e12f358d5e45ef14a76f8d87fe8f1154bde172229448b6644869417f14f348",
+  "figures/transformation_selection.png": "b57c15d63c3b4d0dad45a709e70bd2193ac8cfe12e8a00904bf070c969c9ad15",
+  "fold_comparison.csv": "50da948aa4cfdddfa6da87a34b4b27b145c35f968ae1fcfea86354d53a9d932d",
+  "full_tests.xml": "25e39f79049a1937afa52f5ed275dbfe5bff897a3c921ca019dff0870b3668bc",
+  "integrity_verification.json": "9fb254471f7b2233dca20ba65a2c5823fad80f74fa9f3764fd664fa3b4203943",
+  "pipeline_summary.csv": "9be7667a480f64007f5f0779e015d050d2e874f99a580407b7e8b6e069a9877c",
+  "selected_candidate_frequency.csv": "0c9b032a707458410b3cc9628b3126a4b76d1871d8240dd04ea3cf5c36ae37cf",
+  "selection_overlap.csv": "1baea8b2902e3e560aaa9d13a4bed8b0dc0b73cd06784e87f8c717465f6d1b80",
+  "stability_summary.csv": "ccfaa386cf7c43ee5a7deb3850f117fcadfafc272f766260b9db0937e0a2b0b1",
+  "transformation_by_fold.csv": "1c7e649b62a4a6be5ad19e0ec1373e791af6b20f174b5516b7d928335eb1c5a0",
+  "transformation_summary.csv": "17a37b8a5dd395d05adaa73117361b7f7a06f339106e912d94ec9a97c0ce6996"
+}

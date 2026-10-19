@@ -1,0 +1,121 @@
+{
+  "run_type": "real",
+  "created_at_utc": "2026-10-19T13:26:27.276295+00:00",
+  "git_commit": "40ad107082404a0889470bb68d2254b746200951",
+  "git_tag": [
+    "phase4-engineered-pipeline-v1.1"
+  ],
+  "git_worktree_dirty": false,
+  "protocol_tag": "protocol-v3.1",
+  "protocol_commit": "4ce62ab8f5a1dde62b2d682b1e5b1ae008e71f7b",
+  "protocol_lock_sha256": "23c63be206ca150b99e0ac5a1aca22a133b2f27c170732470daef135a8955815",
+  "phase3_pipeline_code_hash": "987ac1a342c2a551155eb855997aaa842d528f52ed7d9495971406bab9f4ddba",
+  "phase4_pipeline_code_hash": "c5c3bd0fdf529fc14db0e90543c6fae2ff488de9a91f4cbef21fc2689b269415",
+  "implementation_sha256": {
+    "src/features/engineered_alpha.py": "89bc04145739ef50a94a622d351e4f921601c072b96b70fbb9c509eed0f359c8",
+    "src/research/phase4_engine.py": "15f8f7bdd27e15837c291111c326bfc9e85f5cb79e72dc1f74c88777c74ed8aa",
+    "src/research/phase4_synthetic.py": "c966a0851d29a1c836bb2690a6cb0bad2509ca288af2bf7af90e49683d1e338e",
+    "src/research/phase4_calibration.py": "956c42bf660919f6f461970352008e0242e461263964d7772d02251b20b1a51b",
+    "src/research/phase4_execution.py": "6efb95d85c3d89e14945480462ce34b9b84c1a53d9f8c58ae6c1633eacd105ef",
+    "src/research/phase4.py": "1b05fe98ee69bbe6185885dd19d20d462049e2423c68ad9e42955f06c75dcee4",
+    "requirements.txt": "8087c689cc1619ba015dafde597fbc0071d82a77b45d83be97aa39481be2ee14"
+  },
+  "research_boundary": [
+    0,
+    7859
+  ],
+  "internal_holdout": [
+    7860,
+    8867
+  ],
+  "final_simulation": [
+    8868,
+    9047
+  ],
+  "data_hash": "8c1aba83e1bf34f91b234b7979f1fc7c397186b33a8d08bdd3634c08eb3810ca",
+  "data_hash_source": "frozen metadata; real execution revalidates bytes before loading",
+  "environment": {
+    "python": "3.12.6",
+    "numpy": "2.5.4",
+    "pandas": "3.0.6",
+    "scipy": "1.18.1"
+  },
+  "real_xy_read": true,
+  "internal_holdout_read": false,
+  "final_simulation_read": false,
+  "previous_attempt": {
+    "path": "artifacts/phase4_execution_state.json",
+    "sha256": "958233157fdf1e273ced45b6ade587bf69d75089fd4da3bf840a0bd86e865228",
+    "record": {
+      "run_type": "real",
+      "created_at_utc": "2026-10-19T08:14:03.887529+00:00",
+      "git_commit": "720d06015c55bbcd6300d265f3252f46f9d20574",
+      "git_tag": [
+        "phase4-engineered-pipeline-v1"
+      ],
+      "git_worktree_dirty": false,
+      "protocol_tag": "protocol-v3.1",
+      "protocol_commit": "4ce62ab8f5a1dde62b2d682b1e5b1ae008e71f7b",
+      "protocol_lock_sha256": "23c63be206ca150b99e0ac5a1aca22a133b2f27c170732470daef135a8955815",
+      "phase3_pipeline_code_hash": "987ac1a342c2a551155eb855997aaa842d528f52ed7d9495971406bab9f4ddba",
+      "phase4_pipeline_code_hash": "d526d2cd1402d156569e6b1fcbdf5b086e8cfbb8832a712a52b2043a49b0e17d",
+      "implementation_sha256": {
+        "src/features/engineered_alpha.py": "89bc04145739ef50a94a622d351e4f921601c072b96b70fbb9c509eed0f359c8",
+        "src/research/phase4_engine.py": "15f8f7bdd27e15837c291111c326bfc9e85f5cb79e72dc1f74c88777c74ed8aa",
+        "src/research/phase4_synthetic.py": "c966a0851d29a1c836bb2690a6cb0bad2509ca288af2bf7af90e49683d1e338e",
+        "src/research/phase4_calibration.py": "956c42bf660919f6f461970352008e0242e461263964d7772d02251b20b1a51b",
+        "src/research/phase4_execution.py": "87fdc729013aced60104b662d18930be5fed84844fa59bbd7fc3e516776ed60a",
+        "src/research/phase4.py": "1b05fe98ee69bbe6185885dd19d20d462049e2423c68ad9e42955f06c75dcee4",
+        "requirements.txt": "8087c689cc1619ba015dafde597fbc0071d82a77b45d83be97aa39481be2ee14"
+      },
+      "research_boundary": [
+        0,
+        7859
+      ],
+      "internal_holdout": [
+        7860,
+        8867
+      ],
+      "final_simulation": [
+        8868,
+        9047
+      ],
+      "data_hash": "8c1aba83e1bf34f91b234b7979f1fc7c397186b33a8d08bdd3634c08eb3810ca",
+      "data_hash_source": "frozen metadata; real execution revalidates bytes before loading",
+      "environment": {
+        "python": "3.12.6",
+        "numpy": "2.5.4",
+        "pandas": "3.0.6",
+        "scipy": "1.18.1"
+      },
+      "real_xy_read": false,
+      "internal_holdout_read": false,
+      "final_simulation_read": false,
+      "preflight": "passed",
+      "data_bytes_verified": false,
+      "real_run_state": "unused",
+      "pipeline_tag": "phase4-engineered-pipeline-v1",
+      "read_only": false,
+      "state": "failed_or_interrupted",
+      "reservation_consumed": true,
+      "error_type": "KeyError"
+    }
+  },
+  "preflight": "passed",
+  "data_bytes_verified": true,
+  "real_run_state": "unused",
+  "pipeline_tag": "phase4-engineered-pipeline-v1.1",
+  "read_only": false,
+  "run_state": "completed",
+  "output_sha256": {
+    "phase4_candidate_audit.csv": "f7521402b5ffa475374a066053eff0f4361611ef899478b032bda2dfe2e8487d",
+    "phase4_engineered_fold_results.csv": "c4bd27b58d1f188056141d464b53168f0efb53e02e3ed249a502c81937718024",
+    "phase4_engineered_selection.csv": "e3497a2241562bffe198957c9329a3d7ea6fc5bfe08dc2e215ae207c7ab691fe",
+    "phase4_multiple_fold_summary.csv": "de87be6f660b58ef356677f07e5505fb6db2da5736f43af52bc8ec7cf57e0d11",
+    "phase4_predictions.csv": "8c8fc55881de9bfcb9feb407ae4d21af6ecc553a9b7dd9ee6cfc2ff2214304f4",
+    "phase4_raw_control_fold_results.csv": "37abe794efe6b9015973884efb206a71e382a74c83314c4943a54c8f734f5d5a",
+    "phase4_raw_control_selection.csv": "4bd913d4f8903184b5346affef72b5ad1896af8373e0c92b3c4f187b2824cf21",
+    "phase4_redundancy_audit.csv": "9111243b42369998d76f82f85b9aecaed16e8df5e1cf7ae3fb5dc124e8633fe9",
+    "phase4_transform_audit.json": "b35b2955e429d4ab1d769ad0cca83fc7724719910a7a44d1e78b3fcbc53e7ff7"
+  }
+}

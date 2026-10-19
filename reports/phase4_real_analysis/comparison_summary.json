@@ -1,0 +1,21 @@
+{
+  "mean_B_minus_A": -0.013519080429305165,
+  "median_B_minus_median_A": -0.044288121371093794,
+  "median_fold_difference": -0.012933022286911101,
+  "B_outperforms_A_folds": 4,
+  "tied_folds": 0,
+  "B_raw_Level_share": 0.3352272727272727,
+  "B_Level_including_family_share": 0.3806818181818182,
+  "B_total_selected_occurrences": 176,
+  "target": "market_forward_excess_returns",
+  "research_range": [
+    0,
+    7859
+  ],
+  "oos_range": [
+    5088,
+    7859
+  ],
+  "oos_observations_per_pipeline": 2772,
+  "analysis_type": "descriptive_only_no_new_tests_or_reselection"
+}

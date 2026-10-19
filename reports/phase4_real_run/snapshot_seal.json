@@ -1,0 +1,33 @@
+{
+  "sealed_at_utc": "2026-10-19T13:27:53.842513+00:00",
+  "run_type": "real",
+  "pipeline_commit": "40ad107082404a0889470bb68d2254b746200951",
+  "pipeline_tag": "phase4-engineered-pipeline-v1.1",
+  "pipeline_code_hash": "c5c3bd0fdf529fc14db0e90543c6fae2ff488de9a91f4cbef21fc2689b269415",
+  "protocol_tag": "protocol-v3.1",
+  "protocol_commit": "4ce62ab8f5a1dde62b2d682b1e5b1ae008e71f7b",
+  "source_output_directory": "artifacts/phase4",
+  "real_research_range": [
+    0,
+    7859
+  ],
+  "v1_pre_data_failed_attempts": 1,
+  "v1_1_completed_research_runs": 1,
+  "byte_identical_archive_sha256": {
+    "phase4_candidate_audit.csv": "f7521402b5ffa475374a066053eff0f4361611ef899478b032bda2dfe2e8487d",
+    "phase4_engineered_fold_results.csv": "c4bd27b58d1f188056141d464b53168f0efb53e02e3ed249a502c81937718024",
+    "phase4_engineered_selection.csv": "e3497a2241562bffe198957c9329a3d7ea6fc5bfe08dc2e215ae207c7ab691fe",
+    "phase4_execution_state.json": "958233157fdf1e273ced45b6ade587bf69d75089fd4da3bf840a0bd86e865228",
+    "phase4_execution_state_v1.1.json": "b8beb2b285390f0d321b13f8be1945a51f96073ad6ebdbfbb05614617fc0c8da",
+    "phase4_multiple_fold_summary.csv": "de87be6f660b58ef356677f07e5505fb6db2da5736f43af52bc8ec7cf57e0d11",
+    "phase4_predictions.csv": "8c8fc55881de9bfcb9feb407ae4d21af6ecc553a9b7dd9ee6cfc2ff2214304f4",
+    "phase4_raw_control_fold_results.csv": "37abe794efe6b9015973884efb206a71e382a74c83314c4943a54c8f734f5d5a",
+    "phase4_raw_control_selection.csv": "4bd913d4f8903184b5346affef72b5ad1896af8373e0c92b3c4f187b2824cf21",
+    "phase4_redundancy_audit.csv": "9111243b42369998d76f82f85b9aecaed16e8df5e1cf7ae3fb5dc124e8633fe9",
+    "phase4_run_manifest.json": "b7b105954058e98f8fa738b4841129a3b364089db0e5beae184cc8b45b3ab7ab",
+    "phase4_transform_audit.json": "b35b2955e429d4ab1d769ad0cca83fc7724719910a7a44d1e78b3fcbc53e7ff7"
+  },
+  "v1_state_preserved_sha256": "958233157fdf1e273ced45b6ade587bf69d75089fd4da3bf840a0bd86e865228",
+  "internal_holdout_used": false,
+  "final_simulation_used": false
+}

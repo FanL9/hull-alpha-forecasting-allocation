@@ -1,0 +1,30 @@
+{
+  "frozen_tracked_files": 180,
+  "source_protocol_changes": false,
+  "only_preexisting_file_changed": ".gitattributes (archive byte preservation)",
+  "copied_output_and_state_hashes": 12,
+  "hashes_match": true,
+  "candidate_registry": {
+    "A": 97,
+    "B": 499
+  },
+  "folds_per_pipeline": 11,
+  "oos_dates": [
+    5088,
+    7859
+  ],
+  "paired_observations_per_pipeline": 2772,
+  "selection_invariants": "passed",
+  "v1_record_unchanged": true,
+  "protocol_locks": "passed",
+  "full_tests": {
+    "passed": 399,
+    "failed": 0,
+    "skipped": 0
+  },
+  "v1_pre_data_failure_preserved": true,
+  "v1_1_completed_real_runs": 1,
+  "internal_holdout_used": false,
+  "final_simulation_used": false,
+  "phase5_trained": false
+}
