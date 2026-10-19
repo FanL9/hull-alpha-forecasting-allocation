@@ -1,0 +1,17 @@
+diagnostic_type,cluster,member_count,members,mean_abs_within_cluster_correlation,minimum_abs_within_cluster_correlation,cut_distance,exploratory_choice
+exploratory / post-hoc diagnostic,1,4,M1;V7;V9;V10,0.9180795390781397,0.8490964365255661,0.2,True
+exploratory / post-hoc diagnostic,2,1,M3,,,0.2,True
+exploratory / post-hoc diagnostic,3,2,M9;M11,0.8428214157157449,0.8428214157157449,0.2,True
+exploratory / post-hoc diagnostic,4,4,E2;E3;P10;P11,0.864771957925171,0.7645003274318174,0.2,True
+exploratory / post-hoc diagnostic,5,1,E19,,,0.2,True
+exploratory / post-hoc diagnostic,6,1,P2,,,0.2,True
+exploratory / post-hoc diagnostic,7,1,P3,,,0.2,True
+exploratory / post-hoc diagnostic,8,1,P4,,,0.2,True
+exploratory / post-hoc diagnostic,9,1,P5,,,0.2,True
+exploratory / post-hoc diagnostic,10,1,P8,,,0.2,True
+exploratory / post-hoc diagnostic,11,1,V13,,,0.2,True
+exploratory / post-hoc diagnostic,12,1,S2,,,0.2,True
+exploratory / post-hoc diagnostic,13,1,S3,,,0.2,True
+exploratory / post-hoc diagnostic,14,1,S5,,,0.2,True
+exploratory / post-hoc diagnostic,15,1,S8,,,0.2,True
+exploratory / post-hoc diagnostic,16,2,lagged_forward_returns;lagged_market_forward_excess_returns,0.9999863378878185,0.9999863378878185,0.2,True

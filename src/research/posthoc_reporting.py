@@ -7,7 +7,7 @@ import pandas as pd
 
 def _table(frame, columns, formats=None):
     formats = formats or {}
-    lines = ["| " + " | ".join(label for _, label in columns) + " |",
+    lines = ["| " + " | ".join(label.replace("|", "\\|") for _, label in columns) + " |",
              "| " + " | ".join("---" for _ in columns) + " |"]
     for row in frame.to_dict("records"):
         values = []
@@ -17,7 +17,7 @@ def _table(frame, columns, formats=None):
                 values.append("undefined")
             else:
                 values.append(format(value, formats.get(key, ".5f")) if isinstance(value, (float, np.floating)) else str(value))
-        lines.append("| " + " | ".join(values) + " |")
+        lines.append("| " + " | ".join(value.replace("|", "\\|") for value in values) + " |")
     return lines
 
 
@@ -117,7 +117,10 @@ def write_diagnostic_report(tables: dict, source_manifest: dict, output: Path, r
     pairs = tables["high_correlation_pairs"].sort_values("spearman_corr", key=lambda s: s.abs(), ascending=False)
     clusters = tables["cluster_summary"]
     sharp = lag[lag["relative_drop_k0_to_k1"].ge(.75)].sort_values("relative_drop_k0_to_k1", ascending=False)
-    other = lag[~lag["feature"].isin(sharp["feature"])]
+    lagged_names = ["lagged_forward_returns", "lagged_market_forward_excess_returns"]
+    sharp_anonymous = sharp[~sharp["feature"].isin(lagged_names)]
+    reversals = lag[lag["sign_flip_k0_to_k1"]]
+    other = lag[~lag["feature"].isin(list(sharp["feature"]) + list(reversals["feature"]))]
     return_max = reverse.loc[reverse.groupby("feature")["rank_ic"].apply(lambda s: s.abs().idxmax())].sort_values("rank_ic", key=lambda s: s.abs(), ascending=False)
     link = "phase3_posthoc_diagnostics/"
     lines = ["# Phase 3 Post-hoc Diagnostic Analysis", "", "## Purpose", "",
@@ -128,10 +131,11 @@ def write_diagnostic_report(tables: dict, source_manifest: dict, output: Path, r
         "Composites replay saved members/directions/required counts and hash-verified training percentile references. Lagging C_t uses the historical fold's actual composite; the first k OOS rows are missing instead of inventing pre-OOS composites. k=0 Rank IC and pair counts reconcile with all 28 sealed PASS; saved-bound Pearson also reconciles for all 24 singles.", "",
         "## 1. Lag Decay", "",
         "Magnitude drop = |IC_k0| − |IC_k1|; relative drop divides by |IC_k0|. A ≥75% magnitude loss is an **exploratory display flag only**, chosen for this diagnostic and never a significance, exclusion or PASS rule. Negative relative drops indicate stronger lagged associations. Common-pair estimates separate coverage changes from lag changes.", "",
-        f"The display flag is present for {len(sharp)} of 24 signals: " + (", ".join(sharp["feature"]) if len(sharp) else "none") + ". These patterns are potentially suspicious and require caution; they do not establish leakage.", "",
+        f"The display flag is present for {len(sharp)} of 24 signals: " + (", ".join(sharp["feature"]) if len(sharp) else "none") + ". This flags a lag pattern for interpretation, not evidence of leakage. In particular, a legal t−1 return field can lose its association when moved to t−2; its exact construction audit takes precedence over a generic cliff interpretation.", "",
         "Other signals retain more k=1 magnitude, but retention is not proof of correct intraday availability. The complete signed trajectories below show whether later lags decay, reverse or rebound; smoothness is not assigned a formal label.", ""]
     columns = [("feature", "Signal")] + [(f"IC_k{k}", f"IC k={k}") for k in range(6)] + [("relative_drop_k0_to_k1", "Relative magnitude drop")]
     lines += _table(lag, columns)
+    lines += ["", "Signed k=0→1 reversals: " + (", ".join(reversals["feature"]) if len(reversals) else "none") + ". Magnitude retention alone can hide these reversals; they require caution even without the 75% display flag."]
     lines += ["", "Composite trajectories (identical exploratory flag, no FDR rerun):", ""] + _table(composite, columns)
     lines += ["", f"![Single lag decay]({link}figures/single_feature_lag_decay.png)",
               f"![Composite lag decay]({link}figures/composite_lag_decay.png)", "",
@@ -159,6 +163,10 @@ def write_diagnostic_report(tables: dict, source_manifest: dict, output: Path, r
             f"Raw-X tail/core contributions {'oppose' if oppose_x else 'have the same sign'}; extreme-y/core contributions {'oppose' if oppose_y else 'have the same sign'}. "
             f"Descriptive Pearson excluding the X-tail is {row['pearson_excluding_x_tail_descriptive']:.5f}, and excluding extreme-y days is {row['pearson_excluding_extreme_y_descriptive']:.5f}. "
             "The numbers and decile curve are consistent with nonlinear, tail-sensitive and/or time-varying aggregation; they do not uniquely identify a causal mechanism."]
+    lines += ["", "All 24 PASS signals, including other pooled-versus-block divergences (no new selection or gate):", ""]
+    lines += _table(divergence.reset_index(), [("feature", "Signal"), ("frozen_oos_rank_ic", "Frozen block Rank IC"),
+        ("oos_global_spearman_ic", "Pooled OOS Rank IC"), ("oos_raw_pearson_ic", "Raw Pearson"),
+        ("frozen_winsorized_pearson_ic", "Frozen winsor Pearson")])
     lines += ["", f"![Focus deciles]({link}figures/focus_decile_response.png)", "",
         f"All 24 signals: [decile table]({link}decile_analysis.csv), [Rank/Pearson and tail contributions]({link}rank_pearson_divergence.csv), [frozen fold diagnostics]({link}fold_level_diagnostics.csv).", "",
         "## 4. Redundancy", "",
@@ -174,7 +182,7 @@ def write_diagnostic_report(tables: dict, source_manifest: dict, output: Path, r
               f"![Hierarchy]({link}figures/correlation_dendrogram.png)", "",
         "## 5. Overall Diagnostic Assessment", "",
         "These are overlapping diagnostic labels only; none changes PASS/FAIL/NOT_TESTABLE:", "",
-        "- **Potential timing concern:** " + (", ".join(sharp["feature"]) if len(sharp) else "no single feature meets the exploratory 75% k0→1 display flag") + ". A sharp drop is consistent with a short-lived same-row association and potentially suspicious timing; publication cutoffs remain unknown for anonymous features, so leakage is not established.",
+        "- **Potential timing concern:** " + (", ".join(sharp_anonymous["feature"]) if len(sharp_anonymous) else "no anonymous feature meets the exploratory 75% k0→1 magnitude-loss flag") + ". Signed k0→1 reversals occur in " + (", ".join(reversals["feature"]) if len(reversals) else "none") + ". Such lag sensitivity requires caution, not an automatic leakage conclusion. The legal lagged fields' cliff is interpreted separately as past-return dependence; their exact t−1 audit found no future shift. Anonymous publication cutoffs remain unverified.",
         "- **No obvious timing concern:** " + (", ".join(other["feature"]) if len(other) else "none under the display rule") + ". This means only that the chosen lag-cliff flag is absent; it is not a certification of executable availability. The two lagged outcomes additionally pass the exact t−1 construction audit.",
         "- **Strong redundancy:** " + (", ".join(clusters.loc[clusters["member_count"].gt(1), "members"]) if clusters["member_count"].gt(1).any() else "no multi-member cluster at the exploratory cut") + ". No representative feature has been selected.",
         "- **Unusual nonlinear structure:** M9, M11 and E19 show the sealed Rank/Pearson divergence discussed above. Deciles, tails and pooled-versus-block ranks describe possible mechanisms; none creates a new formal grade.", "",

@@ -1,0 +1,3 @@
+diagnostic_type,feature,source_outcome,source_date_offset,exact_previous_row_match,first_row_missing
+exploratory / post-hoc diagnostic,lagged_forward_returns,forward_returns,-1,True,True
+exploratory / post-hoc diagnostic,lagged_market_forward_excess_returns,market_forward_excess_returns,-1,True,True

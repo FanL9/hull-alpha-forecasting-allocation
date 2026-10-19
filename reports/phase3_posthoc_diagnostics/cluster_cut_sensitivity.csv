@@ -1,0 +1,4 @@
+diagnostic_type,cut_distance,cluster_count,exploratory_choice
+exploratory / post-hoc diagnostic,0.1,20,True
+exploratory / post-hoc diagnostic,0.2,16,True
+exploratory / post-hoc diagnostic,0.3,12,True

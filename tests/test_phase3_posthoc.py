@@ -243,6 +243,9 @@ def test_synthetic_report_and_figures_are_explicitly_posthoc(artificial_archive,
     report = write_diagnostic_report(tables, sealed.manifest, output, tmp_path / 'report.md')
     assert 'This analysis is post-hoc and does not alter' in report
     assert 'exploratory' in report.lower() and 'No Internal Holdout or Final-180 data were used.' in report
+    assert 'Mean \\|within correlation\\|' in report
+    assert 'a legal t−1 return field' in report
+    assert 'All 24 PASS signals, including other pooled-versus-block divergences' in report
     assert len(list((output / 'figures').glob('*.png'))) == 5
     assert all(p.stat().st_size > 1000 for p in (output / 'figures').glob('*.png'))
 
