@@ -47,7 +47,7 @@ The default synthetic destination is `artifacts/phase3_synthetic/`; real output 
 ## Current status
 
 Pipeline implemented and tested on synthetic data.
-Real Alpha Research completed once at `phase3-pipeline-v1`; see the [sealed results](../reports/phase3_alpha_research_results.md). No Phase 4 work has started.
+Real Alpha Research completed once at `phase3-pipeline-v1`; see the [sealed results](../reports/phase3_alpha_research_results.md). Post-hoc timing diagnostics, which do not change those conclusions, are summarized in the [interpretation](../reports/phase3_posthoc_interpretation.md). No Phase 4 work has started.
 
 The [synthetic engine tests](../tests/test_phase3_alpha_pipeline.py), [execution guards](../tests/test_phase3_execution.py) and [calibration panel](../tests/test_phase3_calibration.py) cover pipeline behavior, single-run/Git restrictions and statistical sanity. Calibration executes five IID null seeds and three Gaussian-copula power seeds, with 97/7/104 hypotheses and the unchanged 2000-draw bootstrap in every run. Weak signals are never required to pass BH; this finite panel does not certify nominal FDR.
 
