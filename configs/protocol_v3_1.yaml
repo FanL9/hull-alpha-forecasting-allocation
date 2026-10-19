@@ -1,0 +1,478 @@
+protocol_version: v3.1
+status: frozen_before_real_phase4_phase5_results
+freeze_tag: protocol-v3.1
+parent_protocol: v3
+scope: protocol_only_no_research_execution
+target: market_forward_excess_returns
+research:
+  start: 0
+  end: 7859
+  loader: src.validation.walk_forward.load_research_prefix
+  real_xy_access_this_task: false
+  phase4_executed: false
+  phase5_executed: false
+  prior_phase3_and_posthoc_results_observed: true
+  prior_delta5_delta21_diagnostics_observed: true
+outer:
+  initial_train_size: 5087
+  validation_window: 252
+  step_size: 252
+  purge: 1
+  embargo: 0
+  folds: 11
+  shuffle: false
+  refit: frozen_within_validation_block
+inner:
+  blocks: 2
+  block_rows: 252
+  placement: last_504_rows_of_reference_training_window
+  purge: 1
+  expanding: true
+  fit_on: strictly_earlier_purged_reference
+  outer_validation_used: false
+input_universe:
+  anonymous_counts:
+    M: 18
+    E: 20
+    I: 9
+    P: 13
+    V: 13
+    S: 12
+    D: 9
+  lagged_fields:
+  - lagged_forward_returns
+  - lagged_market_forward_excess_returns
+  - lagged_risk_free_rate
+  raw_count: 97
+  lagged_source_offset: -1
+  phase3_pass_global_prefilter: false
+transformations:
+  names:
+  - Level
+  - Delta5
+  - Delta21
+  - Z252
+  - Rank63
+  max_per_raw: 5
+  level:
+    enabled: true
+  delta_windows:
+  - 5
+  - 21
+  delta_index: original_trading_row_grid
+  centered: false
+  allowed_max_source_offset: 0
+  impute_before_transform: false
+  zscore:
+    window: 252
+    window_unit: trading_rows
+    min_periods: 126
+    ddof: 0
+    include_current: true
+    zero_std: nan
+  rank:
+    window: 63
+    window_unit: observed_values
+    min_periods: 32
+    include_current: true
+    ties: mid_ecdf
+    missing_current: nan
+  missing_endpoint: nan
+family_composites:
+  families:
+  - M
+  - E
+  - I
+  - P
+  - V
+  - S
+  - D
+  implementation: src.features.family_composites.family_composite
+  member_input: raw_anonymous_levels_only
+  fit_on: purged_reference_training_only
+  refit_inside_each_inner_block: true
+  direction: training_spearman_sign
+  normalization: training_mid_ecdf
+  weighting: equal_observed_members
+  minimum_members: 2
+  minimum_available_fraction: 0.5
+  phase3_pass_filter: false
+regime:
+  source: unsigned_training_V_family_mid_ecdf_summary
+  fit_on: purged_reference_training_only
+  validation_y_used: false
+  states: 2
+  threshold: training_median
+  quantile: 0.5
+  high_comparator: strictly_greater
+  low_comparator: less_or_equal
+  labels:
+  - Low_V_proxy
+  - High_V_proxy
+  minimum_observed_training_rows: 252
+  minimum_training_rows_per_state: 126
+  unavailable: disable_all_regime_interactions_no_alternative_source
+  physical_volatility_order_identified: false
+  training_y_used: false
+  member_input: eligible_raw_V_levels_only
+  member_directions: all_positive_without_target
+  normalization: training_mid_ecdf
+  minimum_members: 2
+  minimum_available_fraction: 0.5
+interactions:
+  forms:
+  - family_composite_times_high_indicator
+  families:
+  - M
+  - E
+  - I
+  - P
+  - V
+  - S
+  - D
+  count: 7
+  low_interactions: false
+  additional_pairwise: false
+  unknown_regime: nan
+candidates:
+  raw_representations: 485
+  family_levels: 7
+  regime_interactions: 7
+  maximum_total: 499
+  adaptive_additions: false
+availability:
+  min_observed: 252
+  min_post_launch_coverage: 0.8
+  recent_window: 504
+  max_recent_missing: 0.25
+  min_distinct: 2
+  on_transformed_values: true
+  reference_training_only: true
+selection:
+  fit_on: reference_training_only
+  statistic: absolute_equal_mean_of_two_inner_oos_spearman_ics
+  method: top_k
+  top_k: 16
+  direction: both_inner_ics_strictly_same_nonzero_sign
+  minimum_inner_pairs: 126
+  minimum_inner_coverage: 0.5
+  require_each_inner_reference_eligibility: true
+  require_final_reference_eligibility: true
+  fixed_ic_threshold: null
+  tie_break: candidate_id_lexicographic
+  redundancy:
+    fit_on: reference_training_only
+    method: greedy_ranking_order_continue_beyond_initial_16
+    metric: pairwise_complete_spearman
+    absolute_threshold: 0.9
+    minimum_pairs: 252
+    unknown_pair: reject_lower_ranked_candidate
+    keep_at_most: 16
+  score:
+    normalization: oriented_2_training_mid_ecdf_minus_1
+    weighting: fixed_equal_members
+    missing_contribution: zero_after_mapping
+    minimum_selected: 2
+    minimum_observed_fraction: 0.5
+    insufficient: constant_zero_score_and_no_alpha_status
+benchmark:
+  phase3_archive: immutable_descriptive_reference_not_reselected
+  A: v3_nested_raw_only_97_Level_selector
+  A_is_new_v3_pipeline_not_a_sealed_phase3_aggregate: true
+  B: v3_nested_selector_over_499_candidates
+deep:
+  input_source: raw_97_levels
+  representative_fit_on: each_purged_reference_training_only
+  clustering: average_linkage_one_minus_absolute_training_spearman
+  cluster_cut_distance: 0.1
+  undefined_pair_distance: 1.0
+  representative: highest_two_inner_stable_raw_Level_score_per_cluster
+  representatives_max: 16
+  representative_tie_break: feature_id_lexicographic
+  phase3_posthoc_clusters_reused: false
+  lookback: 63
+  input_channels: 16
+  unused_channels: zero_pad
+  missingness_indicator_channels: false
+  minimum_real_history_rows: 63
+  source_dates: t_minus_62_through_t
+  max_parameters: 10000
+  seeds:
+  - 11
+  - 22
+  - 33
+  - 44
+  - 55
+  seed_prediction: arithmetic_mean_all_five_no_selection
+  fit_on: purged_reference_training_only
+  scaling:
+    fit_on: purged_reference_training_only
+    method: observed_training_mean_std
+    ddof: 0
+    impute: observed_training_mean
+    clip_standardized_x:
+    - -5.0
+    - 5.0
+    minimum_scale: 1.0e-12
+    target: training_mean_std_on_admissible_training_endpoints
+    clip_target: false
+    return_prediction_units: original_target
+models:
+  ridge:
+    settings: 3
+    alphas:
+    - 0.1
+    - 1.0
+    - 10.0
+    input: same_63_by_16_flattened
+    objective: mean_squared_error_plus_alpha_l2_unpenalized_intercept
+    solver: deterministic_svd_float64
+    maximum_fitted_coefficients: 1009
+    setting_selection: highest_mean_two_inner_oos_rank_ic
+    setting_tie_break: larger_alpha
+  gru:
+    settings: 1
+    layers: 1
+    hidden_size: 8
+    input_channels: 16
+    bias_vectors_per_gate: 2
+    dropout: 0.0
+    head: last_hidden_linear_8_to_1
+    trainable_parameters: 633
+  tcn:
+    settings: 1
+    blocks: 2
+    convs_per_block: 2
+    channels: 8
+    kernel_size: 3
+    dilations:
+    - 1
+    - 2
+    padding: left_only_d_times_kernel_minus_one
+    activation: relu_between_convs_and_after_residual
+    residual_projection: first_block_16_to_8_bias_true
+    dropout: 0.0
+    batch_norm: false
+    weight_norm: false
+    pooling: mean_all_63_causal_positions
+    head: linear_8_to_1
+    trainable_parameters: 1137
+training:
+  optimizer: AdamW
+  learning_rate: 0.001
+  weight_decay: 0.001
+  loss: mean_squared_error_standardized_target
+  gradient_norm_clip: 1.0
+  batch_size: 64
+  batch_order: chronological_no_shuffle_reset_state_per_sequence
+  device: cpu
+  dtype: float32
+  deterministic_algorithms: true
+  threads: 1
+  early_stopping:
+    fit_on: last_252_inside_reference_training_only
+    rows: 252
+    purge: 1
+    selector_scaler_fit_on: strictly_earlier_weight_training_prefix
+    outer_validation_used: false
+    metric: stopping_block_mse
+    minimum_checkpoint_epoch: 10
+    max_epochs: 100
+    patience: 10
+    min_delta: 0.0001
+    tie_break: earliest_epoch
+    refit: reinitialize_same_seed_refit_selector_scaler_on_full_reference_for_selected_epochs
+  failed_seed: whole_architecture_fold_unavailable_no_best_seed_rescue
+nonlinear_pipeline:
+  C: fixed_half_GRU_half_TCN_seed_mean_predictions
+  weights:
+    gru: 0.5
+    tcn: 0.5
+  require_both_architectures: true
+  total_ensemble_parameters: 8850
+incremental:
+  methods:
+  - GRU
+  - TCN
+  fit_on: two_inner_oos_predictions_inside_reference_training_only
+  regressand: normalized_deep_prediction
+  regressors:
+  - intercept
+  - normalized_A
+  - normalized_B
+  solver: ols_pseudoinverse
+  rcond: 1.0e-12
+  minimum_common_pairs: 252
+  apply_coefficients_unchanged_to_outer: true
+  outer_y_used_to_fit: false
+  role: descriptive_not_selection_or_pass_gate
+combined:
+  D: equal_weight_normalized_A_B_C
+  weights:
+    A: 0.3333333333333333
+    B: 0.3333333333333333
+    C: 0.3333333333333333
+  normalization_fit_on: two_inner_oos_scores_inside_reference_training_only
+  normalization: mean_std_ddof_0
+  minimum_common_calibration_rows: 252
+  missing_component: unavailable_no_reweight
+evaluation:
+  primary: equal_mean_of_11_outer_fold_spearman_ics
+  block_ranking: inherited_phase2.5_v2_complete_pairs_average_ties
+  minimum_pairs: 126
+  minimum_coverage: 0.5
+  comparison: common_pairs_across_structurally_available_pipelines_each_fold
+  pearson: descriptive_training_1_99_percentile_clipped_prediction_y_unclipped
+  fold_std_ddof: 1
+  metrics:
+  - blockwise_pooled_rank_ic
+  - mean_fold_ic
+  - median_fold_ic
+  - ic_std
+  - positive_fold_ratio
+  - worst_fold_ic
+  - pearson_ic
+  new_hac_inference: false
+  new_fdr_tests: false
+  candidate_discovery_claims: false
+primary_selection:
+  candidates:
+  - A
+  - B
+  - C
+  - D
+  minimum_finite_folds: 11
+  minimum_positive_folds: 7
+  require_positive_mean: true
+  anchor: highest_mean_outer_fold_rank_ic
+  simplicity_margin: 0.01
+  near_best: anchor_minus_candidate_strictly_less_than_margin
+  order_within_near_best:
+  - simpler_pipeline
+  - lower_ic_std
+  - higher_worst_fold_ic
+  - pipeline_id
+  complexity_order:
+  - A
+  - B
+  - C
+  - D
+  exact_margin_in_near_best: false
+  no_admissible_pipeline: stop_no_holdout_unlock
+holdout:
+  start: 7860
+  end: 8867
+  rows: 1008
+  locked: true
+  max_runs: 1
+  refit_end: 7858
+  purge_id: 7859
+  freeze_within_holdout: true
+  prerequisites:
+  - phase4_complete
+  - phase5_complete
+  - primary_selected_and_committed
+  - phase6_forecast_allocation_protocol_frozen
+  - separate_explicit_authorization
+  role: confirmation_only_no_selection
+  secondaries:
+  - A
+  - B
+  - C
+  - D
+  - Ridge
+  - GRU
+  - TCN
+  - historical_mean
+  - zero_forecast
+final_simulation:
+  start: 8868
+  end: 9047
+  rows: 180
+  locked: true
+  max_runs: 1
+  prerequisite: holdout_completed_and_separate_explicit_authorization
+  role: final_kaggle_style_simulation_only
+allocation:
+  bounds:
+  - 0.0
+  - 2.0
+  optimization_in_v3: false
+  requires_separate_frozen_protocol: true
+synthetic_calibration:
+  before_real_phase4_required: true
+  full_outer_folds: 11
+  raw_candidates: 97
+  engineered_candidates_max: 499
+  noise_seeds:
+  - 101
+  - 211
+  - 307
+  - 401
+  - 503
+  - 601
+  - 701
+  - 809
+  - 907
+  - 1009
+  - 1103
+  - 1201
+  - 1301
+  - 1409
+  - 1511
+  - 1601
+  - 1709
+  - 1801
+  - 1901
+  - 2003
+  planted_seeds:
+  - 11
+  - 22
+  - 33
+  cases:
+  - noise
+  - raw
+  - transformed
+  - regime
+  noise_target: iid_standard_normal_independent_of_raw_X
+  noise_X: within_family_AR_factor_0.8_and_independent_innovations_continuous_0.5_correlation_D_bernoulli
+  raw_plant:
+    features:
+    - M1
+    - E1
+    - P1
+    coefficients:
+    - 0.35
+    - -0.25
+    - 0.25
+    target_noise_std: 1.0
+  transformed_plant:
+    feature: M1
+    trend_per_row: 0.02
+    innovation_std: 1.0
+    representation: Delta21
+    coefficient: 0.6
+    target_noise_std: 1.0
+  regime_plant:
+    volatility_latent_ar: 0.97
+    V_loading: 1.0
+    V_noise_std: 0.5
+    active_state: latent_V_strictly_above_zero
+    signal_family: P
+    P_common_noise_std: 0.2
+    coefficient: 0.8
+    target_noise_std: 1.0
+  null_summary:
+  - mean
+  - std
+  - p05
+  - p50
+  - p95
+  - min
+  - max
+  null_alarm: abs_mean_exceeds_max_0.02_or_three_mc_standard_errors
+  alarm_role: engineering_investigation_stop_not_market_significance_or_feature_screen
+  raw_recovery: planted_source_selected_with_correct_sign_in_some_folds_and_positive_outer_mean
+  transformed_recovery: engineered_delta21_recovered_and_mean_advantage_over_raw_across_fixed_seeds
+  regime_recovery: P_HighV_interaction_selected_in_some_folds_with_positive_outer_mean
+  no_parameter_retuning_from_calibration: true

@@ -1,0 +1,110 @@
+{
+  "run_type": "synthetic",
+  "created_at_utc": "2026-10-19T06:34:22.907352+00:00",
+  "git_commit": "ba76060b3400c30b64be0cb95d4337de927ba836",
+  "git_tag": [],
+  "git_worktree_dirty": false,
+  "protocol_tag": "protocol-v3.1",
+  "protocol_commit": "4ce62ab8f5a1dde62b2d682b1e5b1ae008e71f7b",
+  "protocol_lock_sha256": "23c63be206ca150b99e0ac5a1aca22a133b2f27c170732470daef135a8955815",
+  "phase3_pipeline_code_hash": "987ac1a342c2a551155eb855997aaa842d528f52ed7d9495971406bab9f4ddba",
+  "phase4_pipeline_code_hash": "d526d2cd1402d156569e6b1fcbdf5b086e8cfbb8832a712a52b2043a49b0e17d",
+  "implementation_sha256": {
+    "src/features/engineered_alpha.py": "89bc04145739ef50a94a622d351e4f921601c072b96b70fbb9c509eed0f359c8",
+    "src/research/phase4_engine.py": "15f8f7bdd27e15837c291111c326bfc9e85f5cb79e72dc1f74c88777c74ed8aa",
+    "src/research/phase4_synthetic.py": "c966a0851d29a1c836bb2690a6cb0bad2509ca288af2bf7af90e49683d1e338e",
+    "src/research/phase4_calibration.py": "956c42bf660919f6f461970352008e0242e461263964d7772d02251b20b1a51b",
+    "src/research/phase4_execution.py": "87fdc729013aced60104b662d18930be5fed84844fa59bbd7fc3e516776ed60a",
+    "src/research/phase4.py": "1b05fe98ee69bbe6185885dd19d20d462049e2423c68ad9e42955f06c75dcee4",
+    "requirements.txt": "8087c689cc1619ba015dafde597fbc0071d82a77b45d83be97aa39481be2ee14"
+  },
+  "research_boundary": [
+    0,
+    7859
+  ],
+  "internal_holdout": [
+    7860,
+    8867
+  ],
+  "final_simulation": [
+    8868,
+    9047
+  ],
+  "data_hash": "8c1aba83e1bf34f91b234b7979f1fc7c397186b33a8d08bdd3634c08eb3810ca",
+  "data_hash_source": "frozen metadata; real execution revalidates bytes before loading",
+  "environment": {
+    "python": "3.12.6",
+    "numpy": "2.5.4",
+    "pandas": "3.0.6",
+    "scipy": "1.18.1"
+  },
+  "real_xy_read": false,
+  "internal_holdout_read": false,
+  "final_simulation_read": false,
+  "calibration": "Phase4A synthetic only",
+  "noise_seeds": [
+    101,
+    211,
+    307,
+    401,
+    503,
+    601,
+    701,
+    809,
+    907,
+    1009,
+    1103,
+    1201,
+    1301,
+    1409,
+    1511,
+    1601,
+    1709,
+    1801,
+    1901,
+    2003
+  ],
+  "planted_seeds": [
+    11,
+    22,
+    33
+  ],
+  "cases": [
+    "noise",
+    "raw",
+    "transformed",
+    "regime"
+  ],
+  "runs": 29,
+  "outer_folds_each": 11,
+  "raw_candidates": 97,
+  "engineered_candidates": 499,
+  "no_parameter_retuning": true,
+  "engineering_alarm": false,
+  "recovery": {
+    "raw_correct_source_selections": {
+      "A": 99,
+      "B": 50
+    },
+    "raw_mean_ic": {
+      "A": 0.26347358501018053,
+      "B": 0.2819155082355245
+    },
+    "raw_recovered": true,
+    "delta21_correct_selections": 33,
+    "transformed_mean_ic": {
+      "A": 0.00019470493709031547,
+      "B": 0.19795219818840745
+    },
+    "transformed_mean_B_minus_A": 0.19775749325131714,
+    "transformed_recovered": true,
+    "P_HighV_correct_selections": 23,
+    "regime_mean_ic": {
+      "A": 0.04584837502627323,
+      "B": 0.13327770200673839
+    },
+    "regime_recovered": true
+  },
+  "source_config": "configs/protocol_v3_1.yaml",
+  "market_data_open_blocked": true
+}

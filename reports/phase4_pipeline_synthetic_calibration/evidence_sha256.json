@@ -1,0 +1,20 @@
+{
+  "audit_verification.json": "d91fd8f3de295f1126b8613c1e998fa43537efa4ae63dbb3ba0476d2f0a1c84f",
+  "calibration_manifest.json": "dc000eb985fa1772523869702f8eb3f18efd61cabd88daa486b594b1e2e6fd1a",
+  "figures\\synthetic_calibration.png": "309aa4cea15571f746be7d66f62ac1982ae165a237e28e3694f992344cf4fd09",
+  "full_test_results.xml": "6ee5f5ba186d9ad3c5c6e41a654ca05e08ae35baff87f854e6161e8b5989956b",
+  "noise_distribution.csv": "074f2d1320aa9d35ea39a4dd6293b0be0c7081312f7de8db6252f30ad94db31d",
+  "outer_fold_results.csv": "9f525f5437b706a0df90812fb050b0623a33605a96d2bd37a314b417c734c6d9",
+  "per_seed_summary.csv": "dfc7ae3cd343667a6a2706cb35e78a5b4bcaaeaccc70161a947f122d308d766f",
+  "selected_candidates.csv": "7a79cbf2583c0ce1e5c1fe2499440551dae1dd42665ca1d50554c84edc508b60",
+  "synthetic_audit_example\\phase4_candidate_audit.csv": "f7521402b5ffa475374a066053eff0f4361611ef899478b032bda2dfe2e8487d",
+  "synthetic_audit_example\\phase4_engineered_fold_results.csv": "e3d42b5f706251d757c802e412129fad95a2e0966f86b36e1f5a30034577afdb",
+  "synthetic_audit_example\\phase4_engineered_selection.csv": "3f7902b1b8158a09f97f6d63b3a3e5458bb0b650c4f39a31739d7a7da4090864",
+  "synthetic_audit_example\\phase4_multiple_fold_summary.csv": "5bd2ab69647d410099a2a882044ab6a1f9f00ce43c57352040795c7c6e9a51a8",
+  "synthetic_audit_example\\phase4_predictions.csv": "c15f9f6706a5e9ba75476684f9b3b0120502c0b8c2b965e6f063fdb5d4e924ae",
+  "synthetic_audit_example\\phase4_raw_control_fold_results.csv": "de0c581c9635a76db4d0fe2966be908cd7d75b4ee49f0ba189b1d855c7b0740d",
+  "synthetic_audit_example\\phase4_raw_control_selection.csv": "92cff597f657d0ee69f5b00974dc012c87cedf386e12890cf64cd8a462f5fc1f",
+  "synthetic_audit_example\\phase4_redundancy_audit.csv": "4abe2709dc77e34137b9afcee35d07f2e4c091e57bde0d072adc57704ad842a5",
+  "synthetic_audit_example\\phase4_run_manifest.json": "a3bbe5c856545ed15964d292dee85bc71c40c2530f44c61917ef39b415ace8d1",
+  "synthetic_audit_example\\phase4_transform_audit.json": "b2b69cdd6332fb82187eee48dd6f810dc04bd15e4c2403912519067e3228aaed"
+}

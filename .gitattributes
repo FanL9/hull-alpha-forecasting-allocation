@@ -8,3 +8,5 @@
 *.ipynb text eol=lf
 # Keep the sealed outputs byte-identical, including original Windows line endings.
 reports/phase3_real_run/** -text -eol whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+# Synthetic evidence manifests bind original output bytes on every platform.
+reports/phase4_pipeline_synthetic_calibration/** -text -eol whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

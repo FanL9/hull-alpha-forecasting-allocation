@@ -1,0 +1,17 @@
+{
+  "runs": 29,
+  "output_hashes_verified": 261,
+  "protected_files_unchanged": 61,
+  "candidate_counts": {
+    "A": 97,
+    "B": 499
+  },
+  "folds_each": 11,
+  "selection_and_boundaries": "passed",
+  "phase2_5_v2_lock": "passed",
+  "v3_1_tag": "passed",
+  "canonical_real_reservation": "unused",
+  "real_xy_read": false,
+  "internal_holdout_read": false,
+  "final_simulation_read": false
+}
