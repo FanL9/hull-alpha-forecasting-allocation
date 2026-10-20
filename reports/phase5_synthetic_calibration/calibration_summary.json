@@ -1,0 +1,156 @@
+{
+  "specification": {
+    "status": "prospective_before_calibration",
+    "panels": {
+      "noise": 101,
+      "linear": 211,
+      "nonlinear": 307
+    },
+    "rows": 7860,
+    "outer_folds": 11,
+    "compute_budget": "production_100_epoch_max_all_five_seeds",
+    "noise": "Independent Gaussian continuous X and y; D independent Bernoulli; lagged outcomes reconstructed normally.",
+    "linear": "M1 stationary Gaussian AR(0.98); y[t] = mean(M1[t-62:t+1]) + Gaussian noise std 0.1; endpoints before 62 missing.",
+    "nonlinear": "M1 and E1 independent IID Gaussian; y[t] = M1[t] + E1[t] + 2*M1[t]*E1[t-1] + Gaussian noise std 0.2; first endpoint missing. Marginal linear terms make both causal inputs discoverable by the frozen univariate selector, while the cross-lag interaction is outside flattened linear Ridge.",
+    "criteria": {
+      "noise": "Absolute equal-fold mean IC <= 0.10 for each of Ridge, GRU, TCN, C and D; no systematic nonlinear alpha in this fixed engineering panel. Not a significance claim or guarantee of zero individual folds.",
+      "linear": "Ridge mean IC > 0.30; GRU and TCN each > 0.15 with all 11 folds finite. Neural models need not beat Ridge.",
+      "nonlinear": "At least one of GRU/TCN exceeds Ridge equal-fold mean IC by > 0.05 with all 11 folds finite. This is a capacity check on the predeclared process, not model selection for market data."
+    },
+    "failure_policy": "Stop before freezing on any failed criterion. Do not tune architectures, seeds or generators in response.",
+    "runtime_workers": 4,
+    "test_mode": "Only E2E/reproducibility software smoke tests may cap epochs at 2; real mode and calibration reject that budget."
+  },
+  "results": [
+    {
+      "case": "noise",
+      "passed": true,
+      "mean_fold_ic": {
+        "A": -0.0215025800615189,
+        "B": -0.0110193519166323,
+        "C": 0.0158397943227006,
+        "D": -0.0041792346722822,
+        "GRU": 0.0259948860172471,
+        "Ridge": 0.0049957076711718,
+        "TCN": -0.000810814882591,
+        "historical_mean": null,
+        "zero_forecast": null
+      },
+      "nonlinear_minus_ridge": {
+        "GRU": 0.0209991783460753,
+        "TCN": -0.0058065225537628
+      },
+      "seed": 101,
+      "registered_source_sha256": "c71d72c12a1a7c547209b158fc18cc66cd7e75a29dd7104b5a87b8d826548f5f"
+    },
+    {
+      "case": "linear",
+      "passed": true,
+      "mean_fold_ic": {
+        "A": 0.1737044430460489,
+        "B": 0.5051232879681928,
+        "C": 0.9225088932976746,
+        "D": 0.6709797191979135,
+        "GRU": 0.9355025869521246,
+        "Ridge": 0.9364588086065812,
+        "TCN": 0.8206136492989081,
+        "historical_mean": null,
+        "zero_forecast": null
+      },
+      "nonlinear_minus_ridge": {
+        "GRU": -0.0009562216544565239,
+        "TCN": -0.11584515930767303
+      },
+      "seed": 211,
+      "registered_source_sha256": "ebb9efabb1d290a289f0784921c66ca850809f805a8655183a173e89081cc781"
+    },
+    {
+      "case": "nonlinear",
+      "passed": true,
+      "mean_fold_ic": {
+        "A": 0.1957517441265065,
+        "B": 0.3884030975664441,
+        "C": 0.9838884115847406,
+        "D": 0.6496303511720105,
+        "GRU": 0.9920280549857105,
+        "Ridge": 0.5011328162360397,
+        "TCN": 0.2142540492854651,
+        "historical_mean": null,
+        "zero_forecast": null
+      },
+      "nonlinear_minus_ridge": {
+        "GRU": 0.4908952387496708,
+        "TCN": -0.28687876695057457
+      },
+      "seed": 307,
+      "registered_source_sha256": "8c8edca464a987e6ef45da43b621cf1f5af59bdd66fa453944ed2b4e4c7fc42d"
+    }
+  ],
+  "code": {
+    "phase5_pipeline_code_hash": "bf26dca9c36312707c9fd8e27bb32f6a0682c78e202f144be09ee4333cf63bcb",
+    "implementation_sha256": {
+      "src/features/deep_inputs.py": "e2e37918cbfef433790a97edd8db1e8770a7e48831f5088c8ff19892e076cde8",
+      "src/models/deep_alpha.py": "2c1396fe2ac35cb7bf86c25a6ac76b85562235b1d7856f15f7d3cdf32d7c7f3a",
+      "src/research/phase5_tasks.py": "3f62e03445a88033dbc6bc3a859a53f376933fa37331396701bf1208df1fdf78",
+      "src/research/phase5_engine.py": "b68574581df99799211853e7559705c8ab80892b5ffc6dcf622f5b7187ab01a4",
+      "src/research/phase5_execution.py": "e4fa9390c893ca7e261b0b8e058c94f9d1a28d0fd2431340133e1cbb8b35ed02",
+      "src/research/phase5_synthetic.py": "9499d1adb8977e110fcc56f3cf6fbc4de46ebf81fd3ea1251d7c000a538d196b",
+      "src/research/phase5_calibration.py": "d4bdb98dbecbc4693b0c233ec777e4b57446f58d185fa579368168dab9b0e366",
+      "src/research/phase5_benchmark.py": "cfb5e419b1623e6edeae4ed75100dc6f6913459f01f57e5bf99cb165eb142245",
+      "src/research/phase5.py": "d94f4262bee664ffa895f31fa0403a2b222dff589d4a81210221eac11b38c969",
+      "requirements-phase5.txt": "52e211464e29411c4a023e462ac4bb949414eccdee6e9d216277a741b884d009",
+      "configs/phase5_environment.json": "2eda612a71fe785c1193778e1e227a3618086ae764ddb438d57b771243c90672",
+      "configs/phase5_calibration.json": "6bd8125090dbcd42e9260fa4e49b3ccab6c4e463f704099901c9c008db94d0d0",
+      "configs/phase5_protected.json": "b5e143ccd50d8f4c767f2dc2e6f89d4319c2043c6d0293d8c0d689dfb40eb2dd",
+      "docs/phase5_pipeline.md": "0f8dccc5bc08596350c80c2eb460f9d83c270473dc5741da07338a225aa21b1a"
+    }
+  },
+  "environment": {
+    "python": "3.12.6",
+    "torch": "2.10.0+cpu",
+    "numpy": "2.5.4",
+    "pandas": "3.0.6",
+    "scipy": "1.18.1",
+    "platform": "Windows",
+    "machine": "AMD64"
+  },
+  "tests": {
+    "tests": 479,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 479,
+    "previous_tests": 399,
+    "new_tests": 80,
+    "junit_sha256": "ced5f2e11fb496d2deae163577a16dba3cd0adee8ecef5bf79bb7a672502bacc",
+    "pipeline_code_hash": "bf26dca9c36312707c9fd8e27bb32f6a0682c78e202f144be09ee4333cf63bcb",
+    "protected_original_files": 213,
+    "all_original_bytes_unchanged": true,
+    "environment": {
+      "python": "3.12.6",
+      "torch": "2.10.0+cpu",
+      "numpy": "2.5.4",
+      "pandas": "3.0.6",
+      "scipy": "1.18.1",
+      "platform": "Windows",
+      "machine": "AMD64"
+    },
+    "real_market_data_read": false,
+    "e2e_small_budget_only": true,
+    "e2e_completed_tasks": 877,
+    "e2e_workers_1_vs_4_exact": true,
+    "e2e_task_inventory_hash": "4a8138f39e950b88801867f15bcb54edc436c07acb45b801fbb034afbec84eb2",
+    "e2e_output_sha256": {
+      "phase5_audit.json": "378e82c6ad1e0be5656f23ff3eb8cbe8c81eae7e878f2bd6f120b6daa5649961",
+      "phase5_differences.json": "5165ed6cfdb7061a559f5970a8077bb0d788ead13544bb3f966aff75eb42357b",
+      "phase5_folds.csv": "3cdfb2063824dd2af1492e49345ef98a639646586583a21217ef4b70e6ca1a60",
+      "phase5_incremental.csv": "ea73f3db120f269a24672bf9d4bd602f5744de6c1d715fa4c4960a70aa6a5a3b",
+      "phase5_predictions.csv": "cffc2db9ab199398ae975d81676b6309b7738bb13b61f660d54800787aaa1dfe",
+      "phase5_primary_selection.json": "c840b4235978a9c8388a05197d2833d1a93c6fdf76e0cb78ab91c15451c32422",
+      "phase5_summary.csv": "1354598b9f53214caaf2264212a386fa97af330d5ec180cd1ad567d442ced07f"
+    }
+  },
+  "real_phase5_executed": false,
+  "internal_holdout_read": false,
+  "final_simulation_read": false
+}

@@ -1,0 +1,21 @@
+{
+  "case": "linear",
+  "passed": true,
+  "mean_fold_ic": {
+    "A": 0.1737044430460489,
+    "B": 0.5051232879681928,
+    "C": 0.9225088932976746,
+    "D": 0.6709797191979135,
+    "GRU": 0.9355025869521246,
+    "Ridge": 0.9364588086065812,
+    "TCN": 0.8206136492989081,
+    "historical_mean": null,
+    "zero_forecast": null
+  },
+  "nonlinear_minus_ridge": {
+    "GRU": -0.0009562216544565239,
+    "TCN": -0.11584515930767303
+  },
+  "seed": 211,
+  "registered_source_sha256": "ebb9efabb1d290a289f0784921c66ca850809f805a8655183a173e89081cc781"
+}

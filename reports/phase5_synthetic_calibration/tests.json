@@ -1,0 +1,36 @@
+{
+  "tests": 479,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "passed": 479,
+  "previous_tests": 399,
+  "new_tests": 80,
+  "junit_sha256": "ced5f2e11fb496d2deae163577a16dba3cd0adee8ecef5bf79bb7a672502bacc",
+  "pipeline_code_hash": "bf26dca9c36312707c9fd8e27bb32f6a0682c78e202f144be09ee4333cf63bcb",
+  "protected_original_files": 213,
+  "all_original_bytes_unchanged": true,
+  "environment": {
+    "python": "3.12.6",
+    "torch": "2.10.0+cpu",
+    "numpy": "2.5.4",
+    "pandas": "3.0.6",
+    "scipy": "1.18.1",
+    "platform": "Windows",
+    "machine": "AMD64"
+  },
+  "real_market_data_read": false,
+  "e2e_small_budget_only": true,
+  "e2e_completed_tasks": 877,
+  "e2e_workers_1_vs_4_exact": true,
+  "e2e_task_inventory_hash": "4a8138f39e950b88801867f15bcb54edc436c07acb45b801fbb034afbec84eb2",
+  "e2e_output_sha256": {
+    "phase5_audit.json": "378e82c6ad1e0be5656f23ff3eb8cbe8c81eae7e878f2bd6f120b6daa5649961",
+    "phase5_differences.json": "5165ed6cfdb7061a559f5970a8077bb0d788ead13544bb3f966aff75eb42357b",
+    "phase5_folds.csv": "3cdfb2063824dd2af1492e49345ef98a639646586583a21217ef4b70e6ca1a60",
+    "phase5_incremental.csv": "ea73f3db120f269a24672bf9d4bd602f5744de6c1d715fa4c4960a70aa6a5a3b",
+    "phase5_predictions.csv": "cffc2db9ab199398ae975d81676b6309b7738bb13b61f660d54800787aaa1dfe",
+    "phase5_primary_selection.json": "c840b4235978a9c8388a05197d2833d1a93c6fdf76e0cb78ab91c15451c32422",
+    "phase5_summary.csv": "1354598b9f53214caaf2264212a386fa97af330d5ec180cd1ad567d442ced07f"
+  }
+}

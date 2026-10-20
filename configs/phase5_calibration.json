@@ -1,0 +1,18 @@
+{
+  "status": "prospective_before_calibration",
+  "panels": {"noise": 101, "linear": 211, "nonlinear": 307},
+  "rows": 7860,
+  "outer_folds": 11,
+  "compute_budget": "production_100_epoch_max_all_five_seeds",
+  "noise": "Independent Gaussian continuous X and y; D independent Bernoulli; lagged outcomes reconstructed normally.",
+  "linear": "M1 stationary Gaussian AR(0.98); y[t] = mean(M1[t-62:t+1]) + Gaussian noise std 0.1; endpoints before 62 missing.",
+  "nonlinear": "M1 and E1 independent IID Gaussian; y[t] = M1[t] + E1[t] + 2*M1[t]*E1[t-1] + Gaussian noise std 0.2; first endpoint missing. Marginal linear terms make both causal inputs discoverable by the frozen univariate selector, while the cross-lag interaction is outside flattened linear Ridge.",
+  "criteria": {
+    "noise": "Absolute equal-fold mean IC <= 0.10 for each of Ridge, GRU, TCN, C and D; no systematic nonlinear alpha in this fixed engineering panel. Not a significance claim or guarantee of zero individual folds.",
+    "linear": "Ridge mean IC > 0.30; GRU and TCN each > 0.15 with all 11 folds finite. Neural models need not beat Ridge.",
+    "nonlinear": "At least one of GRU/TCN exceeds Ridge equal-fold mean IC by > 0.05 with all 11 folds finite. This is a capacity check on the predeclared process, not model selection for market data."
+  },
+  "failure_policy": "Stop before freezing on any failed criterion. Do not tune architectures, seeds or generators in response.",
+  "runtime_workers": 4,
+  "test_mode": "Only E2E/reproducibility software smoke tests may cap epochs at 2; real mode and calibration reject that budget."
+}

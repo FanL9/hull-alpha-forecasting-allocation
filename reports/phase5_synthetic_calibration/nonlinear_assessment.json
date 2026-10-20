@@ -1,0 +1,21 @@
+{
+  "case": "nonlinear",
+  "passed": true,
+  "mean_fold_ic": {
+    "A": 0.1957517441265065,
+    "B": 0.3884030975664441,
+    "C": 0.9838884115847406,
+    "D": 0.6496303511720105,
+    "GRU": 0.9920280549857105,
+    "Ridge": 0.5011328162360397,
+    "TCN": 0.2142540492854651,
+    "historical_mean": null,
+    "zero_forecast": null
+  },
+  "nonlinear_minus_ridge": {
+    "GRU": 0.4908952387496708,
+    "TCN": -0.28687876695057457
+  },
+  "seed": 307,
+  "registered_source_sha256": "8c8edca464a987e6ef45da43b621cf1f5af59bdd66fa453944ed2b4e4c7fc42d"
+}

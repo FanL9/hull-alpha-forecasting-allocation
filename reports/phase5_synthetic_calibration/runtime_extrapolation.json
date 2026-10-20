@@ -1,0 +1,137 @@
+{
+  "serial_training_extrapolated_hours": 6.730710058922775,
+  "parallel_training_extrapolated_hours": 2.7504415049814686,
+  "all_stages_100_epochs_extrapolated_hours": 10.12659551536559,
+  "recommended_workers": 4,
+  "mean_seed_seconds": {
+    "GRU": 78.75246980000156,
+    "TCN": 35.674603899999056
+  },
+  "benchmark": {
+    "environment": {
+      "python": "3.12.6",
+      "torch": "2.10.0+cpu"
+    },
+    "parallel_wall_seconds": 93.5711192000017,
+    "parallel_workers": 4,
+    "real_market_data_read": false,
+    "serial_wall_seconds": 228.98144609999872,
+    "workers_1": [
+      {
+        "model": "GRU",
+        "refit_seconds": 44.53833260000101,
+        "refit_sequences": 5025,
+        "seed": 11,
+        "selected_epochs": 28,
+        "shape": [
+          63,
+          16
+        ],
+        "stopping_epochs_run": 38,
+        "stopping_seconds": 55.14080400000239,
+        "training_sequences": 4772
+      },
+      {
+        "model": "TCN",
+        "refit_seconds": 16.853188299995963,
+        "refit_sequences": 5025,
+        "seed": 11,
+        "selected_epochs": 29,
+        "shape": [
+          63,
+          16
+        ],
+        "stopping_epochs_run": 39,
+        "stopping_seconds": 22.397631799998635,
+        "training_sequences": 4772
+      },
+      {
+        "model": "GRU",
+        "refit_seconds": 21.826661899998726,
+        "refit_sequences": 5025,
+        "seed": 22,
+        "selected_epochs": 13,
+        "shape": [
+          63,
+          16
+        ],
+        "stopping_epochs_run": 23,
+        "stopping_seconds": 35.999141100001,
+        "training_sequences": 4772
+      },
+      {
+        "model": "TCN",
+        "refit_seconds": 12.306591100001242,
+        "refit_sequences": 5025,
+        "seed": 22,
+        "selected_epochs": 27,
+        "shape": [
+          63,
+          16
+        ],
+        "stopping_epochs_run": 37,
+        "stopping_seconds": 19.79179660000227,
+        "training_sequences": 4772
+      }
+    ],
+    "workers_parallel": [
+      {
+        "model": "GRU",
+        "refit_seconds": 40.82043159999739,
+        "refit_sequences": 5025,
+        "seed": 11,
+        "selected_epochs": 28,
+        "shape": [
+          63,
+          16
+        ],
+        "stopping_epochs_run": 38,
+        "stopping_seconds": 48.44211660000292,
+        "training_sequences": 4772
+      },
+      {
+        "model": "TCN",
+        "refit_seconds": 13.020952699996997,
+        "refit_sequences": 5025,
+        "seed": 11,
+        "selected_epochs": 29,
+        "shape": [
+          63,
+          16
+        ],
+        "stopping_epochs_run": 39,
+        "stopping_seconds": 16.351840100003756,
+        "training_sequences": 4772
+      },
+      {
+        "model": "GRU",
+        "refit_seconds": 16.982308699996793,
+        "refit_sequences": 5025,
+        "seed": 22,
+        "selected_epochs": 13,
+        "shape": [
+          63,
+          16
+        ],
+        "stopping_epochs_run": 23,
+        "stopping_seconds": 29.05698570000095,
+        "training_sequences": 4772
+      },
+      {
+        "model": "TCN",
+        "refit_seconds": 11.5306125000061,
+        "refit_sequences": 5025,
+        "seed": 22,
+        "selected_epochs": 27,
+        "shape": [
+          63,
+          16
+        ],
+        "stopping_epochs_run": 37,
+        "stopping_seconds": 15.69476250000298,
+        "training_sequences": 4772
+      }
+    ]
+  },
+  "measured_not_real_market": true
+}
