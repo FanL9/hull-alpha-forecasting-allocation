@@ -1,0 +1,37 @@
+{
+  "sealed_at_utc": "2026-10-21T11:43:49.496917+00:00",
+  "run_type": "real",
+  "pipeline_commit": "4ce84be875c9a25a37615833924eebdbabe1fa49",
+  "pipeline_tag": [
+    "phase5-deep-alpha-pipeline-v1"
+  ],
+  "pipeline_code_hash": "bf26dca9c36312707c9fd8e27bb32f6a0682c78e202f144be09ee4333cf63bcb",
+  "protocol_commit": "4ce62ab8f5a1dde62b2d682b1e5b1ae008e71f7b",
+  "source_output_directory": "artifacts/phase5",
+  "research_parsed_range": [
+    0,
+    7859
+  ],
+  "completed_tasks_verified": 877,
+  "completed_research_runs": 1,
+  "canonical_sources_preserved": true,
+  "task_cache_remains_local": true,
+  "byte_identical_archive_sha256": {
+    "phase5_audit.json": "ef44606411fa16bc5106bfa41cffab7a766e3330361dabce0b66b550fc006f0f",
+    "phase5_differences.json": "5a9b9623aef0a5aa5dd768ec8a83a2a990c302d7dca451625ebe678d150f0eac",
+    "phase5_folds.csv": "7addd521d448c3737438db0278fe0b4208d4f730be6346ddd21a8330e7978a24",
+    "phase5_incremental.csv": "83a9451cb386167780d09418795574efc546db604198eeab4d573fbfa656bd44",
+    "phase5_predictions.csv": "5adbb3d768a499929da59ac8d1201210ada5d4e3178cac1043da54810e78dad7",
+    "phase5_primary_selection.json": "6555a0d52a7ef73ba3818b4db3dffc9f95996f8a114ed060be98504db4e726e3",
+    "phase5_summary.csv": "a5011d4f87fa7657b4f00de9d18867d16b17b49711465d88c23e2a0f4522a0b9",
+    "phase5_run_manifest.json": "d215608b565efed33c956072cc52998da169e4f5975832ff2f7b5b0b0143581d",
+    "sealed_predictions.json": "12f3d15ad0cb02bb40eca4cc1703f56c4e846b3f5dcc2223ac418ea976787040",
+    "runtime_log.json": "b8c7d36cff1a7f79d02dd0d67275f76840301d73b2965f542e260bd85fe948f0",
+    "phase5_execution_state.json": "87b4811c90b81e8bc6bef450dee87958e7e317f85576dd12f044fda72c84e111",
+    "phase5_reservation.json": "cb3938a3b0eba3d9395873da9b3b8658b44fa09df19880635c9aa4342b77aa4c",
+    "phase5_task_receipts.json": "50c377c999b8bd8595728a790af0f579145495f64d366b0fd3a2d5a565fac0f2",
+    "phase5_supervisor_completion.json": "cac91f54386526aa0ee78a83b4717fc2820c24ec0df9deddaf9d3b2c827206a2"
+  },
+  "internal_holdout_used": false,
+  "final_simulation_used": false
+}
