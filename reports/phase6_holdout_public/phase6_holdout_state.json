@@ -1,0 +1,53 @@
+{
+  "identity": {
+    "code_hash": "92ec0aca99f4fa48f9755aabbd06ce5f62da098967d70184554fa4b6bc26c8d0",
+    "code_sha256": {
+      "src/research/phase6_allocation.py": "39b04c9d56940d29c9b04b0f1d1da32ed59ad26d1eac510e33786569dfe62194",
+      "src/research/phase6_holdout.py": "a04cc2dccb69282ec40a8586151f9f93b5e60d1b45830c61f00472ee46835336",
+      "src/research/phase6_holdout_run.py": "bc77170a844086072690596129772094f99e8513b3a35817d61becaf6604e08b",
+      "tests/test_phase6_holdout.py": "fd773f06c0fc583bcc3259642d302b5cd108999c43095b08fedab0803f52e728"
+    },
+    "final_simulation_read": false,
+    "fit_rows": [
+      0,
+      7858
+    ],
+    "git_commit": "5b0bc19230bb9ae2e4d32f94ef5db9e58fb67572",
+    "holdout_rows": [
+      7860,
+      8867
+    ],
+    "pipeline_tag": "phase6-holdout-pipeline-v1",
+    "protocol_tags": [
+      "protocol-v4",
+      "protocol-v4.1"
+    ],
+    "protocol_v4_1_lock_sha256": "8e84fb260d71377c82f401ecf47aa624e34f07606b8d72a002d0ca634a6880d2",
+    "purge_row": 7859,
+    "run_type": "holdout",
+    "sealed_phase6_selection_sha256": {
+      "reports/phase6_selection/phase6_block_scores.csv": "3a34b90fd2f0befe897e0b6d100422e9ac789f6f7dcf91ef7838e0e54ce5fe5d",
+      "reports/phase6_selection/phase6_candidate_scores.csv": "0836b9f344a9b015c37b6d5b9225fd478128d99544704d63718ec650c0b726dc",
+      "reports/phase6_selection/phase6_daily_positions.csv": "d2779add8534dbed377ddf33e2ed08d578a8f2997084496ba83d1efc414b484a",
+      "reports/phase6_selection/phase6_run_manifest.json": "14d16097c76e6f0629eafc70957d2ffe31d8f9110aff9698dee40a5c4da5bab3",
+      "reports/phase6_selection/phase6_selection.json": "d8d751f15af2ccab67069c864a3c4df7e42b3e296cbd8af761e28806af3e9a60",
+      "reports/phase6_selection/phase6_selection_state.json": "36e52e5639a5e0a4872ac4166db4e96670605066d4f5c31e8668c1a49faf0785",
+      "reports/phase6_selection/snapshot_seal.json": "3f5c20a87b2451501eb70257e4dc7b5192f5398d8a902319d3433916eb99b8d2"
+    }
+  },
+  "output_sha256": {
+    "holdout_allocation_block_scores.csv": "59e8130c540167f9b95341cd118ca4e1c600bf086e0fb9f82817ad6267d83b5e",
+    "holdout_allocation_scores.csv": "db25127ffe9ed9765688820e5a2f0dff02528d1f8c25a3daa909e9a3403fdb9f",
+    "holdout_daily_positions.csv": "88251bdadd5389a201e4fb36550122a70f69cc7852a79ed2d20382f5e3492c61",
+    "holdout_fit_audit.json": "f42eb6d6c1162f073026093937301d9caf1ca236d309f2c935b8f4dd392b15f3",
+    "holdout_fit_audit_pending.json": "fecfb4477a18a7b02184e4a93502dbf836009cb94e7d7b4502f5ba7a6b681842",
+    "holdout_forecast_metrics.csv": "0732f7a4eeaa1a970e285230a401b83aeda7ad477de13e5c301ef398f0fa54c5",
+    "holdout_forecasts_sealed.csv": "d1d433dae1696244abefd8fb2fc69cc890fd974bc4c30b1cb8d5251c3f7a72cb",
+    "holdout_secondary_forecast_allocations.csv": "03a7652e5e21b9444a91daa4d557aff221d4c13623f6e1c86802a90adb314d79",
+    "holdout_summary.json": "41829371c95926fa043067b6bb95b559466544d4db24994745e4908e92e66d65",
+    "tasks_completion_journal.json": "34aa2398ce3127b4609b5aabb09a4bb4c1e6c4c7b6df87fe452b42fe5f2a5fc0"
+  },
+  "sealed_sha256": "d1d433dae1696244abefd8fb2fc69cc890fd974bc4c30b1cb8d5251c3f7a72cb",
+  "state": "completed",
+  "updated_at_utc": "2026-10-22T13:50:19.032542+00:00"
+}

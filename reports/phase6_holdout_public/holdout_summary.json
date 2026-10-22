@@ -1,0 +1,37 @@
+{
+  "forecast_confirmation_A": {
+    "block_1_ic": -0.09000099732821022,
+    "block_2_ic": 0.09512486474204816,
+    "block_3_ic": 0.00661011140830993,
+    "block_4_ic": 0.061442166586805416,
+    "blockwise_rank_ic": 0.018294036352238342,
+    "ci95_lower": -0.03946622735831215,
+    "ci95_upper": 0.07605430006278883,
+    "confirmed_at_0.05": false,
+    "hac_se": 0.029470063820639606,
+    "one_sided_p": 0.26737654484335427,
+    "pairs": 1008
+  },
+  "interpretation": "per Protocol v4.1 section 4",
+  "paired_allocation_differences": {
+    "volscaled_k0.10 - constant_1": {
+      "block_length": 20,
+      "ci_lower": -0.2650374194156815,
+      "ci_upper": 0.23762816328033914,
+      "estimate": 0.00994880449488672,
+      "repetitions": 2000,
+      "seed": 42,
+      "valid_repetitions": 2000
+    },
+    "volscaled_k0.10 - volatility_only": {
+      "block_length": 20,
+      "ci_lower": -0.1389256852299887,
+      "ci_upper": 0.06848205063392339,
+      "estimate": -0.03412042558219369,
+      "repetitions": 2000,
+      "seed": 42,
+      "valid_repetitions": 2000
+    }
+  },
+  "primary_allocation": "volscaled_k0.10"
+}

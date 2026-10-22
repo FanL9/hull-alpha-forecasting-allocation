@@ -1,0 +1,1049 @@
+{
+  "A_selector": {
+    "map_hashes": {
+      "raw/D9/Level": "e6cdff5b358abec166119add03b3ac830be6ae1556c75fb52b372cd4c77444f9",
+      "raw/E19/Level": "b7dad7bf2a17e86c1d04ccb650ba925deaedac2f08de64a02b7768bb180e0649",
+      "raw/E3/Level": "1ef1680413b3d7e33bf93ef868eb3948859d631a0cdef95291f4179bbeeaf3ec",
+      "raw/M1/Level": "9ac2707957e48cd971c66eb4d398f2c7c3e48e74b457d2718dc69f820004dfd9",
+      "raw/M17/Level": "b8e705d71ae9aeaba3d6cae9e750357fa077871ccb4b88e340ae8a1af57ceb51",
+      "raw/M2/Level": "b2927ccf94da73353c8f520407f3b6978f9c4f52ac36022ac335eb5f3917a5e1",
+      "raw/M3/Level": "3cd7c60dae4d5a35ca859aba7775f2032c1d9c70ed3566d2809cef3ef3eca5cb",
+      "raw/M9/Level": "f93bf263878626ecdabd94b2b9310fc46aa71c5c3751218c988137ec19e28c3d",
+      "raw/P11/Level": "73ff56d4b36088eace84f3782f040ee253b519fab555a9ea4dfd91342a6159d9",
+      "raw/P13/Level": "65b62d063443ca7c6a1531cbceaad58dc4e3a591336b820ec6d34f2be5ad684a",
+      "raw/P2/Level": "cedcea3979d8a7405b7c50d790222c719d02e941f72f67ddd79a6094d65c21c2",
+      "raw/P9/Level": "4a7ff5b752f82d93304f6f9d8e7ae6f1e2ce5ee02834dd2a122fedbfb8ffc667",
+      "raw/S2/Level": "88ac712e3b3035c0d4831012e4687cb117aef8b1e584e3d6231fd2c4eeac7a8f",
+      "raw/S8/Level": "032e9f7f3176bbde1ec0d66258779b2dfc2bc5f74036d4f494108c14753bace0",
+      "raw/V13/Level": "0fd3bf4ee22f4cb1e9f46036686057ddbcaa49d31811050889f8a7ba42c31515",
+      "raw/lagged_forward_returns/Level": "b9dee5869d6f97f09e38fc8fc72a47e0c62ffd59710f4cd813b50677dd11494d"
+    },
+    "reference_end": 7858,
+    "selected": [
+      "raw/E3/Level",
+      "raw/P2/Level",
+      "raw/P11/Level",
+      "raw/lagged_forward_returns/Level",
+      "raw/E19/Level",
+      "raw/M9/Level",
+      "raw/P9/Level",
+      "raw/S8/Level",
+      "raw/P13/Level",
+      "raw/M2/Level",
+      "raw/S2/Level",
+      "raw/M3/Level",
+      "raw/M1/Level",
+      "raw/D9/Level",
+      "raw/M17/Level",
+      "raw/V13/Level"
+    ],
+    "signs": {
+      "raw/D9/Level": 1,
+      "raw/E19/Level": 1,
+      "raw/E3/Level": -1,
+      "raw/M1/Level": 1,
+      "raw/M17/Level": -1,
+      "raw/M2/Level": 1,
+      "raw/M3/Level": 1,
+      "raw/M9/Level": -1,
+      "raw/P11/Level": -1,
+      "raw/P13/Level": -1,
+      "raw/P2/Level": 1,
+      "raw/P9/Level": -1,
+      "raw/S2/Level": -1,
+      "raw/S8/Level": -1,
+      "raw/V13/Level": 1,
+      "raw/lagged_forward_returns/Level": -1
+    },
+    "status": "active",
+    "weights": {
+      "raw/D9/Level": 0.0625,
+      "raw/E19/Level": 0.0625,
+      "raw/E3/Level": 0.0625,
+      "raw/M1/Level": 0.0625,
+      "raw/M17/Level": 0.0625,
+      "raw/M2/Level": 0.0625,
+      "raw/M3/Level": 0.0625,
+      "raw/M9/Level": 0.0625,
+      "raw/P11/Level": 0.0625,
+      "raw/P13/Level": 0.0625,
+      "raw/P2/Level": 0.0625,
+      "raw/P9/Level": 0.0625,
+      "raw/S2/Level": 0.0625,
+      "raw/S8/Level": 0.0625,
+      "raw/V13/Level": 0.0625,
+      "raw/lagged_forward_returns/Level": 0.0625
+    }
+  },
+  "B_selector": {
+    "map_hashes": {
+      "family/P/Level": "9a230f6a1251d90c253269865f973907ff4920cf3c8a1e5b975480c2aee91991",
+      "raw/D7/Z252": "5e1a0f4df50537173d5bc44c1b26f759e517b7c50a2e4df35e0db83a345b808b",
+      "raw/E18/Delta5": "02d3b39c7eab068bce37778f12989c4ab3324de63358078b307a73e30a118ada",
+      "raw/E19/Level": "b7dad7bf2a17e86c1d04ccb650ba925deaedac2f08de64a02b7768bb180e0649",
+      "raw/E19/Z252": "71d66f3d7da82a221e3e33f7b2ed71e7a50b4bbc4a91e4661c66b19ad293e14f",
+      "raw/E20/Delta21": "1cfc29037b1050b60ee8b8587676fb7201577cd8cd991a371b945dbf24c9e63b",
+      "raw/E20/Rank63": "4c34d07b89aec89aff798c9827b3e5226745e303cbd8947576b32cf6bf17bfb5",
+      "raw/E3/Level": "1ef1680413b3d7e33bf93ef868eb3948859d631a0cdef95291f4179bbeeaf3ec",
+      "raw/E3/Z252": "ea6ddf2b0dad7eff7fcd1035bc0c437b7d60bf5bbaf3ab83abe3007cb78d31e9",
+      "raw/M9/Level": "f93bf263878626ecdabd94b2b9310fc46aa71c5c3751218c988137ec19e28c3d",
+      "raw/P11/Level": "73ff56d4b36088eace84f3782f040ee253b519fab555a9ea4dfd91342a6159d9",
+      "raw/P11/Z252": "665f789d922b3763c4e98bab18417067e186c0233b966087708a21c153d1c4cb",
+      "raw/P13/Delta21": "d1e1e22d8a5fc75116a7b451d92bb7c32884f9ff018b59029c481925bb7efdd7",
+      "raw/P2/Level": "cedcea3979d8a7405b7c50d790222c719d02e941f72f67ddd79a6094d65c21c2",
+      "raw/P2/Z252": "b5ae69582dff834141f9a94ad1dc27ff4d33c27667bdc92e2f7aa0662b5ea522",
+      "raw/lagged_forward_returns/Z252": "7b1f2b79a792cd5c10f9a74f19e602aba381418053152dcae971d42dcef5a986"
+    },
+    "reference_end": 7858,
+    "selected": [
+      "raw/E18/Delta5",
+      "family/P/Level",
+      "raw/E3/Level",
+      "raw/P2/Level",
+      "raw/P11/Level",
+      "raw/E19/Z252",
+      "raw/P2/Z252",
+      "raw/lagged_forward_returns/Z252",
+      "raw/E20/Delta21",
+      "raw/E20/Rank63",
+      "raw/E19/Level",
+      "raw/P13/Delta21",
+      "raw/D7/Z252",
+      "raw/E3/Z252",
+      "raw/P11/Z252",
+      "raw/M9/Level"
+    ],
+    "signs": {
+      "family/P/Level": 1,
+      "raw/D7/Z252": 1,
+      "raw/E18/Delta5": 1,
+      "raw/E19/Level": 1,
+      "raw/E19/Z252": 1,
+      "raw/E20/Delta21": -1,
+      "raw/E20/Rank63": -1,
+      "raw/E3/Level": -1,
+      "raw/E3/Z252": -1,
+      "raw/M9/Level": -1,
+      "raw/P11/Level": -1,
+      "raw/P11/Z252": -1,
+      "raw/P13/Delta21": -1,
+      "raw/P2/Level": 1,
+      "raw/P2/Z252": 1,
+      "raw/lagged_forward_returns/Z252": -1
+    },
+    "status": "active",
+    "weights": {
+      "family/P/Level": 0.0625,
+      "raw/D7/Z252": 0.0625,
+      "raw/E18/Delta5": 0.0625,
+      "raw/E19/Level": 0.0625,
+      "raw/E19/Z252": 0.0625,
+      "raw/E20/Delta21": 0.0625,
+      "raw/E20/Rank63": 0.0625,
+      "raw/E3/Level": 0.0625,
+      "raw/E3/Z252": 0.0625,
+      "raw/M9/Level": 0.0625,
+      "raw/P11/Level": 0.0625,
+      "raw/P11/Z252": 0.0625,
+      "raw/P13/Delta21": 0.0625,
+      "raw/P2/Level": 0.0625,
+      "raw/P2/Z252": 0.0625,
+      "raw/lagged_forward_returns/Z252": 0.0625
+    }
+  },
+  "D_normalization": {
+    "mask": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "means": [
+      0.03018504603793201,
+      -0.06801213841297243,
+      0.0008391116956314569
+    ],
+    "pairs": 504,
+    "scales": [
+      0.18815202374415335,
+      0.25660332873302744,
+      0.0008540055827919545
+    ]
+  },
+  "fit_end": 7858,
+  "holdout": [
+    7860,
+    8867
+  ],
+  "inputs": {
+    "clusters": [
+      [
+        "M1"
+      ],
+      [
+        "M3"
+      ],
+      [
+        "M4"
+      ],
+      [
+        "M5"
+      ],
+      [
+        "M6"
+      ],
+      [
+        "M7"
+      ],
+      [
+        "M8"
+      ],
+      [
+        "M9"
+      ],
+      [
+        "M10"
+      ],
+      [
+        "M11"
+      ],
+      [
+        "M12"
+      ],
+      [
+        "M13"
+      ],
+      [
+        "M14"
+      ],
+      [
+        "M15"
+      ],
+      [
+        "M17"
+      ],
+      [
+        "M18"
+      ],
+      [
+        "E1"
+      ],
+      [
+        "E4"
+      ],
+      [
+        "E5"
+      ],
+      [
+        "E6"
+      ],
+      [
+        "E7"
+      ],
+      [
+        "E8"
+      ],
+      [
+        "E9"
+      ],
+      [
+        "E10"
+      ],
+      [
+        "E11"
+      ],
+      [
+        "E12"
+      ],
+      [
+        "E13"
+      ],
+      [
+        "E14"
+      ],
+      [
+        "E15"
+      ],
+      [
+        "E18"
+      ],
+      [
+        "E19"
+      ],
+      [
+        "E20"
+      ],
+      [
+        "I1"
+      ],
+      [
+        "I2"
+      ],
+      [
+        "I3"
+      ],
+      [
+        "I4"
+      ],
+      [
+        "I6"
+      ],
+      [
+        "I7"
+      ],
+      [
+        "I8"
+      ],
+      [
+        "P1"
+      ],
+      [
+        "P2"
+      ],
+      [
+        "P3"
+      ],
+      [
+        "P4"
+      ],
+      [
+        "P5"
+      ],
+      [
+        "P6"
+      ],
+      [
+        "P8"
+      ],
+      [
+        "P9"
+      ],
+      [
+        "P12"
+      ],
+      [
+        "P13"
+      ],
+      [
+        "V1"
+      ],
+      [
+        "V3"
+      ],
+      [
+        "V5"
+      ],
+      [
+        "V6"
+      ],
+      [
+        "V13"
+      ],
+      [
+        "S1"
+      ],
+      [
+        "S2"
+      ],
+      [
+        "S3"
+      ],
+      [
+        "S4"
+      ],
+      [
+        "S5"
+      ],
+      [
+        "S6"
+      ],
+      [
+        "S7"
+      ],
+      [
+        "S8"
+      ],
+      [
+        "S9"
+      ],
+      [
+        "S12"
+      ],
+      [
+        "D3"
+      ],
+      [
+        "D4"
+      ],
+      [
+        "D5"
+      ],
+      [
+        "D6"
+      ],
+      [
+        "D7"
+      ],
+      [
+        "D8"
+      ],
+      [
+        "D9"
+      ],
+      [
+        "lagged_risk_free_rate"
+      ],
+      [
+        "D1",
+        "D2"
+      ],
+      [
+        "lagged_forward_returns",
+        "lagged_market_forward_excess_returns"
+      ],
+      [
+        "I5",
+        "I9"
+      ],
+      [
+        "E2",
+        "E3"
+      ],
+      [
+        "M16",
+        "V11"
+      ],
+      [
+        "V7",
+        "V9",
+        "V10"
+      ],
+      [
+        "S10",
+        "S11"
+      ],
+      [
+        "V2",
+        "V4"
+      ],
+      [
+        "V8",
+        "V12"
+      ],
+      [
+        "P10",
+        "P11"
+      ],
+      [
+        "M2",
+        "P7"
+      ],
+      [
+        "E16",
+        "E17"
+      ]
+    ],
+    "input_features_sha256": "13e6a467e21c7bd6fe72db1081fc7b2bc01d67e45ff3f88555c198a1ddb0c3a8",
+    "means": [
+      0.24050695227221663,
+      -0.20882459845892307,
+      1.1747144586627756,
+      0.0004599821872863324,
+      0.13995338721489128,
+      0.4291834011244798,
+      0.4457454812595506,
+      0.12058282964008249,
+      0.5101975672744783,
+      0.03938857599491598,
+      0.02969319399681892,
+      0.14152993583434859,
+      -0.6448293815624134,
+      0.14314798320396996,
+      0.2890973578176857,
+      0.1447483596875709
+    ],
+    "reference_end": 7858,
+    "representatives": [
+      "E3",
+      "P2",
+      "P11",
+      "lagged_forward_returns",
+      "E19",
+      "M9",
+      "P9",
+      "S8",
+      "P13",
+      "M2",
+      "S2",
+      "M3",
+      "M1",
+      "D9",
+      "M17",
+      "V13"
+    ],
+    "scaler_fit_rows": [
+      0,
+      7858
+    ],
+    "scales": [
+      1.5195542463781089,
+      1.4729200229957768,
+      1.1325893808363892,
+      0.01057200081782076,
+      1.309575946580804,
+      1.4745935489040365,
+      0.39245955883199757,
+      1.0567191817729993,
+      0.284325876079896,
+      1.0769411212426774,
+      1.0311572362630406,
+      1.2404303254722029,
+      0.9960405659058958,
+      0.35022369724021524,
+      0.23540058528968993,
+      1.4138212604377147
+    ],
+    "scores": {
+      "D9": 0.08854493254969753,
+      "E19": 0.11679313238294703,
+      "E3": 0.12343023914130788,
+      "M1": 0.0916559622605006,
+      "M17": 0.08597284380852543,
+      "M2": 0.09551704718862175,
+      "M3": 0.09318794837589223,
+      "M9": 0.10980133671975001,
+      "P11": 0.1222311956765447,
+      "P13": 0.09998624776884035,
+      "P2": 0.12283109234434367,
+      "P9": 0.1051126625425737,
+      "S2": 0.09383133755210664,
+      "S8": 0.10457286232446458,
+      "V13": 0.08544103278210327,
+      "lagged_forward_returns": 0.11966288806753035
+    },
+    "target_fit_endpoints": [
+      62,
+      7858
+    ],
+    "target_mean": 5.60971159588303e-05,
+    "target_scale": 0.01060367795119008
+  },
+  "purge": 7859,
+  "ridge": {
+    "alpha": 10.0,
+    "inner_ics": [
+      [
+        0.1,
+        0.017450619130854706
+      ],
+      [
+        1.0,
+        0.017362134372354357
+      ],
+      [
+        10.0,
+        0.022659971819854026
+      ]
+    ]
+  }
+}
