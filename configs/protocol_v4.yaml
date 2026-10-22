@@ -1,0 +1,96 @@
+# Protocol v4 — Phase 6 forecast-to-allocation and held-out execution.
+# DRAFT until the protocol-v4 freeze commit/tag. Machine authority for Phase 6.
+protocol_version: v4
+status: draft_not_frozen
+parent_protocols: [phase2.5-v2, v3, v3.1]
+primary_forecast_pipeline: A
+primary_forecast_source:
+  phase5_selection: reports/phase5_real_run/phase5_primary_selection.json
+  research_oos_predictions: reports/phase5_real_run/phase5_predictions.csv
+  research_oos_range: [5088, 7859]
+  research_oos_rows: 2772
+
+data:
+  calibration_range: [5088, 7859]
+  outcome_fields_for_scoring: [forward_returns, risk_free_rate]
+  forecast_target_is_not_scored: true
+  loader: load_research_prefix_with_train_columns
+  internal_holdout: [7860, 8867]
+  final_simulation: [8868, 9047]
+
+signal_standardization:
+  # Location/scale of A's research OOS forecasts only; no target enters.
+  formula: z_t = (s_t - mu_A) / sigma_A
+  mu_A: research_oos_prediction_mean
+  sigma_A: research_oos_prediction_std_ddof1
+  fit_rows: [5088, 7859]
+  frozen_for_holdout_and_final: true
+  missing_forecast_position: 1.0
+
+volatility_state:
+  source: lagged_forward_returns
+  short_window_rows: 21
+  long_window_rows: 252
+  min_periods: {short: 15, long: 126}
+  std_ddof: 1
+  ratio: sigma_long / sigma_short
+  ratio_clip: [0.5, 1.5]
+  undefined_ratio: 1.0
+
+candidates:
+  baseline:
+    id: constant_1
+    position: 1.0
+  linear:
+    id_pattern: linear_k{k}
+    position: clip(1 + k * z_t, 0, 2)
+    k: [0.10, 0.20, 0.35, 0.50, 0.75]
+  vol_scaled:
+    id_pattern: volscaled_k{k}
+    position: clip(c_t * (1 + k * z_t), 0, 2)
+    c_t: volatility_state.ratio
+    k: [0.10, 0.20, 0.35, 0.50, 0.75]
+  candidate_count_excluding_baseline: 10
+  simplicity_order: [linear_k0.10, linear_k0.20, linear_k0.35, linear_k0.50, linear_k0.75,
+                     volscaled_k0.10, volscaled_k0.20, volscaled_k0.35, volscaled_k0.50, volscaled_k0.75]
+
+selection:
+  metric: official_hull_score_unmodified
+  blocks: phase4_outer_validation_blocks_11x252
+  admissible:
+    overall_score_strictly_above_constant_1: true
+    min_blocks_beating_constant_1: 6
+  near_best_margin: 0.05
+  near_best_definition: best_admissible_score_minus_score_strictly_below_margin
+  choose: first_in_simplicity_order_within_near_best
+  if_none_admissible: constant_1
+  no_other_search: true
+
+costs:
+  official_score_includes_costs: false
+  turnover: sum_abs_position_change
+  sensitivity_one_way_bps: [0, 1, 5]
+  costs_change_selection: false
+
+holdout:
+  fit_rows: [0, 7858]
+  purge_row: 7859
+  evaluate_rows: [7860, 8867]
+  learned_state: frozen_throughout
+  online_state_allowed: [current_X, lagged_official_fields, trailing_volatility_state]
+  primary_endpoints:
+    forecast: A_rank_ic_holdout
+    allocation: official_score_selected_mapping_vs_constant_1
+  secondary_reports: [constant_1, B, C, D, Ridge, GRU, TCN, all_10_mappings]
+  secondaries_never_replace_primary: true
+  runs: 1
+
+final_simulation:
+  requires: [holdout_completed_and_sealed, separate_authorization]
+  fit_rows: [0, 8866]
+  purge_row: 8867
+  evaluate_rows: [8868, 9047]
+  pipeline: A_with_holdout_frozen_mapping
+  standardization: unchanged_mu_A_sigma_A
+  execution: sequential_one_row_at_a_time_using_only_current_X_and_lagged_fields
+  runs: 1
