@@ -1,0 +1,27 @@
+{
+  "created_at_utc": "2026-10-22T09:20:36.263791+00:00",
+  "freeze_tag": "protocol-v4",
+  "normative_sha256": {
+    "configs/official_metric.yaml": "6d7f7790d0386591864993b540677769fdf55c60c526e15f56f1ed119cf637ae",
+    "configs/protocol_v4.yaml": "d54e969a2a079498ba42b29d03cafd94ccd9c8ca57338f45e3ce7800580b1b1b",
+    "docs/protocol_v4_phase6_allocation.md": "da24dd731946e2303dac6a226fd83f50f0446ec3d0b7331c396efec8398a188e",
+    "src/evaluation/kaggle_metric.py": "71122987e5b73cf431f06e9693138f2e40ca33238905d8cf954173427ea32124",
+    "src/validation/protocol_v4.py": "aea2d268867b80b532db6dc97f87617505ddd2145a0ea0b7b025aa98156061eb",
+    "tests/test_protocol_v4.py": "81dff472ce6c34cab2bb8c0a30193d31aa14914fe2d4ef76f8a7d1e2af91cabd"
+  },
+  "parent_v3_1_lock_sha256": "23c63be206ca150b99e0ac5a1aca22a133b2f27c170732470daef135a8955815",
+  "parent_v3_1_normative_sha256": {
+    "configs/protocol_v3_1.yaml": "a6c6163b4d32fd4cf78110f55bfe34bee561bdf2d4a400fe5ea452f98ff482d6",
+    "docs/protocol_v3_1_engineered_alpha_fair_comparison.md": "65c621f401c0f2263064ac0ae468e6a73085fe505ccb0929bd3d39faed3c9576",
+    "src/validation/protocol_v3_1.py": "1f728069733c86139f13cdcf20bfbf8014d88cdac5143abd0cc4b4044929cae1",
+    "tests/test_protocol_v3_1.py": "0048b1d57c07e536b5ba4e26e7fbd062261e80abc6e114eee55ff7fe9654dad6"
+  },
+  "phase6_scores_computed": false,
+  "protocol_version": "v4",
+  "real_data_read": false,
+  "sealed_phase5_sha256": {
+    "reports/phase5_real_run/phase5_predictions.csv": "5adbb3d768a499929da59ac8d1201210ada5d4e3178cac1043da54810e78dad7",
+    "reports/phase5_real_run/phase5_primary_selection.json": "6555a0d52a7ef73ba3818b4db3dffc9f95996f8a114ed060be98504db4e726e3",
+    "reports/phase5_real_run/snapshot_seal.json": "9e6c8ec431eb40cdd279e86aa16bbbaa5b74fee8d106e02859b28046004d89a7"
+  }
+}

@@ -1,6 +1,6 @@
 # Protocol v4 — Phase 6 Forecast-to-Allocation
 
-State: **DRAFT — not frozen.** Freezing requires an independent commit, an annotated `protocol-v4` tag and a lock, before any Phase 6 calibration score is computed.
+State: **FROZEN before any Phase 6 allocation score.** Freeze commit: the commit adding `configs/protocol_v4_lock.json`; annotated tag `protocol-v4`. Verify with `python -m src.validation.protocol_v4 --check`.
 Machine authority after freeze: [protocol_v4.yaml](../configs/protocol_v4.yaml). Parents: [Phase 2.5-v2](research_protocol.md), [v3](protocol_v3_engineered_and_deep_alpha.md), [v3.1](protocol_v3_1_engineered_alpha_fair_comparison.md); none is modified.
 
 ## 1. Question and starting point
@@ -77,4 +77,4 @@ After the holdout is completed and sealed, and with separate authorization:
 
 No new mapping, k, window, clip, smoothing, regime rule, cost-aware selection or ensemble may be added after any Phase 6 score is seen. Holdout or Final outcomes cannot change μ_A, σ_A, the mapping, A's state or the reported primary. Technical failures follow the incident discipline of Phase 4 v1: stop, record, fix the code without altering rules, re-freeze, and disclose.
 
-This draft was written before any Phase 6 allocation score, return statistic or holdout/final observation was computed.
+Protocol v4 was frozen before any Phase 6 allocation score, return statistic or holdout/final observation was computed.

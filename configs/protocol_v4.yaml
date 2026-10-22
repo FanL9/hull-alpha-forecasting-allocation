@@ -1,7 +1,8 @@
 # Protocol v4 — Phase 6 forecast-to-allocation and held-out execution.
-# DRAFT until the protocol-v4 freeze commit/tag. Machine authority for Phase 6.
+# Frozen before any Phase 6 allocation score. Machine authority for Phase 6.
 protocol_version: v4
-status: draft_not_frozen
+status: frozen_before_phase6_scores
+freeze_tag: protocol-v4
 parent_protocols: [phase2.5-v2, v3, v3.1]
 primary_forecast_pipeline: A
 primary_forecast_source:
