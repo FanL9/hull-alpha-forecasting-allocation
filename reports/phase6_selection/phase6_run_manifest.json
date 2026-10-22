@@ -1,0 +1,34 @@
+{
+  "calibration_range": [
+    5088,
+    7859
+  ],
+  "completed_at_utc": "2026-10-22T10:49:43.964014+00:00",
+  "final_simulation_read": false,
+  "git_commit": "11a70fe7b7977606159dc8d0e694eff65268f164",
+  "internal_holdout_read": false,
+  "output_sha256": {
+    "phase6_block_scores.csv": "3a34b90fd2f0befe897e0b6d100422e9ac789f6f7dcf91ef7838e0e54ce5fe5d",
+    "phase6_candidate_scores.csv": "0836b9f344a9b015c37b6d5b9225fd478128d99544704d63718ec650c0b726dc",
+    "phase6_daily_positions.csv": "d2779add8534dbed377ddf33e2ed08d578a8f2997084496ba83d1efc414b484a",
+    "phase6_selection.json": "d8d751f15af2ccab67069c864a3c4df7e42b3e296cbd8af761e28806af3e9a60"
+  },
+  "phase6_code_hash": "37b89235e76bd3e51cbab8602d252d34009ee34084c12e1017b82f92ea789c66",
+  "phase6_code_sha256": {
+    "src/research/phase6.py": "f3cd116b21e2b83aaff10f0395db2d210f215cdc27ec3e566a62db9c17892a9b",
+    "src/research/phase6_allocation.py": "39b04c9d56940d29c9b04b0f1d1da32ed59ad26d1eac510e33786569dfe62194",
+    "tests/test_phase6_allocation.py": "ba441212d6efc328405c0de37d3d220465e6d9b303616ad042d80c0501569eed"
+  },
+  "pipeline_tag": "phase6-allocation-pipeline-v1",
+  "preflight": "passed",
+  "protocol_tag": "protocol-v4",
+  "protocol_v4_lock_sha256": "844eeea999387379d8157cc328f1e33ae55a5e01f6202e0399d931fe5c7a2fcf",
+  "real_xy_read": true,
+  "run_type": "real",
+  "sealed_phase5_sha256": {
+    "reports/phase5_real_run/phase5_predictions.csv": "5adbb3d768a499929da59ac8d1201210ada5d4e3178cac1043da54810e78dad7",
+    "reports/phase5_real_run/phase5_primary_selection.json": "6555a0d52a7ef73ba3818b4db3dffc9f95996f8a114ed060be98504db4e726e3",
+    "reports/phase5_real_run/snapshot_seal.json": "9e6c8ec431eb40cdd279e86aa16bbbaa5b74fee8d106e02859b28046004d89a7"
+  },
+  "state": "completed"
+}

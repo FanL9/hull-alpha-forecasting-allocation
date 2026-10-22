@@ -1,0 +1,33 @@
+{
+  "sealed_at_utc": "2026-10-22T10:51:22.161865+00:00",
+  "pipeline_commit": "11a70fe7b7977606159dc8d0e694eff65268f164",
+  "pipeline_tag": "phase6-allocation-pipeline-v1",
+  "protocol_tag": "protocol-v4",
+  "protocol_commit": "fb063aca5a7ef0a608abf53884686b0e4ff7f19e",
+  "run_type": "real",
+  "real_cli_invocations": 1,
+  "research_calibration_range": [
+    5088,
+    7859
+  ],
+  "selected": "volscaled_k0.10",
+  "pre_run_tests": {
+    "tests": 25,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "pre_run_tests_junit_sha256": "ab389a46d3941bb530b68f242c84242b1ababbbea4409c66b949a9e1bf007d94",
+  "canonical_sources_preserved": true,
+  "byte_identical_archive_sha256": {
+    "phase6_block_scores.csv": "3a34b90fd2f0befe897e0b6d100422e9ac789f6f7dcf91ef7838e0e54ce5fe5d",
+    "phase6_candidate_scores.csv": "0836b9f344a9b015c37b6d5b9225fd478128d99544704d63718ec650c0b726dc",
+    "phase6_daily_positions.csv": "d2779add8534dbed377ddf33e2ed08d578a8f2997084496ba83d1efc414b484a",
+    "phase6_run_manifest.json": "14d16097c76e6f0629eafc70957d2ffe31d8f9110aff9698dee40a5c4da5bab3",
+    "phase6_selection.json": "d8d751f15af2ccab67069c864a3c4df7e42b3e296cbd8af761e28806af3e9a60",
+    "phase6_selection_state.json": "36e52e5639a5e0a4872ac4166db4e96670605066d4f5c31e8668c1a49faf0785",
+    "phase6_run_timing.json": "b48276c0fb56ad9890da9c97cb507df0e0130f8467514fbf1636f9a365eff0d4"
+  },
+  "internal_holdout_used": false,
+  "final_simulation_used": false
+}

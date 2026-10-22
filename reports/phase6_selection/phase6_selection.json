@@ -1,0 +1,40 @@
+{
+  "selection": {
+    "admissible": [
+      "linear_k0.10",
+      "volscaled_k0.10",
+      "volscaled_k0.20",
+      "volscaled_k0.35",
+      "volscaled_k0.50",
+      "volscaled_k0.75"
+    ],
+    "baseline_score": 0.8638092688674407,
+    "best_score": 1.0112625962040627,
+    "block_wins": {
+      "linear_k0.10": 9,
+      "linear_k0.20": 9,
+      "linear_k0.35": 5,
+      "linear_k0.50": 5,
+      "linear_k0.75": 5,
+      "volscaled_k0.10": 6,
+      "volscaled_k0.20": 6,
+      "volscaled_k0.35": 6,
+      "volscaled_k0.50": 8,
+      "volscaled_k0.75": 8
+    },
+    "margin": 0.05,
+    "near_best": [
+      "volscaled_k0.10",
+      "volscaled_k0.20",
+      "volscaled_k0.35",
+      "volscaled_k0.50"
+    ],
+    "reason": "first_near_best_in_simplicity_order",
+    "selected": "volscaled_k0.10"
+  },
+  "standardization": {
+    "mu": -0.03914753913955494,
+    "rows": 2772,
+    "sigma": 0.20598592027915236
+  }
+}
