@@ -26,7 +26,7 @@ The first two areas form Development; holdout outcomes do not guide selection, a
 - **Phase 3:** frozen pipeline completed one real Alpha Research run; [sealed results and report](reports/phase3_alpha_research_results.md). Post-hoc timing diagnostics: [interpretation](reports/phase3_posthoc_interpretation.md).
 - **Phase 4:** [Raw-Control / Engineered pipeline](docs/phase4_pipeline.md) under frozen [Protocol v3.1](docs/protocol_v3_1_engineered_alpha_fair_comparison.md) ([synthetic calibration](reports/phase4_pipeline_synthetic_calibration.md)). One real run at pipeline v1.1 after a pre-data v1 failure ([incident](reports/phase4_incidents/v1_real_entry_key_error.md)): the 499-candidate engineered universe did not beat the identically selected raw control ([results](reports/phase4_engineered_alpha_results.md)).
 - **Phase 5:** Ridge/GRU/TCN on the same 63-day inputs did not beat the raw nested composite; the frozen rule selected **A** (mean fold Rank IC 0.0765). [Analysis](reports/phase5_real_analysis.md).
-- **Phase 6:** [Protocol v4](docs/protocol_v4_phase6_allocation.md) frozen (forecast → [0,2] allocation); [selection pipeline](docs/phase6_pipeline.md) implemented on synthetic data. Real selection, Internal Holdout and Final Simulation not run.
+- **Phase 6:** [Protocol v4](docs/protocol_v4_phase6_allocation.md) + [v4.1](docs/protocol_v4_1_holdout_amendment.md) frozen. Research-OOS selection chose `volscaled_k0.10` ([sealed](reports/phase6_selection/)); [holdout pipeline](docs/phase6_holdout_pipeline.md) implemented on synthetic data. Internal Holdout not yet run.
 - **Not started:** Internal Holdout (7860–8867) and Final Simulation (8868–9047).
 
 ## Pipeline
