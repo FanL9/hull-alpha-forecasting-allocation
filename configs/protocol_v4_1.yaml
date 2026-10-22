@@ -1,0 +1,47 @@
+# Protocol v4.1 — additive holdout amendment to Protocol v4 (unchanged).
+# Frozen after the Phase 6A research selection and before any held-out row is read.
+protocol_version: v4.1
+parent_protocol: v4
+freeze_tag: protocol-v4.1
+status: frozen_before_holdout
+inherited_unchanged: [primary_forecast, standardization, volatility_state, candidates, selection, costs, holdout_fit, final_simulation]
+
+phase6_selection:
+  sealed_directory: reports/phase6_selection
+  selected_mapping: volscaled_k0.10
+  mu_A: -0.03914753913955494
+  sigma_A: 0.20598592027915236
+
+holdout:
+  rows: [7860, 8867]
+  blocks: {count: 4, rows: 252}
+  fit_rows: [0, 7858]
+  purge_row: 7859
+  primary_allocation: volscaled_k0.10
+  added_secondary:
+    id: volatility_only
+    position: clip(c_t, 0, 2)
+    c_t: protocol_v4.volatility_state.ratio
+  secondary_mappings: [constant_1, volatility_only, linear_k0.10, linear_k0.20, linear_k0.35, linear_k0.50, linear_k0.75,
+                       volscaled_k0.10, volscaled_k0.20, volscaled_k0.35, volscaled_k0.50, volscaled_k0.75]
+  secondary_forecasts: [B, C, D, Ridge, GRU, TCN]
+  secondary_forecast_standardization: own_research_oos_mean_std_from_phase5_predictions
+
+forecast_confirmation:
+  primary_evidence_for_A: true
+  statistic: blockwise_spearman_rank_ic_over_4_holdout_blocks
+  inference: newey_west_hac_lag5_on_ranked_series
+  hypothesis: one_sided_rank_ic_greater_than_zero
+  alpha: 0.05
+  report: [estimate, hac_se, one_sided_p, normal_95_ci, per_block_ic]
+
+paired_allocation_differences:
+  pairs: [[volscaled_k0.10, volatility_only], [volscaled_k0.10, constant_1]]
+  statistic: official_score_difference_on_identical_days
+  bootstrap: {method: paired_moving_block, block_length: 20, repetitions: 2000, seed: 42, confidence: 0.95}
+  role: descriptive_only_not_a_gate
+
+interpretation:
+  forecast_value_of_A: decided_by_forecast_confirmation_only
+  allocation_rankings_over_1008_rows: descriptive_economic_evidence_not_a_conclusion_by_themselves
+  secondaries_never_replace_primary: true

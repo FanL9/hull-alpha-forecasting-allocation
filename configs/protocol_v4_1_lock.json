@@ -1,0 +1,30 @@
+{
+  "created_at_utc": "2026-10-22T11:44:58.991973+00:00",
+  "freeze_tag": "protocol-v4.1",
+  "holdout_rows_read": false,
+  "normative_sha256": {
+    "configs/protocol_v4_1.yaml": "84dc616e5458f043adf36b05383cd8a6840e2c35ec1286f28e43bf785aa44b76",
+    "docs/protocol_v4_1_holdout_amendment.md": "0f08f4d2b40ebbca96bfec074be1322889a943cd5ce696aef7c06a34449309f7",
+    "src/validation/protocol_v4_1.py": "58b14811aa877e0ce442129cde3073795e7c5cac15c6fe6a8fd6bc7a6709bafa",
+    "tests/test_protocol_v4_1.py": "a00ce51aec5846272b6322c6ee486c19a4ebea75b0f8935901d437cbf2750ac9"
+  },
+  "parent_v4_lock_sha256": "844eeea999387379d8157cc328f1e33ae55a5e01f6202e0399d931fe5c7a2fcf",
+  "parent_v4_normative_sha256": {
+    "configs/official_metric.yaml": "6d7f7790d0386591864993b540677769fdf55c60c526e15f56f1ed119cf637ae",
+    "configs/protocol_v4.yaml": "d54e969a2a079498ba42b29d03cafd94ccd9c8ca57338f45e3ce7800580b1b1b",
+    "docs/protocol_v4_phase6_allocation.md": "da24dd731946e2303dac6a226fd83f50f0446ec3d0b7331c396efec8398a188e",
+    "src/evaluation/kaggle_metric.py": "71122987e5b73cf431f06e9693138f2e40ca33238905d8cf954173427ea32124",
+    "src/validation/protocol_v4.py": "aea2d268867b80b532db6dc97f87617505ddd2145a0ea0b7b025aa98156061eb",
+    "tests/test_protocol_v4.py": "81dff472ce6c34cab2bb8c0a30193d31aa14914fe2d4ef76f8a7d1e2af91cabd"
+  },
+  "protocol_version": "v4.1",
+  "sealed_phase6_selection_sha256": {
+    "reports/phase6_selection/phase6_block_scores.csv": "3a34b90fd2f0befe897e0b6d100422e9ac789f6f7dcf91ef7838e0e54ce5fe5d",
+    "reports/phase6_selection/phase6_candidate_scores.csv": "0836b9f344a9b015c37b6d5b9225fd478128d99544704d63718ec650c0b726dc",
+    "reports/phase6_selection/phase6_daily_positions.csv": "d2779add8534dbed377ddf33e2ed08d578a8f2997084496ba83d1efc414b484a",
+    "reports/phase6_selection/phase6_run_manifest.json": "14d16097c76e6f0629eafc70957d2ffe31d8f9110aff9698dee40a5c4da5bab3",
+    "reports/phase6_selection/phase6_selection.json": "d8d751f15af2ccab67069c864a3c4df7e42b3e296cbd8af761e28806af3e9a60",
+    "reports/phase6_selection/phase6_selection_state.json": "36e52e5639a5e0a4872ac4166db4e96670605066d4f5c31e8668c1a49faf0785",
+    "reports/phase6_selection/snapshot_seal.json": "3f5c20a87b2451501eb70257e4dc7b5192f5398d8a902319d3433916eb99b8d2"
+  }
+}
