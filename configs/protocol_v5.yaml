@@ -1,0 +1,80 @@
+# Protocol v5 — competition track. Additive to v4/v4.1 (unchanged); the research
+# track (A + volscaled_k0.10) is not modified. Frozen after the Internal Holdout
+# was opened and before any v5 score or any Final Simulation row is read.
+protocol_version: v5
+freeze_tag: protocol-v5
+status: frozen_before_v5_selection_and_final
+parent_protocols: [v3.1, v4, v4.1]
+research_track_unchanged: true
+
+evidence:
+  oos_range: [5088, 8867]
+  oos_rows: 3780
+  blocks: {count: 15, rows: 252, research: 11, holdout: 4}
+  research_forecasts: reports/phase5_real_run/phase5_predictions.csv
+  holdout_forecasts: reports/phase6_holdout_public/holdout_forecasts_sealed.csv
+  holdout_forecasts_sha256: d1d433dae1696244abefd8fb2fc69cc890fd974bc4c30b1cb8d5251c3f7a72cb
+  update_schedule:
+    research: refit_at_each_outer_fold_end_frozen_for_252_rows
+    holdout: refit_at_7858_purge_7859_frozen_for_1008_rows
+    final: refit_at_8866_purge_8867_frozen_for_180_rows
+  loader_rows: 8868
+  final_rows_read: false
+
+forecasters: [A, Ridge, DynRidge, C, D]
+forecaster_set_chosen_after_holdout: true
+
+dynridge:
+  inputs: raw_97_levels
+  eligibility: protocol_v3_1.availability_on_training_rows
+  scaler: {statistic: training_mean_std, ddof: 0, missing: 0.0, clip: [-5, 5]}
+  target: standardized_by_training_mean_std_ddof0
+  sample_weight: {form: exponential, half_life_rows: 504, anchor: reference_end}
+  objective: weighted_mean_squared_error_plus_alpha_l2_unpenalized_intercept
+  alphas: [0.1, 1.0, 10.0, 100.0]
+  alpha_choice: mean_inner_rank_ic_two_252_blocks
+  alpha_ties: larger_alpha
+  solver: float64_weighted_normal_equations
+  design_inspired_by_holdout: true
+
+standardization:
+  rows: oos_range
+  statistic: forecast_mean_std_ddof1_per_forecaster
+  target_enters: false
+  frozen_for_final: true
+  missing_forecast_position: 1.0
+
+volatility_state: protocol_v4.volatility_state
+
+candidates:
+  forecast_free: [constant_1, volatility_only]
+  volatility_only: clip(c_t, 0, 2)
+  forecast_based:
+    id_pattern: volscaled_k{k}/{forecaster}
+    position: clip(c_t * (1 + k * z_t), 0, 2)
+    k: [0.10, 0.20]
+  simplicity_order: [k_ascending, then_forecaster_order]
+
+selection:
+  metric: official_hull_score_unmodified
+  min_blocks: 8
+  default: volatility_only_if_above_constant_1_overall_and_in_at_least_min_blocks_else_constant_1
+  admissible: overall_strictly_above_default_and_above_default_in_at_least_min_blocks
+  near_best_margin: 0.05
+  choose: first_near_best_in_simplicity_order
+  if_none_admissible: default
+  costs_change_selection: false
+  cost_sensitivity_one_way_bps: [0, 1, 5]
+
+final_simulation:
+  rows: [8868, 9047]
+  fit_rows: [0, 8866]
+  purge_row: 8867
+  tracks:
+    research: {forecaster: A, mapping: volscaled_k0.10, standardization: protocol_v4_1.phase6_selection}
+    competition: v5_selection
+  report: [official_score, cost_sensitivity, mean_position, turnover, descriptive_rank_ic]
+  comparators: [constant_1, volatility_only]
+  ranks_tracks: false
+  feeds_back: false
+  runs: 1

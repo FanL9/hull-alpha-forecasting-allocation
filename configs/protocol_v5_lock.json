@@ -1,0 +1,20 @@
+{
+  "created_at_utc": "2026-10-23T03:59:16.289563+00:00",
+  "evidence_sha256": {
+    "reports/phase5_real_run/phase5_predictions.csv": "5adbb3d768a499929da59ac8d1201210ada5d4e3178cac1043da54810e78dad7",
+    "reports/phase6_holdout_public/holdout_forecasts_sealed.csv": "d1d433dae1696244abefd8fb2fc69cc890fd974bc4c30b1cb8d5251c3f7a72cb",
+    "reports/phase6_holdout_public/phase6_holdout_state.json": "d1fc2a1609b6dae213429d05cbf77c15009c58c45720c0548e4b010e2df44e56"
+  },
+  "final_rows_read": false,
+  "freeze_tag": "protocol-v5",
+  "normative_sha256": {
+    "configs/protocol_v5.yaml": "1eed9d50655332db96483db28398fdca1cff693d04f3294e99d8bee27c447130",
+    "docs/protocol_v5_competition_track.md": "83c1ec6fa37883fea59018fbd44434c1b21093b1cfbe85e5307e0cedecfd9c8b",
+    "src/validation/protocol_v5.py": "be3f2f33bbd65bd850beb8459f29df1b3d1da763046d1daf33faec5fcd0d7100",
+    "tests/test_protocol_v5.py": "c4c33c0b36a476528b0c5dc33755b5c2c0f5e9b890d881d5fae77392268883b1"
+  },
+  "parent_v4_1_lock_sha256": "8e84fb260d71377c82f401ecf47aa624e34f07606b8d72a002d0ca634a6880d2",
+  "parent_v4_lock_sha256": "844eeea999387379d8157cc328f1e33ae55a5e01f6202e0399d931fe5c7a2fcf",
+  "protocol_version": "v5",
+  "v5_scores_computed": false
+}
