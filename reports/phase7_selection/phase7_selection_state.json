@@ -1,0 +1,39 @@
+{
+  "run_type": "real",
+  "git_commit": "3f63a9d07fa29eb6389623b7a28d8a5903fe826a",
+  "pipeline_tag": "phase7-pipeline-v1",
+  "protocol_tag": "protocol-v5",
+  "protocol_v5_lock_sha256": "1fe5d3a3b85a9078de7b74e915f505a945129adfcd90597e3b1360a978bd8a6b",
+  "evidence_sha256": {
+    "reports/phase5_real_run/phase5_predictions.csv": "5adbb3d768a499929da59ac8d1201210ada5d4e3178cac1043da54810e78dad7",
+    "reports/phase6_holdout_public/holdout_forecasts_sealed.csv": "d1d433dae1696244abefd8fb2fc69cc890fd974bc4c30b1cb8d5251c3f7a72cb",
+    "reports/phase6_holdout_public/phase6_holdout_state.json": "d1fc2a1609b6dae213429d05cbf77c15009c58c45720c0548e4b010e2df44e56"
+  },
+  "code_sha256": {
+    "src/models/dynamic_ridge.py": "7ba857525cf0acbcead5344f9c2b2644a7a97bdc010b8ea9d32795d6be679f3c",
+    "src/research/phase7_selection.py": "9b0c94015091384c489e71e13c34492cf9239ef8a29d134841044999bb92e111",
+    "src/research/phase7_refit.py": "c1361ae7a01ba43a48f2db1ab9dff38d99623f0db9568994f15949c3679a95e8",
+    "src/research/phase7_final.py": "dd3c5c4657145b382e5a6239337a74a8ffb208352828294c8fcb6962a7ba651e",
+    "src/research/phase6_allocation.py": "39b04c9d56940d29c9b04b0f1d1da32ed59ad26d1eac510e33786569dfe62194",
+    "tests/test_phase7_selection.py": "f4261e338a0f5e87eb3296f05c7cad2ce67b8aab340dfa045044daf0f9c00f2b",
+    "tests/test_phase7_final.py": "fb806d42931bc859566a553894a4b91da9271a0519fef212239bd17fdf321bfb"
+  },
+  "code_hash": "fba605cb342188b746ca7fdf8827897f358b46e9b9de71f59469baa80a5f9fff",
+  "oos_range": [
+    5088,
+    8867
+  ],
+  "final_simulation_read": false,
+  "preflight": "passed",
+  "state": "completed",
+  "real_xy_read": true,
+  "selected": "volscaled_k0.10/A",
+  "output_sha256": {
+    "v5_block_scores.csv": "f1fd0cd2c28b678c8b43fbf4b17e997c6986a540f495cfea60d29891f8f62f90",
+    "v5_candidate_scores.csv": "6f7bef0eda4837674ad16df8d9956bacfbeed7d09d33fd943eeb72bdc171d17f",
+    "v5_daily_positions.csv": "6e82f95892d541b263a886aa3d9a386fa23b26e1997a48301a437441dfd11907",
+    "v5_dynridge_audit.json": "61b0d131ce3a441418d790343ee9d17036063395dde90aed5c769a229f10adbb",
+    "v5_dynridge_forecasts.csv": "79b8adcde219765bfe505a04ba5f153f2406cff912a824749d338946b5a0cfdf",
+    "v5_selection.json": "a20d63c6a4537a75f5b30aa4b34e6793e7b1e9a29580cf9a5e4622e4a9889169"
+  }
+}

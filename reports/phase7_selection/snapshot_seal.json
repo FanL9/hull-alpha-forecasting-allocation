@@ -1,0 +1,41 @@
+{
+  "sealed_at_utc": "2026-10-23T07:00:11.067976+00:00",
+  "pipeline_commit": "3f63a9d07fa29eb6389623b7a28d8a5903fe826a",
+  "protocol_tag": "protocol-v5",
+  "pipeline_tag": "phase7-pipeline-v1",
+  "run_type": "real",
+  "oos_rows": [
+    5088,
+    8867
+  ],
+  "research_track_unchanged": true,
+  "competition_selection_after_holdout": true,
+  "real_selection_cli_invocations": 1,
+  "final_simulation_run": false,
+  "byte_identical_archive_sha256": {
+    "v5_block_scores.csv": "f1fd0cd2c28b678c8b43fbf4b17e997c6986a540f495cfea60d29891f8f62f90",
+    "v5_candidate_scores.csv": "6f7bef0eda4837674ad16df8d9956bacfbeed7d09d33fd943eeb72bdc171d17f",
+    "v5_daily_positions.csv": "6e82f95892d541b263a886aa3d9a386fa23b26e1997a48301a437441dfd11907",
+    "v5_dynridge_audit.json": "61b0d131ce3a441418d790343ee9d17036063395dde90aed5c769a229f10adbb",
+    "v5_dynridge_forecasts.csv": "79b8adcde219765bfe505a04ba5f153f2406cff912a824749d338946b5a0cfdf",
+    "v5_run_manifest.json": "9e66ebc26e03ea9c314e6d176e2bf57dc8e1eab5e634d932294b336499bcecb8",
+    "v5_selection.json": "a20d63c6a4537a75f5b30aa4b34e6793e7b1e9a29580cf9a5e4622e4a9889169",
+    "phase7_selection_state.json": "6988261965c25e3cc39fa619edcbff5a15e4e431cdba502f4a6cda354a47885b"
+  },
+  "new_tests": {
+    "tests": 37,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "full_tests": {
+    "tests": 563,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "full_test_junit_sha256": "2bb20e2b0717c284c6e3fd3cac9f27545220fb110552246aaf6454ce0174e34c",
+  "new_test_junit_sha256": "bc155d5087e62dc4baba6cbb27cd56cbf455e670dedfbc25c64e68eee88d7f63",
+  "original_canonical_files_preserved": true,
+  "daily_realized_returns_published": false
+}
