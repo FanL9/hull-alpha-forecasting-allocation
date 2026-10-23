@@ -1,0 +1,64 @@
+{
+  "sealed_at_utc": "2026-10-23T16:29:33.222598+00:00",
+  "run_type": "final",
+  "git_commit": "85b14524474a16cfcf8ffeda383aaaa3b19bd202",
+  "pipeline_tag": "phase7-pipeline-v1",
+  "real_final_cli_invocations": 1,
+  "fit_rows": [
+    0,
+    8866
+  ],
+  "purge_row": 8867,
+  "final_rows": [
+    8868,
+    9047
+  ],
+  "forecast_before_evaluation_sealed_sha256": "30e11de17e08b006a524cd84bb79f0d3988f7c34def13661dcb4ac3abc0acabb",
+  "canonical_state": "completed",
+  "original_outputs_and_prior_evidence_preserved": true,
+  "research_track_unchanged": true,
+  "interpretation": "Descriptive Final Simulation only; no track ranking, reselection, or feedback.",
+  "local_snapshot_root": "work/phase7_final_v1/full_snapshot",
+  "all_original_files_sha256": {
+    "artifacts/phase7_final/final_daily_positions.csv": "24f812f4949f8d1d60f9413e493733052dac973552c64f84d833a5dbf4c1b9aa",
+    "artifacts/phase7_final/final_fit_audit.json": "6ca508e83fca9b2de68c0d436d3270b44fb71189459ce7a3310bafdc39fd919b",
+    "artifacts/phase7_final/final_fit_audit_pending.json": "5f50449904053e52a76a4e5e5dc2643c41a718bf38df85793f4934afbbfb5103",
+    "artifacts/phase7_final/final_forecasts_sealed.csv": "30e11de17e08b006a524cd84bb79f0d3988f7c34def13661dcb4ac3abc0acabb",
+    "artifacts/phase7_final/final_rank_ic.csv": "07b6f737e28d7696391da0f79b55dc66876d2d8c87ad0c008d6cb8fba881dd54",
+    "artifacts/phase7_final/final_run_manifest.json": "ecdd1840e968533a285351423f2d86a149a6b4b4bc691b0b1a66e7ce831f2283",
+    "artifacts/phase7_final/final_scores.csv": "40acb79ab3daff260153478325308d4ca141482b2da216abd1cedd969616921c",
+    "artifacts/phase7_final/final_summary.json": "1d38386e54c0743260f71929a48eb386d601e053557eb5b3ff4ef057719232b1",
+    "artifacts/phase7_final/tasks_completion_journal.json": "c73495e41acb3fa31d2d5619428a10286c6c0c304cbe0df6c1af84f3f05b0c0a",
+    "artifacts/phase7_final/tasks/receipts/83d347598c58415619c198b318caebe50257e10cbb091d52b2ac179a713bb052.json": "5f5b330c2475fdfcc565bab235c8aaf1e7ecfb8b5a5a8161e3ba0581987e29dc",
+    "artifacts/phase7_final/tasks/tasks/83d347598c58415619c198b318caebe50257e10cbb091d52b2ac179a713bb052.json": "c41e41269fc0ce9644ea12df1f5f726acf1d6813cf90331274b6c2d591764dff",
+    "artifacts/phase7_final_state.json": "08aa071bd2c7d43ab0ae2621f65c5420362ab20588bfcac4a66909eb215b7a0a"
+  },
+  "published_original_files_sha256": {
+    "final_scores.csv": "40acb79ab3daff260153478325308d4ca141482b2da216abd1cedd969616921c",
+    "final_rank_ic.csv": "07b6f737e28d7696391da0f79b55dc66876d2d8c87ad0c008d6cb8fba881dd54",
+    "final_daily_positions.csv": "24f812f4949f8d1d60f9413e493733052dac973552c64f84d833a5dbf4c1b9aa",
+    "final_summary.json": "1d38386e54c0743260f71929a48eb386d601e053557eb5b3ff4ef057719232b1",
+    "final_fit_audit.json": "6ca508e83fca9b2de68c0d436d3270b44fb71189459ce7a3310bafdc39fd919b",
+    "final_run_manifest.json": "ecdd1840e968533a285351423f2d86a149a6b4b4bc691b0b1a66e7ce831f2283",
+    "final_forecasts_sealed.csv": "30e11de17e08b006a524cd84bb79f0d3988f7c34def13661dcb4ac3abc0acabb",
+    "phase7_final_state.json": "08aa071bd2c7d43ab0ae2621f65c5420362ab20588bfcac4a66909eb215b7a0a"
+  },
+  "unpublished_original_files": [
+    "artifacts/phase7_final/final_fit_audit_pending.json",
+    "artifacts/phase7_final/tasks_completion_journal.json",
+    "artifacts/phase7_final/tasks/receipts/83d347598c58415619c198b318caebe50257e10cbb091d52b2ac179a713bb052.json",
+    "artifacts/phase7_final/tasks/tasks/83d347598c58415619c198b318caebe50257e10cbb091d52b2ac179a713bb052.json"
+  ],
+  "daily_raw_returns_published": false,
+  "model_task_cache_published": false,
+  "pre_execution_validation_reference": {
+    "file": "reports/phase7_selection/snapshot_seal.json",
+    "sha256": "3f9183b9774ccad3f80dfe6c9831e2ca2f5f383d129a895e279ca9b80c40f405",
+    "full_tests": {
+      "tests": 563,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  }
+}

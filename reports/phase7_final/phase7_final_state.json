@@ -1,0 +1,56 @@
+{
+  "identity": {
+    "code_hash": "fba605cb342188b746ca7fdf8827897f358b46e9b9de71f59469baa80a5f9fff",
+    "code_sha256": {
+      "src/models/dynamic_ridge.py": "7ba857525cf0acbcead5344f9c2b2644a7a97bdc010b8ea9d32795d6be679f3c",
+      "src/research/phase6_allocation.py": "39b04c9d56940d29c9b04b0f1d1da32ed59ad26d1eac510e33786569dfe62194",
+      "src/research/phase7_final.py": "dd3c5c4657145b382e5a6239337a74a8ffb208352828294c8fcb6962a7ba651e",
+      "src/research/phase7_refit.py": "c1361ae7a01ba43a48f2db1ab9dff38d99623f0db9568994f15949c3679a95e8",
+      "src/research/phase7_selection.py": "9b0c94015091384c489e71e13c34492cf9239ef8a29d134841044999bb92e111",
+      "tests/test_phase7_final.py": "fb806d42931bc859566a553894a4b91da9271a0519fef212239bd17fdf321bfb",
+      "tests/test_phase7_selection.py": "f4261e338a0f5e87eb3296f05c7cad2ce67b8aab340dfa045044daf0f9c00f2b"
+    },
+    "competition_selected": "volscaled_k0.10/A",
+    "evidence_sha256": {
+      "reports/phase5_real_run/phase5_predictions.csv": "5adbb3d768a499929da59ac8d1201210ada5d4e3178cac1043da54810e78dad7",
+      "reports/phase6_holdout_public/holdout_forecasts_sealed.csv": "d1d433dae1696244abefd8fb2fc69cc890fd974bc4c30b1cb8d5251c3f7a72cb",
+      "reports/phase6_holdout_public/phase6_holdout_state.json": "d1fc2a1609b6dae213429d05cbf77c15009c58c45720c0548e4b010e2df44e56"
+    },
+    "final_rows": [
+      8868,
+      9047
+    ],
+    "fit_rows": [
+      0,
+      8866
+    ],
+    "git_commit": "85b14524474a16cfcf8ffeda383aaaa3b19bd202",
+    "pipeline_tag": "phase7-pipeline-v1",
+    "protocol_tags": [
+      "protocol-v4",
+      "protocol-v4.1",
+      "protocol-v5"
+    ],
+    "protocol_v5_lock_sha256": "1fe5d3a3b85a9078de7b74e915f505a945129adfcd90597e3b1360a978bd8a6b",
+    "purge_row": 8867,
+    "run_type": "final",
+    "v5_selection_sha256": {
+      "phase7_selection_state.json": "6988261965c25e3cc39fa619edcbff5a15e4e431cdba502f4a6cda354a47885b",
+      "v5_run_manifest.json": "9e66ebc26e03ea9c314e6d176e2bf57dc8e1eab5e634d932294b336499bcecb8",
+      "v5_selection.json": "a20d63c6a4537a75f5b30aa4b34e6793e7b1e9a29580cf9a5e4622e4a9889169"
+    }
+  },
+  "output_sha256": {
+    "final_daily_positions.csv": "24f812f4949f8d1d60f9413e493733052dac973552c64f84d833a5dbf4c1b9aa",
+    "final_fit_audit.json": "6ca508e83fca9b2de68c0d436d3270b44fb71189459ce7a3310bafdc39fd919b",
+    "final_fit_audit_pending.json": "5f50449904053e52a76a4e5e5dc2643c41a718bf38df85793f4934afbbfb5103",
+    "final_forecasts_sealed.csv": "30e11de17e08b006a524cd84bb79f0d3988f7c34def13661dcb4ac3abc0acabb",
+    "final_rank_ic.csv": "07b6f737e28d7696391da0f79b55dc66876d2d8c87ad0c008d6cb8fba881dd54",
+    "final_scores.csv": "40acb79ab3daff260153478325308d4ca141482b2da216abd1cedd969616921c",
+    "final_summary.json": "1d38386e54c0743260f71929a48eb386d601e053557eb5b3ff4ef057719232b1",
+    "tasks_completion_journal.json": "c73495e41acb3fa31d2d5619428a10286c6c0c304cbe0df6c1af84f3f05b0c0a"
+  },
+  "sealed_sha256": "30e11de17e08b006a524cd84bb79f0d3988f7c34def13661dcb4ac3abc0acabb",
+  "state": "completed",
+  "updated_at_utc": "2026-10-23T16:27:31.168620+00:00"
+}

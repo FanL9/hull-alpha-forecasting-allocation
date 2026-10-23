@@ -1,0 +1,14 @@
+{
+  "interpretation": "Protocol v5 section 6: completes the process; no track is ranked",
+  "official_score": {
+    "competition_track": 1.4822197819344016,
+    "constant_1": 1.1262555230903422,
+    "research_track": 1.4813646667790172,
+    "volatility_only": 1.479437424186268
+  },
+  "rows": 180,
+  "tracks": {
+    "competition": "volscaled_k0.10/A",
+    "research": "volscaled_k0.10/A"
+  }
+}
