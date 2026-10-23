@@ -27,8 +27,9 @@ The first two areas form Development; holdout outcomes do not guide selection, a
 - **Phase 4:** [Raw-Control / Engineered pipeline](docs/phase4_pipeline.md) under frozen [Protocol v3.1](docs/protocol_v3_1_engineered_alpha_fair_comparison.md) ([synthetic calibration](reports/phase4_pipeline_synthetic_calibration.md)). One real run at pipeline v1.1 after a pre-data v1 failure ([incident](reports/phase4_incidents/v1_real_entry_key_error.md)): the 499-candidate engineered universe did not beat the identically selected raw control ([results](reports/phase4_engineered_alpha_results.md)).
 - **Phase 5:** Ridge/GRU/TCN on the same 63-day inputs did not beat the raw nested composite; the frozen rule selected **A** (mean fold Rank IC 0.0765). [Analysis](reports/phase5_real_analysis.md).
 - **Phase 6:** [Protocol v4](docs/protocol_v4_phase6_allocation.md) + [v4.1](docs/protocol_v4_1_holdout_amendment.md). Research-OOS selection chose `volscaled_k0.10` ([sealed](reports/phase6_selection/)). Internal Holdout run once: A **not confirmed** (IC 0.018, p 0.27); allocation indistinguishable from the market ([results](reports/phase6_holdout_results.md), [public files](reports/phase6_holdout_public/)).
-- **Phase 7:** [Protocol v5](docs/protocol_v5_competition_track.md) frozen: a separate, disclosed competition track chosen on all 15 OOS blocks, plus one Final Simulation run for both tracks ([pipeline](docs/phase7_pipeline.md)). Not yet run.
-- **Not started:** Final Simulation (8868–9047).
+- **Phase 7:** [Protocol v5](docs/protocol_v5_competition_track.md) frozen: a separate, disclosed competition track chosen on all 15 OOS blocks, plus one Final Simulation run for both tracks ([pipeline](docs/phase7_pipeline.md)). Both tracks selected A + `volscaled_k0.10`; on the Final 180 days they scored 1.48 vs market 1.13, the same as volatility-only (1.48).
+- **Summary:** [Final project report](reports/final_project_report.md).
+- **Complete:** all phases run once; no data remain unread.
 
 ## Pipeline
 
