@@ -1,7 +1,7 @@
 # Regime-Aware Alpha Forecasting and Dynamic S&P 500 Allocation
 
 This project uses official [Kaggle Hull Tactical data](https://www.kaggle.com/competitions/hull-tactical-market-prediction/data) to study whether anonymous financial features predict future S&P 500 excess returns.
-The planned pipeline converts forecasts into allocations under chronological validation and a final competition simulation.
+The completed pipeline converts forecasts into allocations under chronological validation and a final competition simulation.
 
 ## Data
 
@@ -17,7 +17,7 @@ The planned pipeline converts forecasts into allocations under chronological val
 | Internal Holdout | 7860–8867 | 1008 |
 | Competition Simulation | 8868–9047 | 180 |
 
-The first two areas form Development; holdout outcomes do not guide selection, and the final 180 rows remain locked until simulation.
+The first two areas form Development. Research-track choices were frozen before formal holdout evaluation; the disclosed v5 competition track reused holdout evidence. The Final 180 was evaluated once.
 
 ## Current Status
 
@@ -29,7 +29,7 @@ The first two areas form Development; holdout outcomes do not guide selection, a
 - **Phase 6:** [Protocol v4](docs/protocol_v4_phase6_allocation.md) + [v4.1](docs/protocol_v4_1_holdout_amendment.md). Research-OOS selection chose `volscaled_k0.10` ([sealed](reports/phase6_selection/)). Internal Holdout run once: A **not confirmed** (IC 0.018, p 0.27); allocation indistinguishable from the market ([results](reports/phase6_holdout_results.md), [public files](reports/phase6_holdout_public/)).
 - **Phase 7:** [Protocol v5](docs/protocol_v5_competition_track.md) frozen: a separate, disclosed competition track chosen on all 15 OOS blocks, plus one Final Simulation run for both tracks ([pipeline](docs/phase7_pipeline.md)). Both tracks selected A + `volscaled_k0.10`; on the Final 180 days they scored 1.48 vs market 1.13, the same as volatility-only (1.48).
 - **Summary:** [Final project report](reports/final_project_report.md).
-- **Complete:** all phases run once; no data remain unread.
+- **Complete:** all planned phases finished; Internal Holdout and Final Simulation each evaluated once.
 
 ## Pipeline
 
