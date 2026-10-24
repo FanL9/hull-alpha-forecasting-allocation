@@ -35,22 +35,24 @@ Test 97 single features and **7 predefined family-composite hypotheses** (M/E/I/
 
 ## Forecasting
 
-Fit preprocessing, any feature selection and candidate models inside the corresponding historical training windows, then compare later forecasts with fixed baselines.
-Freeze the selected forecasting pipeline before its one-off internal holdout evaluation; its outcomes do not guide further selection.
+Fit preprocessing, feature selection and models inside each historical training window only; choose hyperparameters on nested inner blocks.
+Compared forecasters: a nested raw-level composite (A), the same selector on 499 engineered candidates (B), Ridge/GRU/TCN on 63-day windows of 16 cluster representatives, their GRU+TCN average (C), an equal-weight combination of normalized A, B and C (D), and, for the competition track only, a recency-weighted ridge on the 97 raw levels (DynRidge).
+A frozen rule selects the primary forecaster on research folds; it is then refit and evaluated once on the Internal Holdout without further tuning.
 
 ## Signal and allocation
 
-Translate forecasts into bounded exposure using research-period calibration, then freeze allocation rules without tuning on held-out outcomes.
-Prediction quality and portfolio utility are separate questions.
+Standardize the forecast with research out-of-sample location and scale, then map it to exposure in [0, 2]: linear clip(1 + kz) or volatility-scaled clip(c(1 + kz)), where c is a trailing 252/21-day volatility ratio of lagged returns.
+The mapping is chosen by a frozen admissibility, near-best and simplicity rule on research blocks; a forecast-free volatility-only rule is reported as a comparator.
+Prediction quality and portfolio utility are separate questions and are reported separately.
 
 ## Evaluation
 
 Calculate strategy returns and the [official competition metric](official_metric_notes.md) from allocations, market returns and cash rates.
-Report any later transaction-cost or financing analysis separately from the unmodified official score; reserve Deflated Sharpe for later model/strategy searches.
+Turnover and 1/5 bp transaction-cost sensitivity are reported separately from the unmodified official score; block-bootstrap intervals are descriptive.
 
 ## Competition simulation
 
-Run the frozen pipeline sequentially through the locked final period with only inference-time inputs and the predeclared update policy.
-The current implementation includes acquisition, EDA and protocol tools; Alpha Research, forecasting and portfolio evaluation have not started.
+Refit once on 0–8866 (purge 8867), freeze all learned state, and process 8868–9047 in order using only current features, official lagged fields and the trailing volatility state.
+Forecasts are sealed before any Final outcome is attached; the run is single-use. The research track and the disclosed competition track ([Protocol v5](protocol_v5_competition_track.md)) are run together and not ranked.
 
 Historical result snapshots belong in [reports/](../reports/); current rules belong in this documentation and the linked configuration.
